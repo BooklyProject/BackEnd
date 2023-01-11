@@ -1,5 +1,9 @@
 package mat.unical.it.bookly.persistance;
 
+import mat.unical.it.bookly.persistance.dao.UtenteDao;
+import mat.unical.it.bookly.persistance.dao.postgres.UtenteDaoPostgres;
+import mat.unical.it.bookly.persistance.model.Utente;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -21,12 +25,16 @@ public class DBManager { //classe Singleton che gestice la connessione con il DB
     public Connection getConnection(){
         if (conn == null){
             try{
-                conn = DriverManager.getConnection("jdbc:postgresql://manny.db.elephantsql.com:5432","postgres","postgres");
+                conn = DriverManager.getConnection("jdbc:postgresql://manny.db.elephantsql.com:5432/ktwiwmsl","ktwiwmsl","ciao");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
         return conn;
+    }
+
+    public UtenteDao getUtenteDao(){
+        return new UtenteDaoPostgres(getConnection());
     }
 
 
