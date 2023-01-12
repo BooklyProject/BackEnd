@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class IdBroker {
-    private static final String query = "SELECT nextval('db_sequence') AS id";//postgresql
+    private static final String query = "SELECT nextval('sequence') AS id";//postgresql
 
     public static Long getId(Connection connection){
         Long id = null;

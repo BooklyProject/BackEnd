@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface UtenteDao {
     public List<Utente> findAll();
-    public Utente findByPrimaryKey(Integer id);
+    public Utente findByPrimaryKey(Long id);
     public void saveOrUpdate(Utente utente);
-    public void delete(Utente utente);
+    public void delete(Long id);
 }

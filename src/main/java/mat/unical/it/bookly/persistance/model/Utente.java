@@ -1,7 +1,7 @@
 package mat.unical.it.bookly.persistance.model;
 
 public class Utente {
-    private Integer id;
+    private Long id;
     private String username;
     private String nome;
     private String cognome;
@@ -9,11 +9,11 @@ public class Utente {
     private String password;
 
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
