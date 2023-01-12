@@ -1,6 +1,5 @@
 package mat.unical.it.bookly;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
 import mat.unical.it.bookly.persistance.DBManager;
 import mat.unical.it.bookly.persistance.model.Utente;
 import org.junit.jupiter.api.Test;
@@ -11,14 +10,13 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
-class BooklyApplicationTests {
+class UtenteTests {
 
     @Test
     void contextLoads() {
     }
 
 
-    //test utenti
     @Test
     public void testUtenteChiavePrimaria(){
         Utente utente = DBManager.getInstance().getUtenteDao().findByPrimaryKey(Long.valueOf(3));
@@ -34,11 +32,12 @@ class BooklyApplicationTests {
 
     @Test
     public void testSaveUpdateTest(){
+        //TODO: TESTARE UPDATE --> è stato testata solo la insert
         Utente u = new Utente();
-        u.setUsername("Checco2222");
-        u.setNome("Francesco");
-        u.setEmail("chifdeho@gmail.coem");
-        u.setPassword("ciao");
+        u.setUsername("Strangis333343");
+        u.setNome("Francesco4343");
+        u.setEmail("mhhh443343");
+        u.setPassword("ciao3");
         u.setCognome("Strangis");
         u.setId(Long.valueOf(15));
         DBManager.getInstance().getUtenteDao().saveOrUpdate(u);

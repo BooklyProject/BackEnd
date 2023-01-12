@@ -1,17 +1,17 @@
 package mat.unical.it.bookly.persistance.model;
 
 public class Amministratore {
-    private Integer id;
+    private Long id;
     private String nome;
     private String cognome;
     private String email;
     private String password;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
