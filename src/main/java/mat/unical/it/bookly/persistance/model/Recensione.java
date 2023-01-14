@@ -8,19 +8,19 @@ public class Recensione {
         numeroMiPiace = 0;
         numeroNonMiPiace = 0;
     }
-    Integer id;
+    Long id;
     String descrizione;
     Integer voto;
     Date data;
     Integer numeroMiPiace;
     Integer numeroNonMiPiace;
-    Libro libro;
+    String isbnLibro;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -64,11 +64,11 @@ public class Recensione {
         this.numeroNonMiPiace = numeroNonMiPiace;
     }
 
-    public Libro getLibro() {
-        return libro;
+    public String getLibro() {
+        return isbnLibro;
     }
 
-    public void setLibro(Libro libro) {
-        this.libro = libro;
+    public void setLibro(String isbnLibro) {
+        this.isbnLibro = isbnLibro;
     }
 }

@@ -121,5 +121,8 @@ public class LibroDaoPostgres implements LibroDao {
         }
     }
 
+
+    //TODO: fare query lista recensioni che ha un libro
+
 }
 
