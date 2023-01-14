@@ -1,18 +1,18 @@
 package mat.unical.it.bookly.persistance.model;
 
 public class Libro {
-    private Integer isbn;
+    private String isbn;
     private String nome;
     private String autore;
     private String generi;  //trattiamolo come string unica, nel caso di più autori questi vengono concatenati
     private Integer numeroPagine;
     private String lingua;
 
-    public Integer getIsbn() {
+    public String getIsbn() {
         return isbn;
     }
 
-    public void setIsbn(Integer isbn) {
+    public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
 

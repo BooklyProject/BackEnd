@@ -1,9 +1,11 @@
 package mat.unical.it.bookly.persistance;
 
 import mat.unical.it.bookly.persistance.dao.AmministratoreDao;
+import mat.unical.it.bookly.persistance.dao.LibroDao;
 import mat.unical.it.bookly.persistance.dao.RaccoltaDao;
 import mat.unical.it.bookly.persistance.dao.UtenteDao;
 import mat.unical.it.bookly.persistance.dao.postgres.AmministratoreDaoPostgres;
+import mat.unical.it.bookly.persistance.dao.postgres.LibroDaoPostgres;
 import mat.unical.it.bookly.persistance.dao.postgres.RaccoltaDaoPostgress;
 import mat.unical.it.bookly.persistance.dao.postgres.UtenteDaoPostgres;
 import mat.unical.it.bookly.persistance.model.Utente;
@@ -42,7 +44,8 @@ public class DBManager { //classe Singleton che gestice la connessione con il DB
     }
     public AmministratoreDao getAmministratoreDao(){return new AmministratoreDaoPostgres(getConnection());}
     public RaccoltaDao getRaccoltaDao(){return new RaccoltaDaoPostgress(getConnection());}
-
+    public LibroDao getLibroDao(){return new LibroDaoPostgres(getConnection());
+    }
     }
 
 

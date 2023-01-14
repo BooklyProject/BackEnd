@@ -62,6 +62,7 @@ public class RaccoltaDaoPostgress implements RaccoltaDao {
 
     @Override
     public void saveOrUpdate(Raccolta raccolta) {
+        //TODO: try update
         if(findByPrimaryKey(raccolta.getId()) == null){
             String insertStr = "INSERT INTO raccolte VALUES (?,?,?)";
             PreparedStatement st;
