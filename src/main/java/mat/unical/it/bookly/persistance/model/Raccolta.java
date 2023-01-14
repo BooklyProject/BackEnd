@@ -1,15 +1,15 @@
 package mat.unical.it.bookly.persistance.model;
 
 public class Raccolta {
-    Integer id;
+    Long id;
     String nome;
-    Utente utente;
+    Long utente;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -21,11 +21,11 @@ public class Raccolta {
         this.nome = nome;
     }
 
-    public Utente getUtente() {
+    public Long getUtente() {
         return utente;
     }
 
-    public void setUtente(Utente utente) {
+    public void setUtente(Long utente) {
         this.utente = utente;
     }
 }

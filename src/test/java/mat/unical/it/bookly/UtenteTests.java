@@ -19,7 +19,7 @@ class UtenteTests {
 
     @Test
     public void testUtenteChiavePrimaria(){
-        Utente utente = DBManager.getInstance().getUtenteDao().findByPrimaryKey(Long.valueOf(3));
+        Utente utente = DBManager.getInstance().getUtenteDao().findByPrimaryKey(Long.valueOf(6));
         assertNotNull(utente.getId());
         System.out.println(utente.getUsername());
     }
@@ -27,18 +27,18 @@ class UtenteTests {
 
     @Test
     public void testCancellazioneUtente() {
-        DBManager.getInstance().getUtenteDao().delete(Long.valueOf(1));
+        DBManager.getInstance().getUtenteDao().delete(Long.valueOf(6));
     }
 
     @Test
     public void testSaveUpdateTest(){
         //TODO: TESTARE UPDATE --> è stato testata solo la insert
         Utente u = new Utente();
-        u.setUsername("Strangis333343");
-        u.setNome("Francesco4343");
-        u.setEmail("mhhh443343");
+        u.setUsername("checco");
+        u.setNome("Paola");
+        u.setEmail("bigdick");
         u.setPassword("ciao3");
-        u.setCognome("Strangis");
+        u.setCognome("caruso");
         u.setId(Long.valueOf(15));
         DBManager.getInstance().getUtenteDao().saveOrUpdate(u);
     }
