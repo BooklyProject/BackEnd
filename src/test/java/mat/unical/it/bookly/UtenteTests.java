@@ -19,7 +19,7 @@ class UtenteTests {
 
     @Test
     public void testUtenteChiavePrimaria(){
-        Utente utente = DBManager.getInstance().getUtenteDao().findByPrimaryKey(Long.valueOf(6));
+        Utente utente = DBManager.getInstance().getUtenteDao().findByPrimaryKey(Long.valueOf(11));
         assertNotNull(utente.getId());
         System.out.println(utente.getUsername());
     }
@@ -32,7 +32,6 @@ class UtenteTests {
 
     @Test
     public void testSaveUpdateTest(){
-        //TODO: TESTARE UPDATE --> è stato testata solo la insert
         Utente u = new Utente();
         u.setUsername("checco");
         u.setNome("Paola");
@@ -52,5 +51,8 @@ class UtenteTests {
         }
 
     }
+
+
+    //TODO: fare in modo che una volta che viene cancellato un utente, vengono cancellate tutte le raccolte ad esso associate
 
 }

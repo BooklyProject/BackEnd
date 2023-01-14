@@ -16,7 +16,6 @@ public class AmministratoreTests {
     void contextLoads() {
     }
 
-    //TODO: COMPLETARE RIMANENTI DUE TEST
 
     @Test
     public void testAmministratoreChiavePrimaria(){
