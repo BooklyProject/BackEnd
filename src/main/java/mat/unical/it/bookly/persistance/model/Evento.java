@@ -3,17 +3,17 @@ package mat.unical.it.bookly.persistance.model;
 import java.sql.Date;
 
 public class Evento {
-    private Integer id;
+    private Long id;
     private String nome;
     private String descrizione;
     private Date data;
     private String luogo;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

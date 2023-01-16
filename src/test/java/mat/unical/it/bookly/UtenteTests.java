@@ -1,6 +1,7 @@
 package mat.unical.it.bookly;
 
 import mat.unical.it.bookly.persistance.DBManager;
+import mat.unical.it.bookly.persistance.model.Provider;
 import mat.unical.it.bookly.persistance.model.Utente;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,18 +28,21 @@ class UtenteTests {
 
     @Test
     public void testCancellazioneUtente() {
-        DBManager.getInstance().getUtenteDao().delete(Long.valueOf(6));
+        DBManager.getInstance().getUtenteDao().delete(Long.valueOf(38));
     }
 
     @Test
     public void testSaveUpdateTest(){
         Utente u = new Utente();
-        u.setUsername("checco");
-        u.setNome("Paola");
-        u.setEmail("bigdick");
-        u.setPassword("ciao3");
-        u.setCognome("caruso");
+        u.setUsername("jacopo");
+        u.setNome("Jacopino");
+        u.setEmail("femifoef");
+        u.setPassword("ifoe");
+        u.setCognome("Garofalo");
         u.setId(Long.valueOf(15));
+        u.setUserImage("image");
+        u.setBanned(true);
+        u.setProvider(Provider.LOCAL);
         DBManager.getInstance().getUtenteDao().saveOrUpdate(u);
     }
 

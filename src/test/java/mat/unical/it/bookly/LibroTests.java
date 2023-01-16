@@ -43,12 +43,12 @@ public class LibroTests {
     public void testSaveUpdate(){
         //TODO: da provare update
         Libro l = new Libro();
-        l.setIsbn("1235");
-        l.setLingua("inglese");
-        l.setNome("Robison Crusoe");
+        l.setIsbn("1236");
+        l.setLingua("english");
+        l.setNome("Jewels");
         l.setNumeroPagine(700);
-        l.setAutore("Martin Garrix");
-        l.setGeneri("Fantasia");
+        l.setAutore("Hitler");
+        l.setGeneri("Commedia");
         DBManager.getInstance().getLibroDao().saveOrUpdate(l);
 
     }

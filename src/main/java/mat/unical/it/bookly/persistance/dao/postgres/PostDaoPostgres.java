@@ -54,4 +54,6 @@ public class PostDaoPostgres implements PostDao {
         }
         return post;
     }
+
+    //TODO: fare in modo che una volta che si cancellano i post, vengano cancellate anche le relative recensioni e viceversa
 }

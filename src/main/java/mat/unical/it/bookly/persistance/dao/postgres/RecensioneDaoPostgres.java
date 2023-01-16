@@ -7,10 +7,8 @@ import mat.unical.it.bookly.persistance.model.Post;
 import mat.unical.it.bookly.persistance.model.Recensione;
 
 import java.awt.image.DataBuffer;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecensioneDaoPostgres implements RecensioneDao {
@@ -20,7 +18,36 @@ public class RecensioneDaoPostgres implements RecensioneDao {
 
     @Override
     public List<Recensione> findAllWroteByUser(Long idUtente) {
-        return null;
+        List<Recensione> recensioniUtente = new ArrayList<>();
+        String query = "SELECT r.id as r_id, r.descrizione as r_desc, r.voto as r_voto, r.data as r_data, r.mi_piace as r_mi," +
+                "r.non_mi_piace as r_no, r.libro as r_libro " +
+                        "FROM recensioni r " +
+                        "JOIN post p ON p.id = r.id " +
+                "JOIN utenti u ON p.utente = u.id " +
+                "where p.utente = ?";
+
+        try{
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setLong(1,idUtente);
+            ResultSet rs = st.executeQuery();
+
+            while(rs.next()){
+                Recensione recensione = new Recensione();
+                recensione.setId(rs.getLong("r_id"));
+                recensione.setDescrizione(rs.getString("r_desc"));
+                recensione.setVoto(rs.getInt("r_voto"));
+                recensione.setData(rs.getDate("r_data"));
+                recensione.setNumeroMiPiace(rs.getInt("r_mi"));
+                recensione.setNumeroNonMiPiace(rs.getInt("r_no"));
+                recensione.setLibro(rs.getString("r_libro"));
+
+                recensioniUtente.add(recensione);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return recensioniUtente;
     }
 
     @Override
@@ -56,7 +83,7 @@ public class RecensioneDaoPostgres implements RecensioneDao {
             Post p = new Post();
             Long id = IdBroker.getId(conn);
             p.setId(id);
-            p.setIdUtente(Long.valueOf(11));
+            p.setIdUtente(Long.valueOf(30));
             DBManager.getInstance().getPostDao().saveUpdate(p);
             String insertStr = "INSERT INTO recensioni VALUES (?,?,?,?,?,?,?)";
             PreparedStatement st;
@@ -103,6 +130,13 @@ public class RecensioneDaoPostgres implements RecensioneDao {
 
     @Override
     public void delete(Long id) {
-
+        String query = "DELETE FROM recensioni where id = ?";
+        try{
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setLong(1,id);
+            st.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 }

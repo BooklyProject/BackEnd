@@ -41,8 +41,10 @@ public class DBManager { //classe Singleton che gestice la connessione con il DB
     public LibroDao getLibroDao(){return new LibroDaoPostgres(getConnection());}
     public RecensioneDao getRecensioneDao(){return new RecensioneDaoPostgres(getConnection());}
     public PostDao getPostDao(){return new PostDaoPostgres(getConnection());}
+    public CommentoDao getCommentoDao(){return new CommentoDaoPostgress(getConnection());}
+    public EventoDao getEventoDao(){return new EventoDaoPostgres(getConnection());}
 
-    //TODO: cose che mi rimangono da fare: -metodo RecensioneDaoPostgress /Dao: COMMENTO-EVENTO-SEGNALAZIONE
+    //TODO: Dao: SEGNALAZIONE
     }
 
 

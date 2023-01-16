@@ -9,7 +9,7 @@ public class Commento{
           numeroNonMiPiace = 0;
      }
 
-     Integer id;
+     Long id;
      String descrizione;
      Date data; //utilizzo java.sql.Date
      Integer numeroMiPiace;
@@ -17,11 +17,11 @@ public class Commento{
      Long rencesione;
 
 
-     public Integer getId() {
+     public Long getId() {
           return id;
      }
 
-     public void setId(Integer id) {
+     public void setId(Long id) {
           this.id = id;
      }
 

@@ -39,6 +39,29 @@ public class RaccoltaDaoPostgress implements RaccoltaDao {
     }
 
     @Override
+    public List<Raccolta> findAll() {
+        List<Raccolta> raccolte = new ArrayList<>();
+        String query = "select * from raccolte";
+        try{
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(query);
+
+            while(rs.next()){
+                Raccolta raccolta = new Raccolta();
+                raccolta.setId(rs.getLong("id"));
+                raccolta.setNome(rs.getString("nome"));
+                raccolta.setUtente(rs.getLong("utente"));
+
+                raccolte.add(raccolta);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return raccolte;
+    }
+
+    @Override
     public Raccolta findByPrimaryKey(Long id) {
         Raccolta raccolta = null;
         String query = "select * from raccolte where id = ?";
