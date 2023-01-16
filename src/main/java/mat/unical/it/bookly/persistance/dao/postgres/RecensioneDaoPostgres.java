@@ -1,10 +1,12 @@
 package mat.unical.it.bookly.persistance.dao.postgres;
 
+import mat.unical.it.bookly.persistance.DBManager;
 import mat.unical.it.bookly.persistance.IdBroker;
 import mat.unical.it.bookly.persistance.dao.RecensioneDao;
 import mat.unical.it.bookly.persistance.model.Post;
 import mat.unical.it.bookly.persistance.model.Recensione;
 
+import java.awt.image.DataBuffer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -43,20 +45,25 @@ public class RecensioneDaoPostgres implements RecensioneDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return r;s
+        return r;
 
     }
 
     @Override
     public void saveOrUpdate(Recensione recensione) {
         if(findByPrimaryKey(recensione.getId()) == null){
+            //
+            Post p = new Post();
+            Long id = IdBroker.getId(conn);
+            p.setId(id);
+            p.setIdUtente(Long.valueOf(11));
+            DBManager.getInstance().getPostDao().saveUpdate(p);
             String insertStr = "INSERT INTO recensioni VALUES (?,?,?,?,?,?,?)";
             PreparedStatement st;
             try{
                 st = conn.prepareStatement(insertStr);
-                Long newId = IdBroker.getId(conn);
 
-                st.setLong(1,newId);
+                st.setLong(1,id);
                 st.setString(2,recensione.getDescrizione());
                 st.setInt(3,recensione.getVoto());
                 st.setDate(4,recensione.getData());
