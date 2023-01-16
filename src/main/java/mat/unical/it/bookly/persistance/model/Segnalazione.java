@@ -6,4 +6,5 @@ public class Segnalazione {
     Post post;
     Utente utente;
     Amministratore amministratore;
+    //TODO: mettere campo descrizione sia qua che su db
 }

@@ -8,14 +8,17 @@ public class Utente {
     private String email;
     private String password;
 
+    private Provider provider;
+
+    private Boolean isBanned;
+
+    private String userImage;
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public void setId(Long id) { this.id = id; }
 
     public String getUsername() {
         return username;
@@ -56,4 +59,18 @@ public class Utente {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public Provider getProvider() {
+        return provider;
+    }
+
+    public void setProvider(Provider provider) { this.provider = provider; }
+
+    public Boolean getBanned() { return isBanned; }
+
+    public void setBanned(Boolean banned) { this.isBanned = banned; }
+
+    public String getUserImage() { return userImage; }
+
+    public void setUserImage(String userImage) { this.userImage = userImage; }
 }

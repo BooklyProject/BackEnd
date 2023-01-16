@@ -1,0 +1,62 @@
+<!doctype html>
+<title>Sign Up</title>
+<html>
+<head lang="en">
+
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.0.4/popper.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+
+<div class="row" style="display: flex; width: 100%;">
+  <div class="column" style="width: 25%; float:left; padding: 10px; background: #888888">
+    <h1 style="text-align: center; color: darkred"> Bookly </h1>
+    <p style="text-align: center">Reading is good</p>
+  </div>
+  <div class="column" style="width: 75%; float: left; padding: 10px">
+    <button type="button" style="float: right">Sign In</button>
+    <h1 style="text-align: center">Sign up to Bookly</h1>
+    <div class="loginGoogle">
+      <button type="button">Sign up with Google</button>
+    </div>
+    <div class="orSeparator">
+      <table><tr>
+        <td style="width:50%"><hr/></td>
+        <td style="vertical-align:middle; text-align: center">or</td>
+        <td style="width:50%"><hr/></td>
+      </tr></table>
+    </div>
+    <div class = formSignUp>
+      <div class="row" style="display: flex; width: 100%">
+        <div class="col">
+          <div class="col1">
+            <label for="nameSignUp">Name</label><br>
+            <input type="text" id="nameSignUp" name="nameSignUp"><br>
+            <label for="emailSignUp">Email address</label><br>
+            <input type="text" id="emailSignUp" name="emailSignUp"><br>
+            <label for="passwordSignUp">Password</label><br>
+            <input type="text" id="passwordSignUp" name="passwordSignUp"><br>
+          </div>
+        </div>
+        <div class="col2">
+          <label for="surnameSignUp">Surname</label><br>
+          <input type="text" id="surnameSignUp" name="surnameSignUp"><br>
+          <label for="birthDateSignUp">Birthdate</label><br>
+          <input type="date" id="birthDateSignUp" name="birthDateSignUp"><br>
+          <label for="confirmPasswordSignUp">Confirm password</label><br>
+          <input type="text" id="confirmPasswordSignUp" name="confirmPasswordSignUp"><br>
+        </div>
+      </div>
+    </div>
+    <div class="signUpButton">
+      <button type="button" style="margin-top: 10px" >Sign Up</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

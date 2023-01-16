@@ -2,6 +2,7 @@ package mat.unical.it.bookly.persistance.dao.postgres;
 
 import mat.unical.it.bookly.persistance.IdBroker;
 import mat.unical.it.bookly.persistance.dao.UtenteDao;
+import mat.unical.it.bookly.persistance.model.Provider;
 import mat.unical.it.bookly.persistance.model.Utente;
 
 import java.sql.*;
@@ -31,6 +32,9 @@ public class UtenteDaoPostgres implements UtenteDao {
                 utente.setEmail(rs.getString("email"));
                 utente.setPassword(rs.getString("password"));
                 utente.setUsername(rs.getString("username"));
+                utente.setProvider(Provider.valueOf(rs.getString("provider")));
+                utente.setUserImage(rs.getString("user_image"));
+                utente.setBanned(rs.getBoolean("is_banned"));
 
                 utenti.add(utente);
             }
@@ -58,6 +62,9 @@ public class UtenteDaoPostgres implements UtenteDao {
                 utente.setEmail(rs.getString("email"));
                 utente.setPassword(rs.getString("password"));
                 utente.setUsername(rs.getString("username"));
+                utente.setProvider(Provider.valueOf(rs.getString("provider")));
+                utente.setUserImage(rs.getString("user_image"));
+                utente.setBanned(rs.getBoolean("is_banned"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -66,20 +73,53 @@ public class UtenteDaoPostgres implements UtenteDao {
     }
 
     @Override
+    public Utente findByEmail(String email) {
+        Utente utente = null;
+        String query = "SELECT * FROM utenti where email = ?";
+        try{
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setString(1,email);
+            ResultSet rs = st.executeQuery();
+
+            if (rs.next()){
+                utente = new Utente();
+                utente.setId(rs.getLong("id"));
+                utente.setCognome(rs.getString("cognome"));
+                utente.setNome(rs.getString("nome"));
+                utente.setEmail(rs.getString("email"));
+                utente.setPassword(rs.getString("password"));
+                utente.setUsername(rs.getString("username"));
+                utente.setProvider(Provider.valueOf(rs.getString("provider")));
+                utente.setUserImage(rs.getString("user_image"));
+                utente.setBanned(rs.getBoolean("is_banned"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        return utente;
+    }
+
+    @Override
     public void saveOrUpdate(Utente utente) {
-        if(findByPrimaryKey(utente.getId()) == null){
-            String insertStr = "INSERT INTO utenti VALUES (?,?,?,?,?,?)";
+        if(findByEmail(utente.getEmail()) == null){
+            String insertStr = "INSERT INTO utenti VALUES (?,?,?,?,?,?,?,?,?)";
             PreparedStatement st;
+
             try{
                 st = conn.prepareStatement(insertStr);
-                Long newId = IdBroker.getId(conn);
 
-                st.setLong(1,newId);
+                st.setLong(1,IdBroker.getId(conn));
                 st.setString(2,utente.getUsername());
                 st.setString(3,utente.getNome());
                 st.setString(4,utente.getCognome());
                 st.setString(5,utente.getEmail());
                 st.setString(6,utente.getPassword());
+                st.setString(7,utente.getProvider().toString());
+                st.setString(8,utente.getUserImage());
+                st.setBoolean(9,utente.getBanned());
 
                 st.executeUpdate();
 
@@ -91,7 +131,10 @@ public class UtenteDaoPostgres implements UtenteDao {
                     "nome = ?," +
                     "cognome = ?," +
                     "email = ?," +
-                    "password = ?" +
+                    "password = ?," +
+                    "provider = ?," +
+                    "immagine = ?," +
+                    "isBanned = ?" +
                     "where id = ?";
             PreparedStatement st;
             try{
@@ -101,7 +144,10 @@ public class UtenteDaoPostgres implements UtenteDao {
                 st.setString(3,utente.getCognome());
                 st.setString(4,utente.getEmail());
                 st.setString(5,utente.getPassword());
-                st.setLong(6,utente.getId());
+                st.setString(6,utente.getProvider().toString());
+                st.setString(7, utente.getUserImage());
+                st.setBoolean(8,utente.getBanned());
+                st.setLong(9,utente.getId());
 
                 st.executeUpdate();
             } catch (SQLException e) {
