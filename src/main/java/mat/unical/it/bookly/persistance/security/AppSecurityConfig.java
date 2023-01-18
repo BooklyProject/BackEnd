@@ -70,7 +70,7 @@ public class AppSecurityConfig {
                         CustomUserDetailsService userService = new CustomUserDetailsService();
                         userService.processOAuthPostLogin(oauthUser.getEmail(), oauthUser.getName());
 
-                        response.sendRedirect("/siumm");
+                        response.sendRedirect("/checkAuth");
                     }
                 });
 

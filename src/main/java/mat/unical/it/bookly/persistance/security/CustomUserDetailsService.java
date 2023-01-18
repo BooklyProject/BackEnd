@@ -1,9 +1,11 @@
 package mat.unical.it.bookly.persistance.security;
 
+import mat.unical.it.bookly.controller.UserService;
 import mat.unical.it.bookly.persistance.DBManager;
 import mat.unical.it.bookly.persistance.dao.UtenteDao;
 import mat.unical.it.bookly.persistance.model.Provider;
 import mat.unical.it.bookly.persistance.model.Raccolta;
+import mat.unical.it.bookly.persistance.model.UserPrincipal;
 import mat.unical.it.bookly.persistance.model.Utente;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,11 +25,12 @@ public class CustomUserDetailsService implements UserDetailsService{
             throw new UsernameNotFoundException("User not found");
         }
 
-        return new Raccolta.UserPrincipal(user);
+        return new UserPrincipal(user);
     }
 
     public void processOAuthPostLogin(String email, String username) {
         Utente existUser = userDao.findByEmail(email);
+        UserService userService = new UserService();
 
         if (existUser == null) {
             Utente newUser = new Utente();
@@ -37,7 +40,12 @@ public class CustomUserDetailsService implements UserDetailsService{
             newUser.setBanned(false);
 
             userDao.saveOrUpdate(newUser);
+            userService.setCurrentUser(newUser);
         }
+        else{
+            userService.setCurrentUser(existUser);
+        }
+
 
     }
 }
