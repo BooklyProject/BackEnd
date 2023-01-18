@@ -1,7 +1,6 @@
 package mat.unical.it.bookly;
 
 import mat.unical.it.bookly.persistance.DBManager;
-import mat.unical.it.bookly.persistance.model.Provider;
 import mat.unical.it.bookly.persistance.model.Utente;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -42,7 +41,7 @@ class UtenteTests {
         u.setId(Long.valueOf(15));
         u.setUserImage("image");
         u.setBanned(true);
-        u.setProvider(Provider.LOCAL);
+        //u.setProvider(Provider.LOCAL);
         DBManager.getInstance().getUtenteDao().saveOrUpdate(u);
     }
 

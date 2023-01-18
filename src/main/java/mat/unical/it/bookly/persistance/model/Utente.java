@@ -8,8 +8,6 @@ public class Utente {
     private String email;
     private String password;
 
-    private Provider provider;
-
     private Boolean isBanned;
 
     private String userImage;
@@ -59,12 +57,6 @@ public class Utente {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    public Provider getProvider() {
-        return provider;
-    }
-
-    public void setProvider(Provider provider) { this.provider = provider; }
 
     public Boolean getBanned() { return isBanned; }
 

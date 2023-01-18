@@ -2,7 +2,6 @@ package mat.unical.it.bookly.persistance.dao.postgres;
 
 import mat.unical.it.bookly.persistance.IdBroker;
 import mat.unical.it.bookly.persistance.dao.UtenteDao;
-import mat.unical.it.bookly.persistance.model.Provider;
 import mat.unical.it.bookly.persistance.model.Utente;
 
 import java.sql.*;
@@ -32,7 +31,6 @@ public class UtenteDaoPostgres implements UtenteDao {
                 utente.setEmail(rs.getString("email"));
                 utente.setPassword(rs.getString("password"));
                 utente.setUsername(rs.getString("username"));
-                utente.setProvider(Provider.valueOf(rs.getString("provider")));
                 utente.setUserImage(rs.getString("user_image"));
                 utente.setBanned(rs.getBoolean("is_banned"));
 
@@ -62,7 +60,6 @@ public class UtenteDaoPostgres implements UtenteDao {
                 utente.setEmail(rs.getString("email"));
                 utente.setPassword(rs.getString("password"));
                 utente.setUsername(rs.getString("username"));
-                utente.setProvider(Provider.valueOf(rs.getString("provider")));
                 utente.setUserImage(rs.getString("user_image"));
                 utente.setBanned(rs.getBoolean("is_banned"));
             }
@@ -89,7 +86,6 @@ public class UtenteDaoPostgres implements UtenteDao {
                 utente.setEmail(rs.getString("email"));
                 utente.setPassword(rs.getString("password"));
                 utente.setUsername(rs.getString("username"));
-                utente.setProvider(Provider.valueOf(rs.getString("provider")));
                 utente.setUserImage(rs.getString("user_image"));
                 utente.setBanned(rs.getBoolean("is_banned"));
             }
@@ -105,7 +101,7 @@ public class UtenteDaoPostgres implements UtenteDao {
     @Override
     public void saveOrUpdate(Utente utente) {
         if(findByEmail(utente.getEmail()) == null){
-            String insertStr = "INSERT INTO utenti VALUES (?,?,?,?,?,?,?,?,?)";
+            String insertStr = "INSERT INTO utenti VALUES (?,?,?,?,?,?,?,?)";
             PreparedStatement st;
 
             try{
@@ -117,9 +113,8 @@ public class UtenteDaoPostgres implements UtenteDao {
                 st.setString(4,utente.getCognome());
                 st.setString(5,utente.getEmail());
                 st.setString(6,utente.getPassword());
-                st.setString(7,utente.getProvider().toString());
-                st.setString(8,utente.getUserImage());
-                st.setBoolean(9,utente.getBanned());
+                st.setString(7,utente.getUserImage());
+                st.setBoolean(8,utente.getBanned());
 
                 st.executeUpdate();
 
@@ -132,7 +127,6 @@ public class UtenteDaoPostgres implements UtenteDao {
                     "cognome = ?," +
                     "email = ?," +
                     "password = ?," +
-                    "provider = ?," +
                     "immagine = ?," +
                     "isBanned = ?" +
                     "where id = ?";
@@ -144,10 +138,9 @@ public class UtenteDaoPostgres implements UtenteDao {
                 st.setString(3,utente.getCognome());
                 st.setString(4,utente.getEmail());
                 st.setString(5,utente.getPassword());
-                st.setString(6,utente.getProvider().toString());
-                st.setString(7, utente.getUserImage());
-                st.setBoolean(8,utente.getBanned());
-                st.setLong(9,utente.getId());
+                st.setString(6, utente.getUserImage());
+                st.setBoolean(7,utente.getBanned());
+                st.setLong(8,utente.getId());
 
                 st.executeUpdate();
             } catch (SQLException e) {
