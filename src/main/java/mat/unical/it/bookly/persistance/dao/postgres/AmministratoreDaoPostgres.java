@@ -66,6 +66,24 @@ public class AmministratoreDaoPostgres implements AmministratoreDao {
     }
 
     @Override
+    public int findAdministratorsNum() {
+        int count = 0;
+        String query = "select count(*) from amministratori";
+        try{
+            PreparedStatement st = conn.prepareStatement(query);
+            ResultSet rs = st.executeQuery();
+
+            if(rs.next()){
+                count = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return count;
+    }
+
+    @Override
     public void saveOrUpdate(Amministratore amministratore) {
         if(findByPrimaryKey(amministratore.getId()) == null){
             String insertStr = "INSERT INTO amministratori VALUES (?,?,?,?,?)";

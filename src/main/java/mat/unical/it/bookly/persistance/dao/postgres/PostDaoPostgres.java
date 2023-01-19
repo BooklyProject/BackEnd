@@ -55,5 +55,18 @@ public class PostDaoPostgres implements PostDao {
         return post;
     }
 
+    @Override
+    public void delete(Long id) {
+        String query = "DELETE FROM segnalazioni where id = ?";
+
+        try{
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setLong(1,id);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     //TODO: fare in modo che una volta che si cancellano i post, vengano cancellate anche le relative recensioni e viceversa
 }

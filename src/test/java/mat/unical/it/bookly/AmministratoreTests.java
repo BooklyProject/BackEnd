@@ -4,7 +4,7 @@ import mat.unical.it.bookly.persistance.model.Amministratore;
 import mat.unical.it.bookly.persistance.model.Utente;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-
+import org.apache.commons.lang3.RandomUtils;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -41,6 +41,13 @@ public class AmministratoreTests {
     }
 
     @Test
+    public void testTrovaNumeroAmministratore(){
+        int count = DBManager.getInstance().getAmministratoreDao().findAdministratorsNum();
+        System.out.println(count);
+        System.out.println(RandomUtils.nextLong( 1, DBManager.getInstance().getAmministratoreDao().findAdministratorsNum() + 1) );
+    }
+
+    @Test
     public void testAmministratori() {
         List<Amministratore> amministratori = DBManager.getInstance().getAmministratoreDao().findAll();
         for (Amministratore amministratore : amministratori) {
@@ -48,5 +55,7 @@ public class AmministratoreTests {
             System.out.println(amministratore.getNome());
         }
     }
+
+
 
 }
