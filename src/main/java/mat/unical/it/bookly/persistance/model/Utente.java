@@ -7,9 +7,7 @@ public class Utente {
     private String cognome;
     private String email;
     private String password;
-
     private Boolean isBanned;
-
     private String userImage;
 
     public Long getId() {

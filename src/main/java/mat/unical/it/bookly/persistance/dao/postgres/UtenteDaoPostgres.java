@@ -161,4 +161,32 @@ public class UtenteDaoPostgres implements UtenteDao {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public Utente findByEmailAndPassword(String email, String password) {
+        Utente utente = null;
+        String query = "SELECT * from utenti where email = ? and password = ?";
+        try{
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setString(1,email);
+            st.setString(2,password);
+            ResultSet rs = st.executeQuery();
+
+            if (rs.next()){
+                utente = new Utente();
+                utente.setId(rs.getLong("id"));
+                utente.setCognome(rs.getString("cognome"));
+                utente.setNome(rs.getString("nome"));
+                utente.setEmail(rs.getString("email"));
+                utente.setPassword(rs.getString("password"));
+                utente.setUsername(rs.getString("username"));
+                utente.setUserImage(rs.getString("user_image"));
+                utente.setBanned(rs.getBoolean("is_banned"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return utente;
+
+    }
 }

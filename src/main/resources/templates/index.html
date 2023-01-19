@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome Page</title>
+</head>
+<body>
+<header>
+    <h1>Benvenuti sul sito</h1>
+    <a href="registrazione.html">Registrazione</a>
+    <a href="login.html">Login</a>
+</header>
+
+            <p th:if="${session.user != null}" th:text="|Benvenuto ${session.user.username}|" />
+            <a th:unless="${session.user != null}" class="nav-link" href="login.html">Login</a>
+            <a th:if="${session.user != null}" class="nav-link" href="doLogout">Logout</a>
+
+</nav>
+<p>Naviga tra le nostre pagine</p>
+<footer>
+    Sito web realizzato da noi
+</footer>
+</body>
+</html>

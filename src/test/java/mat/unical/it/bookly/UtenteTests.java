@@ -33,11 +33,11 @@ class UtenteTests {
     @Test
     public void testSaveUpdateTest(){
         Utente u = new Utente();
-        u.setUsername("jacopo");
-        u.setNome("Jacopino");
-        u.setEmail("femifoef");
-        u.setPassword("ifoe");
-        u.setCognome("Garofalo");
+        u.setUsername("checco");
+        u.setNome("Francesco");
+        u.setEmail("checco0110@gmail.com");
+        u.setPassword("sooca");
+        u.setCognome("Strangis");
         u.setId(Long.valueOf(15));
         u.setUserImage("image");
         u.setBanned(true);
@@ -46,14 +46,22 @@ class UtenteTests {
     }
 
     @Test
+    public void testFindByEmailAndPassword(){
+        Utente utente = DBManager.getInstance().getUtenteDao().findByEmailAndPassword("checco0110@gmail.com","sooca");
+        assertNotNull(utente.getId());
+        System.out.println(utente.getNome());
+    }
+
+
+    @Test
     public void testUtenti(){
         List<Utente> utenti = DBManager.getInstance().getUtenteDao().findAll();
         for(Utente utente: utenti){
             assertNotNull(utente.getUsername());
             System.out.println(utente.getUsername());
         }
-
     }
+
 
 
     //TODO: fare in modo che una volta che viene cancellato un utente, vengono cancellate tutte le raccolte ad esso associate
