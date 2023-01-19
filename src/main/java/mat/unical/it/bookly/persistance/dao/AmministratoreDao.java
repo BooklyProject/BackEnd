@@ -8,6 +8,7 @@ import java.util.List;
 public interface AmministratoreDao {
     public List<Amministratore> findAll();
     public Amministratore findByPrimaryKey(Long id);
+    public int findAdministratorsNum();
     public void saveOrUpdate(Amministratore amministratore);
     public void delete(Long id);
 }

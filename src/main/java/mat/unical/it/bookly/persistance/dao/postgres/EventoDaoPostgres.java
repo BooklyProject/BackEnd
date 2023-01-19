@@ -6,12 +6,10 @@ import mat.unical.it.bookly.persistance.dao.EventoDao;
 import mat.unical.it.bookly.persistance.model.Commento;
 import mat.unical.it.bookly.persistance.model.Evento;
 import mat.unical.it.bookly.persistance.model.Post;
+import mat.unical.it.bookly.persistance.model.Utente;
 
 import javax.xml.transform.Result;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +17,31 @@ public class EventoDaoPostgres implements EventoDao {
     Connection conn;
     public EventoDaoPostgres(Connection conn){this.conn = conn;}
 
+
+    @Override
+    public List<Evento> findAll() {
+        List<Evento> eventi = new ArrayList<>();
+        String query = "select * from eventi"; //ritorna la lista di tutti gli utenti
+        try{
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(query);
+
+            while (rs.next()){
+                Evento evento = new Evento();
+                evento.setId(rs.getLong("id"));
+                evento.setNome(rs.getString("nome"));
+                evento.setDescrizione(rs.getString("descrizione"));
+                evento.setData(rs.getDate("data"));
+                evento.setLuogo(rs.getString("luogo"));
+
+                eventi.add(evento);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return eventi;
+    }
 
     @Override
     public List<Evento> findAllCreatedByUser(Long idUtente) {
@@ -40,6 +63,7 @@ public class EventoDaoPostgres implements EventoDao {
                 evento.setId(rs.getLong("e_id"));
                 evento.setNome(rs.getString("e_nome"));
                 evento.setDescrizione(rs.getString("e_de"));
+                evento.setData(rs.getDate("e_data"));
                 evento.setLuogo(rs.getString("e_luogo"));
 
                 eventi.add(evento);
@@ -66,6 +90,7 @@ public class EventoDaoPostgres implements EventoDao {
                 e.setId(rs.getLong("id"));
                 e.setNome(rs.getString("nome"));
                 e.setDescrizione(rs.getString("descrizione"));
+                e.setData(rs.getDate("data"));
                 e.setLuogo(rs.getString("luogo"));
 
             }
@@ -76,13 +101,13 @@ public class EventoDaoPostgres implements EventoDao {
     }
 
     @Override
-    public void saveOrUpdate(Evento evento) {
+    public void saveOrUpdate(Evento evento, Long idUtente) {
         if(findByPrimaryKey(evento.getId()) == null){
             //
             Post p = new Post();
             Long id = IdBroker.getId(conn);
             p.setId(id);
-            p.setIdUtente(Long.valueOf(30));
+            p.setIdUtente(idUtente);
             DBManager.getInstance().getPostDao().saveUpdate(p);
             String insertStr = "INSERT INTO eventi VALUES (?,?,?,?,?)";
             PreparedStatement st;
@@ -128,6 +153,7 @@ public class EventoDaoPostgres implements EventoDao {
             PreparedStatement st = conn.prepareStatement(query);
             st.setLong(1,id);
             st.executeUpdate();
+            DBManager.getInstance().getPostDao().delete(id);
         }catch (SQLException e){
             e.printStackTrace();
         }
