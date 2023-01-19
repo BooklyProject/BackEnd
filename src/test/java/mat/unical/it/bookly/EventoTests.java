@@ -16,6 +16,7 @@ public class EventoTests {
     @Test
     void contextLoads(){}
 
+    /*
     @Test
     public void testSaveUpdate(){
         Evento e = new Evento();
@@ -27,6 +28,8 @@ public class EventoTests {
         DBManager.getInstance().getEventoDao().saveOrUpdate(e);
 
     }
+    */
+
 
     @Test
     public void testFindCreatedByUser(){

@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpSession;
 import mat.unical.it.bookly.persistance.DBManager;
 import mat.unical.it.bookly.persistance.dao.UtenteDao;
 import mat.unical.it.bookly.persistance.model.Utente;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.io.IOException;
 
@@ -18,17 +19,15 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        System.out.println("esecuzione login");
         String email = req.getParameter("email");
         String password = req.getParameter("password");
-        System.out.println(email);
         UtenteDao utenteDao = DBManager.getInstance().getUtenteDao();
-        Utente utente = utenteDao.findByEmail(email); //check se corretta
+        Utente utente = utenteDao.findByEmail(email);
         boolean logged;
         if(utente == null){
             logged = false;
         }else {
-            if(password.equals(utente.getPassword())){
+            if(BCrypt.checkpw(password,utente.getPassword())){
                 logged = true;
                 HttpSession session = req.getSession();
                 session.setAttribute("user",utente);

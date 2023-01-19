@@ -12,7 +12,7 @@ import mat.unical.it.bookly.persistance.model.Utente;
 
 import java.io.IOException;
 
-//@WebServlet("")
+@WebServlet("")
 public class HomeServlet extends HttpServlet{
 
     @Override
