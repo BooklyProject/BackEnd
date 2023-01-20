@@ -31,6 +31,9 @@ public class LoginServlet extends HttpServlet {
                 logged = true;
                 HttpSession session = req.getSession();
                 session.setAttribute("user",utente);
+                session.setAttribute("sessionId",session.getId());
+
+                req.getServletContext().setAttribute(session.getId(),session);
             }else{
                 logged = false;
             }
