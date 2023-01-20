@@ -1,7 +1,6 @@
 package mat.unical.it.bookly.controller;
 
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletException;
+
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,7 +17,7 @@ import java.io.IOException;
 public class LoginServlet extends HttpServlet {
 
     @Override
-    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException{
         String email = req.getParameter("email");
         String password = req.getParameter("password");
         UtenteDao utenteDao = DBManager.getInstance().getUtenteDao();
