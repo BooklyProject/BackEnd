@@ -15,6 +15,7 @@ import java.util.List;
 @CrossOrigin("http://localhost:4200/")
 public class FrontEndController {
 
+
     @GetMapping("/reports")
     public List<Segnalazione> getSegnalazioni(HttpServletRequest req, @RequestParam String sessionId){
 
@@ -136,6 +137,14 @@ public class FrontEndController {
     @GetMapping("/deletePartecipation")
     public boolean cancellaPartecipazione(HttpServletRequest req, @RequestParam String sessionId, @RequestParam Long idEvento){
         return false;
+    }
+
+    @PostMapping("/getUser")
+    public Utente getUtente(HttpServletRequest req, @RequestParam String sessionId){
+
+        HttpSession session = (HttpSession) req.getServletContext().getAttribute(sessionId);
+        Utente user = (Utente) session.getAttribute("user");
+        return user;
     }
 
 

@@ -2,7 +2,7 @@ package mat.unical.it.bookly.persistance.model;
 
 import java.util.List;
 
-public class Segue {
+public class Follow {
     Utente utente1;
     List<Utente> utentiSeguiti;
 

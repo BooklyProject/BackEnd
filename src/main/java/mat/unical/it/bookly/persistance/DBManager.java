@@ -2,7 +2,6 @@ package mat.unical.it.bookly.persistance;
 
 import mat.unical.it.bookly.persistance.dao.*;
 import mat.unical.it.bookly.persistance.dao.postgres.*;
-import mat.unical.it.bookly.persistance.model.Utente;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -41,7 +40,7 @@ public class DBManager { //classe Singleton che gestice la connessione con il DB
     public LibroDao getLibroDao(){return new LibroDaoPostgres(getConnection());}
     public RecensioneDao getRecensioneDao(){return new RecensioneDaoPostgres(getConnection());}
     public PostDao getPostDao(){return new PostDaoPostgres(getConnection());}
-    public CommentoDao getCommentoDao(){return new CommentoDaoPostgress(getConnection());}
+    public CommentoDao getCommentoDao(){return new CommentoDaoPostgres(getConnection());}
     public EventoDao getEventoDao(){return new EventoDaoPostgres(getConnection());}
     public SegnalazioneDao getSegnalazioneDao() { return new SegnalazioneDaoPostgres(getConnection()); }
 
