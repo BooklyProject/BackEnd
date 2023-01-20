@@ -144,6 +144,7 @@ public class FrontEndController {
 
         HttpSession session = (HttpSession) req.getServletContext().getAttribute(sessionId);
         Utente user = (Utente) session.getAttribute("user");
+
         return user;
     }
 
