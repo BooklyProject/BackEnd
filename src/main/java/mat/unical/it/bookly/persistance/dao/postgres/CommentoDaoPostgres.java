@@ -5,7 +5,6 @@ import mat.unical.it.bookly.persistance.IdBroker;
 import mat.unical.it.bookly.persistance.dao.CommentoDao;
 import mat.unical.it.bookly.persistance.model.Commento;
 import mat.unical.it.bookly.persistance.model.Post;
-import mat.unical.it.bookly.persistance.model.Recensione;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,9 +13,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommentoDaoPostgress implements CommentoDao {
+public class CommentoDaoPostgres implements CommentoDao {
     Connection conn;
-    public CommentoDaoPostgress(Connection conn){
+    public CommentoDaoPostgres(Connection conn){
         this.conn = conn;
     }
     @Override

@@ -2,7 +2,7 @@ package mat.unical.it.bookly.persistance.model;
 
 import java.util.List;
 
-public class Partecipa {
+public class Partecipazione {
     List<Utente> utenti;
     Evento evento;
 
