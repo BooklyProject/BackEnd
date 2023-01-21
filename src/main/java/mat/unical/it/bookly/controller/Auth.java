@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class Auth {
     @GetMapping("/checkAuth")
     public Boolean isAuth(HttpServletRequest req, String jsessionid){
-        System.out.println(jsessionid);
+        //System.out.println(jsessionid);
         HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
         if (session != null) {
             return true;

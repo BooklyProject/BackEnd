@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@CrossOrigin("http://localhost:4200/")
+@CrossOrigin("http://localhost:4200")
 public class FrontEndController {
 
 
@@ -140,10 +140,13 @@ public class FrontEndController {
     }
 
     @PostMapping("/getUser")
-    public Utente getUtente(HttpServletRequest req, @RequestParam String sessionId){
+    @CrossOrigin("http://localhost:4200/getUser")
+    public Utente getUtente(HttpServletRequest req, @RequestParam(required = false) String sessionId){
 
+        System.out.println("sessionIdjyh: " + sessionId);
         HttpSession session = (HttpSession) req.getServletContext().getAttribute(sessionId);
         Utente user = (Utente) session.getAttribute("user");
+        System.out.println("Utente: " + user.getNome() + " " + user.getCognome());
         return user;
     }
 

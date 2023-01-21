@@ -30,7 +30,7 @@ public class LoginServlet extends HttpServlet {
                 logged = true;
                 HttpSession session = req.getSession();
                 session.setAttribute("user",utente);
-                session.setAttribute("sessionId",session.getId());
+                session.setAttribute("jsessionid",session.getId());
 
                 req.getServletContext().setAttribute(session.getId(),session);
             }else{
@@ -38,7 +38,9 @@ public class LoginServlet extends HttpServlet {
             }
         }
         if(logged){
-            resp.sendRedirect("/");
+            HttpSession session = req.getSession();
+            System.out.println("sessionId: " + session.getId());
+            resp.sendRedirect("http://localhost:4200/?jsessionid="+ session.getId());
         }else{
             //RequestDispatcher dispatcher = req.getRequestDispatcher("views/error_page.html");
             //dispatcher.forward(req,resp);
