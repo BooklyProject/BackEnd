@@ -189,4 +189,24 @@ public class UtenteDaoPostgres implements UtenteDao {
         return utente;
 
     }
+
+    @Override
+    public List<Utente> followList(Long id) {
+        List<Utente> utenti = new ArrayList<>();
+        String query = "select utente2 from segue where utente1 = ?"; //ritorna la lista di tutti gli utenti
+        try{
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setLong(1,id);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()){
+                Utente utente = findByPrimaryKey(rs.getLong("utente2"));
+                utenti.add(utente);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return utenti;
+    }
 }

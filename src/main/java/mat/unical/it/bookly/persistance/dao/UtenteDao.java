@@ -11,4 +11,5 @@ public interface UtenteDao {
     public void saveOrUpdate(Utente utente);
     public void delete(Long id);
     public Utente findByEmailAndPassword(String email,String password);
+    public List<Utente> followList(Long id);
 }
