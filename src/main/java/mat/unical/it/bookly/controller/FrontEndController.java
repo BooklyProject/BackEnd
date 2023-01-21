@@ -139,12 +139,11 @@ public class FrontEndController {
         return false;
     }
 
-    @PostMapping("/getUser")
-    @CrossOrigin("http://localhost:4200/getUser")
-    public Utente getUtente(HttpServletRequest req, @RequestParam(required = false) String sessionId){
+    @GetMapping("/getUser")
+    public Utente getUtente(HttpServletRequest req, @RequestParam String jsessionid){
 
-        System.out.println("sessionIdjyh: " + sessionId);
-        HttpSession session = (HttpSession) req.getServletContext().getAttribute(sessionId);
+        System.out.println("sessionIdjyh: " + jsessionid);
+        HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
         Utente user = (Utente) session.getAttribute("user");
         return user;
     }
