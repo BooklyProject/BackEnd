@@ -1,3 +1,5 @@
 //TODO: vedere come sistemare Amministratore
-//TODO: dare SegnalazioneDao --> unico rimanente, non fatto perchè bisogna metterci dentro un amministratore
+//TODO: controllare SegnalazioneDAO e Postgres
 //TODO: fare in modo che ogni qual volta viene eliminato una recensione o commento o evento, questa viene eliminata anche da POST
+//TODO: fare DAO partecipazione e follow
+//TODO: controllare DAO contenuto

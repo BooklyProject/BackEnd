@@ -1,5 +1,6 @@
 package mat.unical.it.bookly;
 
+import jakarta.xml.bind.SchemaOutputResolver;
 import mat.unical.it.bookly.persistance.DBManager;
 import mat.unical.it.bookly.persistance.model.Utente;
 import org.junit.jupiter.api.Test;
@@ -10,7 +11,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
-class UtenteTests {
+class UtenteDaoPostgresTest {
 
     @Test
     void contextLoads() {
@@ -36,7 +37,7 @@ class UtenteTests {
         u.setUsername("checco");
         u.setNome("Francesco");
         u.setEmail("checco0110@gmail.com");
-        u.setPassword("sooca");
+        u.setPassword("hfiehifeh");
         u.setCognome("Strangis");
         u.setId(Long.valueOf(15));
         u.setUserImage("image");
@@ -59,6 +60,16 @@ class UtenteTests {
         for(Utente utente: utenti){
             assertNotNull(utente.getUsername());
             System.out.println(utente.getUsername());
+        }
+    }
+
+    @Test
+    public void testFollowList(){
+        List<Utente> utenti = DBManager.getInstance().getUtenteDao().followList(Long.valueOf(46));
+        Utente utente1 = DBManager.getInstance().getUtenteDao().findByPrimaryKey(Long.valueOf(46));
+        System.out.println("L'utente :" + utente1.getNome() + " segue i seguenti profili");
+        for(Utente utente : utenti){
+            System.out.println( "nome: " + utente.getNome() + "-- codice: " + utente.getId());
         }
     }
 

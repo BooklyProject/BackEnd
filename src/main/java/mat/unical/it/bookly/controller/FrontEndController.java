@@ -146,7 +146,6 @@ public class FrontEndController {
         System.out.println("sessionIdjyh: " + sessionId);
         HttpSession session = (HttpSession) req.getServletContext().getAttribute(sessionId);
         Utente user = (Utente) session.getAttribute("user");
-        System.out.println("Utente: " + user.getNome() + " " + user.getCognome());
         return user;
     }
 
