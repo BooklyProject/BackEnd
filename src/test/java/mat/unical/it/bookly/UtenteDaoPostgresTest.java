@@ -10,7 +10,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
-class UtenteTests {
+class UtenteDaoPostgresTest {
 
     @Test
     void contextLoads() {
@@ -36,7 +36,7 @@ class UtenteTests {
         u.setUsername("checco");
         u.setNome("Francesco");
         u.setEmail("checco0110@gmail.com");
-        u.setPassword("sooca");
+        u.setPassword("hfiehifeh");
         u.setCognome("Strangis");
         u.setId(Long.valueOf(15));
         u.setUserImage("image");
