@@ -39,6 +39,26 @@ public class FollowDaoPostgress implements FollowDao {
     }
 
     @Override
+    public List<Utente> followByList(Long id) {
+        List<Utente> utenti = new ArrayList<>();
+        String query = "select utente1 from segue where utente2 = ?"; //ritorna la lista di tutti gli utenti
+        try{
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setLong(1,id);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()){
+                Utente utente = DBManager.getInstance().getUtenteDao().findByPrimaryKey(rs.getLong("utente1"));
+                utenti.add(utente);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return utenti;
+    }
+
+    @Override
     public Follow singleFollow(Long utente1, Long utente2) {
         Follow follow = null;
         String query = "select * from segue where utente1 = ? and utente2 = ?";

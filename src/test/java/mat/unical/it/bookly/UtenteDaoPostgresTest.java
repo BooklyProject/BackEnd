@@ -34,11 +34,11 @@ class UtenteDaoPostgresTest {
     @Test
     public void testSaveUpdateTest(){
         Utente u = new Utente();
-        u.setUsername("checco");
-        u.setNome("Francesco");
-        u.setEmail("checco0110@gmail.com");
-        u.setPassword("hfiehifeh");
-        u.setCognome("Strangis");
+        u.setUsername("dottore");
+        u.setNome("Antonio");
+        u.setEmail("mobydick");
+        u.setPassword("ciao");
+        u.setCognome("Romano");
         u.setId(Long.valueOf(15));
         u.setUserImage("image");
         u.setBanned(true);

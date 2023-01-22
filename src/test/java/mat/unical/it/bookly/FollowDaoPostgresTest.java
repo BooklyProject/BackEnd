@@ -40,11 +40,21 @@ public class FollowDaoPostgresTest {
 
     @Test
     public void testCreateFollow(){
-        DBManager.getInstance().getFollowDao().createFollow(Long.valueOf(49),Long.valueOf(50));
+        DBManager.getInstance().getFollowDao().createFollow(Long.valueOf(50),Long.valueOf(49));
     }
 
     @Test
     public void testDeleteFollow(){
         DBManager.getInstance().getFollowDao().deleteFollow(Long.valueOf(49),Long.valueOf(50));
+    }
+
+    @Test
+    public void testFollowByList(){
+        List<Utente> utenti = DBManager.getInstance().getFollowDao().followByList(Long.valueOf(51));
+        Utente utente = DBManager.getInstance().getUtenteDao().findByPrimaryKey(Long.valueOf(51));
+        System.out.println("L'utente " + utente.getNome() + " è seguito da: ");
+        for(Utente user: utenti){
+            System.out.println(user.getNome());
+        }
     }
 }
