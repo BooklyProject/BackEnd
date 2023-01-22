@@ -11,7 +11,7 @@ import java.util.List;
 public class UtenteDaoPostgres implements UtenteDao {
     Connection conn;
 
-    public UtenteDaoPostgres(Connection conn){  //attraverso il costruttore settiamo l'oggetto di tipo Connection
+    public UtenteDaoPostgres(Connection conn) {  //attraverso il costruttore settiamo l'oggetto di tipo Connection
         this.conn = conn;
     }
 
@@ -19,11 +19,11 @@ public class UtenteDaoPostgres implements UtenteDao {
     public List<Utente> findAll() {
         List<Utente> utenti = new ArrayList<>();
         String query = "select * from utenti"; //ritorna la lista di tutti gli utenti
-        try{
+        try {
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(query);
 
-            while (rs.next()){
+            while (rs.next()) {
                 Utente utente = new Utente();
                 utente.setId(rs.getLong("id"));
                 utente.setCognome(rs.getString("cognome"));
@@ -47,12 +47,12 @@ public class UtenteDaoPostgres implements UtenteDao {
     public Utente findByPrimaryKey(Long id) {    //ritorna l'utente attraverso il suo ID
         Utente utente = null;
         String query = "select * from utenti where id = ?";
-        try{
+        try {
             PreparedStatement st = conn.prepareStatement(query);
-            st.setLong(1,id);
+            st.setLong(1, id);
             ResultSet rs = st.executeQuery();
 
-            if (rs.next()){
+            if (rs.next()) {
                 utente = new Utente();
                 utente.setId(rs.getLong("id"));
                 utente.setCognome(rs.getString("cognome"));
@@ -73,12 +73,12 @@ public class UtenteDaoPostgres implements UtenteDao {
     public Utente findByEmail(String email) {
         Utente utente = null;
         String query = "SELECT * FROM utenti where email = ?";
-        try{
+        try {
             PreparedStatement st = conn.prepareStatement(query);
-            st.setString(1,email);
+            st.setString(1, email);
             ResultSet rs = st.executeQuery();
 
-            if (rs.next()){
+            if (rs.next()) {
                 utente = new Utente();
                 utente.setId(rs.getLong("id"));
                 utente.setCognome(rs.getString("cognome"));
@@ -100,28 +100,28 @@ public class UtenteDaoPostgres implements UtenteDao {
 
     @Override
     public void saveOrUpdate(Utente utente) {
-        if(findByEmail(utente.getEmail()) == null){
+        if (findByEmail(utente.getEmail()) == null) {
             String insertStr = "INSERT INTO utenti VALUES (?,?,?,?,?,?,?,?)";
             PreparedStatement st;
 
-            try{
+            try {
                 st = conn.prepareStatement(insertStr);
 
-                st.setLong(1,IdBroker.getId(conn));
-                st.setString(2,utente.getUsername());
-                st.setString(3,utente.getNome());
-                st.setString(4,utente.getCognome());
-                st.setString(5,utente.getEmail());
-                st.setString(6,utente.getPassword());
-                st.setString(7,utente.getUserImage());
-                st.setBoolean(8,utente.getBanned());
+                st.setLong(1, IdBroker.getId(conn));
+                st.setString(2, utente.getUsername());
+                st.setString(3, utente.getNome());
+                st.setString(4, utente.getCognome());
+                st.setString(5, utente.getEmail());
+                st.setString(6, utente.getPassword());
+                st.setString(7, utente.getUserImage());
+                st.setBoolean(8, utente.getBanned());
 
                 st.executeUpdate();
 
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }else{
+        } else {
             String updateStr = "UPDATE utenti set username = ?," +
                     "nome = ?," +
                     "cognome = ?," +
@@ -131,16 +131,16 @@ public class UtenteDaoPostgres implements UtenteDao {
                     "isBanned = ?" +
                     "where id = ?";
             PreparedStatement st;
-            try{
+            try {
                 st = conn.prepareStatement(updateStr);
-                st.setString(1,utente.getUsername());
-                st.setString(2,utente.getNome());
-                st.setString(3,utente.getCognome());
-                st.setString(4,utente.getEmail());
-                st.setString(5,utente.getPassword());
+                st.setString(1, utente.getUsername());
+                st.setString(2, utente.getNome());
+                st.setString(3, utente.getCognome());
+                st.setString(4, utente.getEmail());
+                st.setString(5, utente.getPassword());
                 st.setString(6, utente.getUserImage());
-                st.setBoolean(7,utente.getBanned());
-                st.setLong(8,utente.getId());
+                st.setBoolean(7, utente.getBanned());
+                st.setLong(8, utente.getId());
 
                 st.executeUpdate();
             } catch (SQLException e) {
@@ -153,9 +153,9 @@ public class UtenteDaoPostgres implements UtenteDao {
     public void delete(Long id) { //delete utente attraverso id
         String query = "DELETE FROM utenti where id = ?";
 
-        try{
+        try {
             PreparedStatement st = conn.prepareStatement(query);
-            st.setLong(1,id);
+            st.setLong(1, id);
             st.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -166,13 +166,13 @@ public class UtenteDaoPostgres implements UtenteDao {
     public Utente findByEmailAndPassword(String email, String password) {
         Utente utente = null;
         String query = "SELECT * from utenti where email = ? and password = ?";
-        try{
+        try {
             PreparedStatement st = conn.prepareStatement(query);
-            st.setString(1,email);
-            st.setString(2,password);
+            st.setString(1, email);
+            st.setString(2, password);
             ResultSet rs = st.executeQuery();
 
-            if (rs.next()){
+            if (rs.next()) {
                 utente = new Utente();
                 utente.setId(rs.getLong("id"));
                 utente.setCognome(rs.getString("cognome"));
@@ -188,25 +188,5 @@ public class UtenteDaoPostgres implements UtenteDao {
         }
         return utente;
 
-    }
-
-    @Override
-    public List<Utente> followList(Long id) {
-        List<Utente> utenti = new ArrayList<>();
-        String query = "select utente2 from segue where utente1 = ?"; //ritorna la lista di tutti gli utenti
-        try{
-            PreparedStatement st = conn.prepareStatement(query);
-            st.setLong(1,id);
-            ResultSet rs = st.executeQuery();
-
-            while (rs.next()){
-                Utente utente = findByPrimaryKey(rs.getLong("utente2"));
-                utenti.add(utente);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return utenti;
     }
 }

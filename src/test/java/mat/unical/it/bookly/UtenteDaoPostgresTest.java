@@ -63,15 +63,7 @@ class UtenteDaoPostgresTest {
         }
     }
 
-    @Test
-    public void testFollowList(){
-        List<Utente> utenti = DBManager.getInstance().getUtenteDao().followList(Long.valueOf(46));
-        Utente utente1 = DBManager.getInstance().getUtenteDao().findByPrimaryKey(Long.valueOf(46));
-        System.out.println("L'utente :" + utente1.getNome() + " segue i seguenti profili");
-        for(Utente utente : utenti){
-            System.out.println( "nome: " + utente.getNome() + "-- codice: " + utente.getId());
-        }
-    }
+
 
 
 
