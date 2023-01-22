@@ -77,7 +77,7 @@ public class CommentoDaoPostgres implements CommentoDao {
     @Override
     public void saveOrUpdate(Commento commento) {
         if(findByPrimaryKey(commento.getId()) == null){
-            //
+
             Post p = new Post();
             Long id = IdBroker.getId(conn);
             p.setId(id);

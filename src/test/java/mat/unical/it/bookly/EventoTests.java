@@ -16,19 +16,19 @@ public class EventoTests {
     @Test
     void contextLoads(){}
 
-    /*
+
     @Test
     public void testSaveUpdate(){
-        Evento e = new Evento();
-        e.setId(Long.valueOf(99));
-        e.setNome("SAGRA du sasizzu");
-        e.setDescrizione("Ni mangiamu u majali");
-        e.setData(Date.valueOf("2023-05-25"));
-        e.setLuogo("Cusenza");
-        DBManager.getInstance().getEventoDao().saveOrUpdate(e);
+        Evento evento = new Evento();
+        evento.setId(Long.valueOf(99));
+        evento.setNome("Cronoscalata del reventino");
+        evento.setDescrizione("Facciamo le gincane e ci divertiamo");
+        evento.setData(Date.valueOf("2025-12-03"));
+        evento.setLuogo("Lamezia Terme");
+        DBManager.getInstance().getEventoDao().saveOrUpdate(evento,Long.valueOf(49));
 
     }
-    */
+
 
 
     @Test

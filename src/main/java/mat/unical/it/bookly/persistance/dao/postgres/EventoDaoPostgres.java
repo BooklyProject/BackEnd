@@ -103,7 +103,6 @@ public class EventoDaoPostgres implements EventoDao {
     @Override
     public void saveOrUpdate(Evento evento, Long idUtente) {
         if(findByPrimaryKey(evento.getId()) == null){
-            //
             Post p = new Post();
             Long id = IdBroker.getId(conn);
             p.setId(id);

@@ -3,22 +3,22 @@ package mat.unical.it.bookly.persistance.model;
 import java.util.List;
 
 public class Partecipazione {
-    List<Utente> utenti;
-    Evento evento;
+    Long utente;
+    Long evento;
 
-    public List<Utente> getUtenti() {
-        return utenti;
+    public Long getUtente() {
+        return utente;
     }
 
-    public void setUtenti(List<Utente> utenti) {
-        this.utenti = utenti;
+    public void setUtente(Long utente) {
+        this.utente = utente;
     }
 
-    public Evento getEvento() {
+    public Long getEvento() {
         return evento;
     }
 
-    public void setEvento(Evento evento) {
+    public void setEvento(Long evento) {
         this.evento = evento;
     }
 }
