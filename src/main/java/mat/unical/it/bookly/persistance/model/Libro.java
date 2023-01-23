@@ -76,7 +76,7 @@ public class Libro {
                 ", lingua=" + lingua +
                 ", numPagine=" + numeroPagine +
                 ", description=" + descrizione  +
-                ", copertina=" +
+                ", copertina=" + copertina +
                 '}';
     }
 }

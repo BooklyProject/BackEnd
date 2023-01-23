@@ -23,13 +23,15 @@
     width: 250px;
     margin-left: 20px;
 }
-.column1 {
+/*.column1 {
     margin-top: 30px;
+    margin-left: 50px;
     float: left;
     width: auto;
 }
 .column2{
     margin-top: 30px;
+    min-width: 80px;
     float: left;
     width: auto;
     margin-left: 50px;
@@ -38,9 +40,22 @@
 .column3{
     margin-top: 30px;
     float: left;
-    min-width: 200px;
-    margin-left: 10%;
+    margin-left: 5%;
+}*/
+
+.column {
+    float: left;
+    width: 30%;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
+
+@media screen and (max-width: 900px) {
+    .column {
+        width: 100%;
+    }
+}
+
 .row:after {
     display: table;
     clear: both;
@@ -60,9 +75,6 @@ h4{
     text-align: center;
     margin-top: 10px;
     margin-bottom: 10px;
-}
-.titolo {
-    margin-left: 20px;
 }
 .iconHideComment i {
     margin-left: 10px; 

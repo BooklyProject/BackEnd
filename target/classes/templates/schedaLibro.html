@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/libro.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
@@ -13,10 +13,10 @@
         <button type="button" class="btn btn-primary">Torna alla home</button>
     </div>
     <div class="row">
-        <div class="column1">
-                <img src="../images/book-icon-149.png" class="immagine">
+        <div class="column" style="text-align: center">
+                <img th:src="${session.libro.copertina}" class="immagine">
         </div>
-        <div class="column2">
+        <div class="column">
             <div class="infoLibro">
                 <div class="info">
                     <p>Titolo:</p>
@@ -74,7 +74,7 @@
                 </div>-->
             </div>
         </div>
-        <div class="column3">
+        <div class="column">
             <h4>Trama</h4>
             <p th:text="${session.libro.descrizione}"></p>
         </div>
