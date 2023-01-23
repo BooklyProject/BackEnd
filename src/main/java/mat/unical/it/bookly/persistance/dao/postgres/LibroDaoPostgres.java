@@ -30,7 +30,8 @@ public class LibroDaoPostgres implements LibroDao {
                 libro.setGeneri(rs.getString("generi"));
                 libro.setNumeroPagine(rs.getInt("num_pagine"));
                 libro.setLingua(rs.getString("lingua"));
-
+                libro.setDescrizione(rs.getString("descrizione"));
+                libro.setCopertina("copertina");
 
                 libri.add(libro);
             }
@@ -58,6 +59,9 @@ public class LibroDaoPostgres implements LibroDao {
                 libro.setGeneri(rs.getString("generi"));
                 libro.setNumeroPagine(rs.getInt("num_pagine"));
                 libro.setLingua(rs.getString("lingua"));
+                libro.setDescrizione(rs.getString("descrizione"));
+                libro.setCopertina("copertina");
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -68,7 +72,7 @@ public class LibroDaoPostgres implements LibroDao {
     @Override
     public void saveOrUpdate(Libro libro) {
         if(findByPrimaryKey(libro.getIsbn()) == null){
-            String insertStr = "INSERT INTO libri VALUES (?,?,?,?,?,?)";
+            String insertStr = "INSERT INTO libri VALUES (?,?,?,?,?,?,?,?)";
             PreparedStatement st;
             try{
                 st = conn.prepareStatement(insertStr);
@@ -78,6 +82,8 @@ public class LibroDaoPostgres implements LibroDao {
                 st.setString(4, libro.getGeneri());
                 st.setInt(5,libro.getNumeroPagine());
                 st.setString(6,libro.getLingua());
+                st.setString(7,libro.getDescrizione());
+                st.setString(8, libro.getCopertina());
 
                 st.executeUpdate();
 
@@ -89,7 +95,9 @@ public class LibroDaoPostgres implements LibroDao {
                     "autore = ?," +
                     "generi = ?," +
                     "num_pagine = ?," +
-                    "lingua = ?" +
+                    "lingua = ?," +
+                    "descrizione = ?," +
+                    "copertina = ?" +
                     "where isbn = ?";
             PreparedStatement st;
             try{
@@ -99,7 +107,9 @@ public class LibroDaoPostgres implements LibroDao {
                 st.setString(3,libro.getGeneri());
                 st.setInt(4,libro.getNumeroPagine());
                 st.setString(5,libro.getLingua());
-                st.setString(6,libro.getIsbn());
+                st.setString(6,libro.getDescrizione());
+                st.setString(7, libro.getCopertina());
+                st.setString(8,libro.getIsbn());
 
                 st.executeUpdate();
             } catch (SQLException e) {
