@@ -8,6 +8,7 @@ import mat.unical.it.bookly.persistance.model.*;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.sound.midi.Soundbank;
 import java.util.Date;
 import java.util.List;
 
@@ -142,16 +143,18 @@ public class FrontEndController {
     @GetMapping("/getUser")
     public Utente getUtente(HttpServletRequest req, @RequestParam String jsessionid){
 
-        System.out.println("sessionIdjyh: " + jsessionid);
         HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
         Utente user = (Utente) session.getAttribute("user");
         return user;
     }
 
+    @PostMapping("/sendBook")
+    public Boolean prendiLibro(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody Libro libro){
 
+        System.out.println(jsessionid);
+        System.out.println(libro.toString());
 
-
-
-
+        return true;
+    }
 
 }

@@ -3,9 +3,11 @@ package mat.unical.it.bookly.persistance.model;
 public class Libro {
     private String isbn;
     private String nome;
+    private String descrizione;
     private String autore;
     private String generi;  //trattiamolo come string unica, nel caso di più autori questi vengono concatenati
     private Integer numeroPagine;
+
     private String lingua;
 
     public String getIsbn() {
@@ -54,5 +56,20 @@ public class Libro {
 
     public void setLingua(String lingua) {
         this.lingua = lingua;
+    }
+
+    public String getDescrizione() { return descrizione; }
+
+    public void setDescrizione(String descrizione) { this.descrizione = descrizione; }
+    @Override
+    public String toString() {
+        return "Libro{" +
+                "isbn=" + isbn +
+                ", title='" + nome +
+                ", authors=" +  autore+
+                ", generi=" + generi +
+                ", numPagine=" + numeroPagine +
+                ", description='" + descrizione  +
+                '}';
     }
 }
