@@ -70,11 +70,13 @@ public class Libro {
     public String toString() {
         return "Libro{" +
                 "isbn=" + isbn +
-                ", title='" + nome +
-                ", authors=" +  autore+
+                ", title=" + nome +
+                ", authors=" +  autore +
                 ", generi=" + generi +
+                ", lingua=" + lingua +
                 ", numPagine=" + numeroPagine +
-                ", description='" + descrizione  +
+                ", description=" + descrizione  +
+                ", copertina=" +
                 '}';
     }
 }

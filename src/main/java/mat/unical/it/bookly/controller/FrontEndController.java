@@ -1,6 +1,9 @@
 package mat.unical.it.bookly.controller;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponseWrapper;
 import jakarta.servlet.http.HttpSession;
 import mat.unical.it.bookly.persistance.DBManager;
 import mat.unical.it.bookly.persistance.dao.*;
@@ -9,13 +12,13 @@ import org.apache.commons.lang3.RandomUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.sound.midi.Soundbank;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
 @RestController
 @CrossOrigin("http://localhost:4200")
 public class FrontEndController {
-
 
     @GetMapping("/reports")
     public List<Segnalazione> getSegnalazioni(HttpServletRequest req, @RequestParam String sessionId){
@@ -149,12 +152,14 @@ public class FrontEndController {
     }
 
     @PostMapping("/sendBook")
-    public Boolean prendiLibro(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody Libro libro){
+    public Boolean prendiLibro(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody Libro libro) {
 
         System.out.println(jsessionid);
         System.out.println(libro.toString());
 
+        HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
+        session.setAttribute("libro", libro);
+
         return true;
     }
-
 }
