@@ -1,0 +1,84 @@
+.homeButton {
+    margin-top: 10px;
+    margin-left: 20px;
+}
+
+.buttonCrea{
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.bottoniRecensione{
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.recensione{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.immagine {
+    height: 375px;
+    width: 250px;
+    margin-left: 20px;
+}
+.column1 {
+    margin-top: 30px;
+    float: left;
+    width: auto;
+}
+.column2{
+    margin-top: 30px;
+    float: left;
+    width: auto;
+    margin-left: 50px;
+    height: 100px;
+}
+.column3{
+    margin-top: 30px;
+    float: left;
+    min-width: 200px;
+    margin-left: 10%;
+}
+.row:after {
+    display: table;
+    clear: both;
+}
+.info{
+    float: left;
+    font-weight: bold;
+    margin-right: 5px;
+}
+h2{
+    font-weight: bold;
+}
+h4{
+    font-weight: bold;
+}
+.showButton{
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.titolo {
+    margin-left: 20px;
+}
+.iconHideComment i {
+    margin-left: 10px; 
+    margin-top: 5px; 
+    font-size:24px;
+}
+.iconHideComment i:hover {
+    opacity: 0.5;
+}
+
+.showCommentsIcon button {
+    border: none;
+}
+.showCommentsIcon button:focus {
+    outline: none;
+}
+.showCommentsIcon button:hover {
+    opacity: 0.5;
+}

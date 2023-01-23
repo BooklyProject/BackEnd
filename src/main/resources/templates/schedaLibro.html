@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <script src="recensioni.js"></script> 
+    <div class="homeButton">
+        <button type="button" class="btn btn-primary">Torna alla home</button>
+    </div>
+    <div class="row">
+        <div class="column1">
+                <img src="img/book-icon-149.png" class="immagine">
+        </div>
+        <div class="column2">
+            <div class="infoLibro">
+                <div class="info">
+                    <p>Titolo:</p>
+                </div>
+                <div class="attributi">
+                    <p th:text="${VolumeInfo.title}"></p>
+                </div>
+                <div class="info">
+                    <p>Autori:</p>
+                </div>
+                <div class="attributi">
+                    <p th:text="${VolumeInfo.authors}"></p>
+                </div>
+                <div class="info">
+                    <p>Generi:</p>
+                </div>
+                <div class="attributi">
+                    <p th:text="${VolumeInfo.generes}"></p>
+                </div>
+                <div class="info">
+                    <p>Casa editrice: </p>
+                </div>
+                <div class="attributi">
+                    <p th:text="${VolumeInfo.publisher}"></p>
+                </div>
+                <div class="info">
+                    <p>Data pubblicazione: </p>
+                </div>
+                <div class="attributi">
+                    <p th:text="${VolumeInfo.publishedDate}"></p>
+                </div>
+                <div class="info">
+                    <p>Lingua: </p>
+                </div>
+                <div class="attributi">
+                    <p th:text="${VolumeInfo.language}"></p>
+                </div>
+                <div class="info">
+                    <p>Pagine: </p>
+                </div>
+                <div class="attributi">
+                    <p th:text="${VolumeInfo.pageCount}"></p>
+                </div>
+                <div class="info">
+                    <p>Prezzo: </p>
+                </div>
+                <div class="attributi">
+                    <p th:text="${Price.amount}"></p>
+                </div>
+                <div class="info">
+                    <p>Valutazione media: </p>
+                </div>
+                <div class="attributi">
+                    <p th:text="${VolumeInfo.averageRating}"></p>
+                </div>
+            </div>
+        </div>
+        <div class="column3">
+            <h4>Trama</h4>
+            <p th:text="${VolumeInfo.description}"></p>
+        </div>
+    </div>
+
+    <div class="buttonCrea">
+        <button id="creaRecensione" type="button" class="btn btn-primary">Scrivi recensione</button>
+    </div>
+    <div class="recensione">
+        <div class="voto">
+            <label class="form-label">Voto</label><br>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio">
+                <label class="form-check-label" for="inlineRadio1">1</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio">
+                <label class="form-check-label" for="inlineRadio1">2</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio">
+                <label class="form-check-label" for="inlineRadio1">3</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio">
+                <label class="form-check-label" for="inlineRadio1">4</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio">
+                <label class="form-check-label" for="inlineRadio1">5</label>
+            </div>
+        </div>
+        <div class="form-outline mb-4">
+            <label class="form-label">Descrizione</label>
+            <input type="text" class="form-control" style="word-wrap: break-word;"/>
+        </div>
+    </div>
+    <div class="bottoniRecensione">
+        <button id="confermaRecensione" type="button" class="btn btn-primary">Conferma</button>
+        <button id="annullaRecensione" type="button" class="btn btn-danger" style="margin-left: 5px;">Annulla</button>
+    </div>
+    
+    <div id="recensioni"  style="display:none; margin-top: 20px; margin-left: 30px;" class="recensioni">
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-0 border" style="background-color: #f0f2f5;">
+                    <div class="card-body p-4">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <p>Descrizione della recensione.</p>
+                                <div class="info">
+                                    <p>Voto:</p>
+                                </div>
+                                <div class="attributi">
+                                    <p th:text="${recensione.voto}"></p><br><br>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <div class="d-flex flex-row align-items-center">
+                                        <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(4).webp" alt="avatar" width="25" height="25"/>
+                                        <p class="small mb-0 ms-2">Nome user</p>
+                                    </div>
+                                    <div class="d-flex flex-row align-items-center">
+                                        <div class="showCommentsIcon">                                        
+                                            <button type="button" class="small text-muted mb-0" id="mostraCommenti" onclick="showComments()">Commenti</button>
+                                        </div>
+                                        <i class="fa fa-thumbs-up mx-2 fa-xs text-black" style="margin-top: -0.16rem;"></i>
+                                        <p class="small text-muted mb-0" th:text="${recensione.numeroMiPiace}"></p>
+                                        <i class="fa fa-thumbs-down mx-2 fa-xs text-black" style="margin-top: -0.16rem;"></i>
+                                        <p class="small text-muted mb-0" th:text="${recensione.numeroNonMiPiace}"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="commenti"  style="display:none;" class="commenti">
+                                <div class="row d-flex justify-content-center">
+                                    <div class="col-lg-8">
+                                        <div class="card-body p-4">          
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <p>Commento.</p>
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="d-flex flex-row align-items-center">
+                                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(4).webp" alt="avatar" width="25" height="25"/>
+                                                            <p class="small mb-0 ms-2">Nome user</p>
+                                                        </div>
+                                                        <div class="d-flex flex-row align-items-center">
+                                                        <i class="fa fa-thumbs-up mx-2 fa-xs text-black" style="margin-top: -0.16rem;"></i>
+                                                        <p class="small text-muted mb-0">3</p>
+                                                        <i class="fa fa-thumbs-down mx-2 fa-xs text-black" style="margin-top: -0.16rem;"></i>
+                                                        <p class="small text-muted mb-0">3</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="input-group" style="width: 80%; margin: 0 auto; margin-bottom: 20px;">
+                                            <input type="text" class="form-control" placeholder="Scrivi un commento">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-outline-primary" type="button">Conferma</button>
+                                                <div class="iconHideComment">                                                
+                                                    <i class="fa fa-angle-up" onclick="hideComments()"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="showButton">    
+        <button id="mostraRecensioni" type="button" class="btn btn-primary" onclick="showRec()">Visualizza recensioni</button>
+    </div>
+</body>
+</html>

@@ -7,8 +7,9 @@ public class Libro {
     private String autore;
     private String generi;  //trattiamolo come string unica, nel caso di più autori questi vengono concatenati
     private Integer numeroPagine;
-
     private String lingua;
+
+    private String bookImage;
 
     public String getIsbn() {
         return isbn;
@@ -61,6 +62,10 @@ public class Libro {
     public String getDescrizione() { return descrizione; }
 
     public void setDescrizione(String descrizione) { this.descrizione = descrizione; }
+
+    public String getBookImage() { return bookImage; }
+
+    public void setBookImage(String copertina) { this.bookImage = bookImage; }
     @Override
     public String toString() {
         return "Libro{" +
