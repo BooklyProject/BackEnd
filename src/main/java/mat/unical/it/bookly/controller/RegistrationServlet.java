@@ -25,9 +25,8 @@ public class RegistrationServlet extends HttpServlet {
         u.setCognome(req.getParameter("surname"));
         u.setNome(req.getParameter("name"));
         u.setUsername(req.getParameter("username"));
-        u.setId(Long.valueOf(15));
         u.setUserImage("image");
-        u.setBanned(true);
+        u.setBanned(false);
         DBManager.getInstance().getUtenteDao().saveOrUpdate(u);
         HttpSession session = req.getSession();
         session.setAttribute("user",u);

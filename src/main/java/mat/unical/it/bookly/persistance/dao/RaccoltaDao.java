@@ -11,4 +11,5 @@ public interface RaccoltaDao {
     public Raccolta findByPrimaryKey(Long id);
     public void saveOrUpdate(Raccolta raccolta);
     public void delete(Long id);
+    public void deleteAllForUser(Long idUtente);
 }

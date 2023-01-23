@@ -1,6 +1,5 @@
 package mat.unical.it.bookly.persistance.dao.postgres;
 
-import com.sun.source.tree.TryTree;
 import mat.unical.it.bookly.persistance.DBManager;
 import mat.unical.it.bookly.persistance.dao.PartecipaDao;
 import mat.unical.it.bookly.persistance.model.Evento;
@@ -13,7 +12,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 
 
 public class PartecipaDaoPostgress implements PartecipaDao {
@@ -49,7 +47,6 @@ public class PartecipaDaoPostgress implements PartecipaDao {
         if(singlePartecipation(utente, evento) == null){
             String insertStr = "INSERT INTO partecipa VALUES (?,?)";
             PreparedStatement st;
-
 
             try{
                 st = conn.prepareStatement(insertStr);
@@ -117,5 +114,17 @@ public class PartecipaDaoPostgress implements PartecipaDao {
             e.printStackTrace();
         }
         return eventi;
+    }
+
+    @Override
+    public void deleteAllEventPartecipations(Long evento) {
+        String query = "DELETE FROM partecipa where evento = ?";
+        try{
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setLong(1,evento);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

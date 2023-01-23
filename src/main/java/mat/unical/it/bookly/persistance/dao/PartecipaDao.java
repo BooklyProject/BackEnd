@@ -12,4 +12,6 @@ public interface PartecipaDao {
     public Partecipazione singlePartecipation(Long utente, Long eveto);
     public void deletePartecipation(Long utente,Long evento);
     public List<Evento> eventFromUserList(Long utente); //ritorna gli eventi a cui parteciperù l'utente
+
+    public void deleteAllEventPartecipations(Long evento);
 }

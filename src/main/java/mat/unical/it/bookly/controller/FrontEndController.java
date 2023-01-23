@@ -30,7 +30,7 @@ public class FrontEndController {
     }
 
     @GetMapping("/addReport")
-    public boolean aggiungiSegnalazione(HttpServletRequest req, @RequestParam String sessionId, @RequestParam String tipo,
+    public boolean creaSegnalazione(HttpServletRequest req, @RequestParam String sessionId, @RequestParam String tipo,
                                    @RequestParam Long post, @RequestParam String descrizione){
 
         HttpSession session = (HttpSession) req.getServletContext().getAttribute(sessionId);
@@ -120,6 +120,7 @@ public class FrontEndController {
     @GetMapping("/deleteEvent")
     public boolean cancellaEvento(@RequestParam Long id){
         try {
+            DBManager.getInstance().getPartecipaDao().deleteAllEventPartecipations(id);
             DBManager.getInstance().getEventoDao().delete(id);
         }catch(Exception e){
             return false;
@@ -129,18 +130,38 @@ public class FrontEndController {
     }
 
     @GetMapping("myPartecipations")
-    public List<Evento> getPartecipazioni(HttpServletRequest req, @RequestParam String sessionId) {
-        return null;
+    public List<Evento> getPartecipazioni(HttpServletRequest req, @RequestParam String jsessionid) {
+        HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
+        Utente user = (Utente) session.getAttribute("user");
+
+        return DBManager.getInstance().getPartecipaDao().eventFromUserList(user.getId());
+
     }
 
     @GetMapping("/partecipate")
-    public boolean partecipaEvento(HttpServletRequest req, @RequestParam String sessionId, @RequestParam Long idEvento){
-        return false;
+    public boolean partecipaEvento(HttpServletRequest req, @RequestParam String jsessionid, @RequestParam Long idEvento){
+        HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
+        Utente user = (Utente) session.getAttribute("user");
+        try {
+            DBManager.getInstance().getPartecipaDao().createPartecipation(user.getId(), idEvento);
+        }catch(Exception e){
+            return false;
+        }
+
+        return true;
     }
 
     @GetMapping("/deletePartecipation")
-    public boolean cancellaPartecipazione(HttpServletRequest req, @RequestParam String sessionId, @RequestParam Long idEvento){
-        return false;
+    public boolean cancellaPartecipazione(HttpServletRequest req, @RequestParam String jsessionid, @RequestParam Long idEvento){
+        HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
+        Utente user = (Utente) session.getAttribute("user");
+        try {
+            DBManager.getInstance().getPartecipaDao().deletePartecipation(user.getId(), idEvento);
+        }catch(Exception e){
+            return false;
+        }
+
+        return true;
     }
 
     @GetMapping("/getUser")
@@ -154,12 +175,78 @@ public class FrontEndController {
     @PostMapping("/sendBook")
     public Boolean prendiLibro(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody Libro libro) {
 
-        System.out.println(jsessionid);
-        System.out.println(libro.toString());
-
         HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
         session.setAttribute("libro", libro);
 
         return true;
     }
+
+    @GetMapping("/myCollections")
+    public List<Raccolta> getRaccolteUtente(HttpServletRequest req, @RequestParam String jsessionid){
+
+        HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
+        Utente user = (Utente) session.getAttribute("user");
+
+        return DBManager.getInstance().getRaccoltaDao().findAllForUser(user.getId());
+    }
+
+    @GetMapping("/createCollection")
+    public Boolean creaRaccolta(HttpServletRequest req, @RequestParam String jsessionid, @RequestParam String nome){
+
+        HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
+        Utente user = (Utente) session.getAttribute("user");
+
+        try {
+            Raccolta raccolta = new Raccolta();
+            raccolta.setNome(nome);
+            raccolta.setUtente(user.getId());
+            DBManager.getInstance().getRaccoltaDao().saveOrUpdate(raccolta);
+        }catch(Exception e){
+            return false;
+        }
+
+        return true;
+    }
+
+    @GetMapping("/deleteCollection")
+    public Boolean eliminaRaccolta(@RequestParam Long idRaccolta){
+
+        try {
+            DBManager.getInstance().getContenutoDao().deleteBooksForCollections(idRaccolta);
+            DBManager.getInstance().getRaccoltaDao().delete(idRaccolta);
+        }catch(Exception e){
+            return false;
+        }
+
+        return true;
+    }
+
+    @GetMapping("/getCollectionBooks")
+    public List<Libro> getContenutoRaccolta(@RequestParam Long idRaccolta){
+
+        return DBManager.getInstance().getContenutoDao().findBooksForCollection(idRaccolta);
+    }
+
+    @GetMapping("/addBook")
+    public Boolean aggiungiLibroRaccolta(@RequestParam Long idRaccolta, @RequestParam String ISBN){
+        try {
+            DBManager.getInstance().getContenutoDao().save(idRaccolta, ISBN);
+        }catch(Exception e){
+            return false;
+        }
+
+        return true;
+    }
+
+    @GetMapping("/deleteBook")
+    public Boolean cancellaLibroRaccolta(@RequestParam Long idRaccolta, @RequestParam String ISBN){
+        try {
+            DBManager.getInstance().getContenutoDao().delete(idRaccolta, ISBN);
+        }catch(Exception e){
+            return false;
+        }
+
+        return true;
+    }
+
 }

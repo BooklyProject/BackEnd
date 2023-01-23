@@ -120,11 +120,26 @@ public class RaccoltaDaoPostgress implements RaccoltaDao {
 
     @Override
     public void delete(Long id) {
+
         String query = "DELETE FROM raccolte where id = ?";
 
         try{
             PreparedStatement st = conn.prepareStatement(query);
             st.setLong(1,id);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void deleteAllForUser(Long idUtente) {
+
+        String query = "DELETE FROM raccolte where utente = ?";
+
+        try{
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setLong(1,idUtente);
             st.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

@@ -1,7 +1,9 @@
 package mat.unical.it.bookly.persistance.dao.postgres;
 
+import mat.unical.it.bookly.persistance.DBManager;
 import mat.unical.it.bookly.persistance.IdBroker;
 import mat.unical.it.bookly.persistance.dao.UtenteDao;
+import mat.unical.it.bookly.persistance.model.Raccolta;
 import mat.unical.it.bookly.persistance.model.Utente;
 
 import java.sql.*;
@@ -106,6 +108,7 @@ public class UtenteDaoPostgres implements UtenteDao {
 
             try {
                 st = conn.prepareStatement(insertStr);
+                Long newId = IdBroker.getId(conn);
 
                 st.setLong(1, IdBroker.getId(conn));
                 st.setString(2, utente.getUsername());
@@ -117,6 +120,15 @@ public class UtenteDaoPostgres implements UtenteDao {
                 st.setBoolean(8, utente.getBanned());
 
                 st.executeUpdate();
+
+                Raccolta raccolta1 = new Raccolta();
+                Raccolta raccolta2 = new Raccolta();
+                raccolta1.setNome("Preferiti");
+                raccolta1.setId(newId);
+                raccolta2.setNome("Da leggere");
+                raccolta2.setId(newId);
+                DBManager.getInstance().getRaccoltaDao().saveOrUpdate(raccolta1);
+                DBManager.getInstance().getRaccoltaDao().saveOrUpdate(raccolta2);
 
             } catch (SQLException e) {
                 e.printStackTrace();
