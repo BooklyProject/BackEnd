@@ -12,4 +12,5 @@ public interface EventoDao {
     public Evento findByPrimaryKey(Long id);
     public void saveOrUpdate(Evento evento, Long idUtente);
     public void delete(Long id);
+    public List<Evento> findAvailableEvents(Long idUtente);
 }

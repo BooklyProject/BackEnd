@@ -8,6 +8,7 @@ public class Evento {
     private String descrizione;
     private Date data;
     private String luogo;
+    private Integer partecipanti;
 
     public Long getId() {
         return id;
@@ -48,4 +49,8 @@ public class Evento {
     public void setLuogo(String luogo) {
         this.luogo = luogo;
     }
+
+    public Integer getPartecipanti() { return partecipanti; }
+
+    public void setPartecipanti(Integer partecipanti) { this.partecipanti = partecipanti; }
 }

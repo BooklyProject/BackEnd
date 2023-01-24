@@ -33,6 +33,7 @@ public class EventoDaoPostgres implements EventoDao {
                 evento.setDescrizione(rs.getString("descrizione"));
                 evento.setData(rs.getDate("data"));
                 evento.setLuogo(rs.getString("luogo"));
+                evento.setPartecipanti(rs.getInt("partecipanti"));
 
                 eventi.add(evento);
             }
@@ -48,7 +49,7 @@ public class EventoDaoPostgres implements EventoDao {
         List<Evento> eventi = new ArrayList<>();
         String query = "" +
                 "SELECT e.id as e_id, e.nome as e_nome, e.descrizione as e_de," +
-                "e.data as e_data, e.luogo as e_luogo " +
+                "e.data as e_data, e.luogo as e_luogo, e.partecipanti as e_partecipanti " +
                 "FROM eventi e " +
                 "JOIN post p ON p.id = e.id " +
                 "JOIN utenti u ON p.utente = u.id " +
@@ -65,6 +66,7 @@ public class EventoDaoPostgres implements EventoDao {
                 evento.setDescrizione(rs.getString("e_de"));
                 evento.setData(rs.getDate("e_data"));
                 evento.setLuogo(rs.getString("e_luogo"));
+                evento.setPartecipanti(rs.getInt("e_partecipanti"));
 
                 eventi.add(evento);
         }
@@ -73,7 +75,6 @@ public class EventoDaoPostgres implements EventoDao {
         }
         return  eventi;
     }
-
 
 
     @Override
@@ -92,6 +93,7 @@ public class EventoDaoPostgres implements EventoDao {
                 e.setDescrizione(rs.getString("descrizione"));
                 e.setData(rs.getDate("data"));
                 e.setLuogo(rs.getString("luogo"));
+                e.setPartecipanti(rs.getInt("partecipanti"));
 
             }
         } catch (SQLException ex) {
@@ -102,13 +104,13 @@ public class EventoDaoPostgres implements EventoDao {
 
     @Override
     public void saveOrUpdate(Evento evento, Long idUtente) {
-        if(findByPrimaryKey(evento.getId()) == null){
+        if(evento.getId() == null || findByPrimaryKey(evento.getId()) == null){
             Post p = new Post();
             Long id = IdBroker.getId(conn);
             p.setId(id);
             p.setIdUtente(idUtente);
             DBManager.getInstance().getPostDao().saveUpdate(p);
-            String insertStr = "INSERT INTO eventi VALUES (?,?,?,?,?)";
+            String insertStr = "INSERT INTO eventi VALUES (?,?,?,?,?,?)";
             PreparedStatement st;
             try{
                 st = conn.prepareStatement(insertStr);
@@ -118,6 +120,7 @@ public class EventoDaoPostgres implements EventoDao {
                 st.setString(3,evento.getDescrizione());
                 st.setDate(4,evento.getData());
                 st.setString(5,evento.getLuogo());
+                st.setInt(6,evento.getPartecipanti());
 
                 st.executeUpdate();
 
@@ -128,7 +131,8 @@ public class EventoDaoPostgres implements EventoDao {
             String updateStr = "UPDATE eventi set nome = ?," +
                     "descrizione = ?," +
                     "data = ?," +
-                    "luogo = ?" +
+                    "luogo = ?," +
+                    "partecipanti = ?" +
                     "where id = ?";
             PreparedStatement st;
             try{
@@ -137,7 +141,9 @@ public class EventoDaoPostgres implements EventoDao {
                 st.setString(2,evento.getDescrizione());
                 st.setDate(3,evento.getData());
                 st.setString(4,evento.getLuogo());
-                st.setLong(5,evento.getId());
+                st.setInt(5,evento.getPartecipanti());
+                st.setLong(6,evento.getId());
+
                 st.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -158,4 +164,32 @@ public class EventoDaoPostgres implements EventoDao {
         }
     }
 
+    @Override
+    public List<Evento> findAvailableEvents(Long idUtente) {
+        List<Evento> eventi = new ArrayList<>();
+        String query = "SELECT * FROM eventi e1" +
+                "WHERE e1.id NOT IN (SELECT p.evento FROM partecipa p)" +
+                "AND e1.id NOT IN (SELECT e.id FROM eventi e JOIN post p ON p.id = e.id JOIN utenti u ON p.utente = u.id WHERE p.utente = ?)";
+        try {
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setLong(1, idUtente);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                Evento evento = new Evento();
+                evento.setId(rs.getLong("id"));
+                evento.setNome(rs.getString("nome"));
+                evento.setDescrizione(rs.getString("descrizione"));
+                evento.setData(rs.getDate("data"));
+                evento.setLuogo(rs.getString("luogo"));
+                evento.setPartecipanti(rs.getInt("partecipanti"));
+
+                eventi.add(evento);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return eventi;
+    }
 }

@@ -21,9 +21,9 @@ import java.util.List;
 public class FrontEndController {
 
     @GetMapping("/reports")
-    public List<Segnalazione> getSegnalazioni(HttpServletRequest req, @RequestParam String sessionId){
+    public List<Segnalazione> getSegnalazioni(HttpServletRequest req, @RequestParam String jsessionid){
 
-        HttpSession session = (HttpSession) req.getServletContext().getAttribute(sessionId);
+        HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
         Amministratore amministratore = (Amministratore) session.getAttribute("user");
         SegnalazioneDao dao = DBManager.getInstance().getSegnalazioneDao();
         return dao.findByAdministrator(amministratore.getId());
@@ -86,10 +86,10 @@ public class FrontEndController {
     }
 
     @GetMapping("/addEvent")
-    public boolean aggiungiEvento(HttpServletRequest req, @RequestParam String sessionId, @RequestParam String nome,
+    public boolean aggiungiEvento(HttpServletRequest req, @RequestParam String jsessionid, @RequestParam String nome,
                                   @RequestParam String descrizione, @RequestParam Date data, @RequestParam String luogo){
 
-        HttpSession session = (HttpSession) req.getServletContext().getAttribute(sessionId);
+        HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
         Utente user = (Utente) session.getAttribute("user");
 
         try {
@@ -99,6 +99,7 @@ public class FrontEndController {
             evento.setDescrizione(descrizione);
             evento.setData((java.sql.Date) data);
             evento.setLuogo(luogo);
+            evento.setPartecipanti(0);
             DBManager.getInstance().getEventoDao().saveOrUpdate(evento, user.getId());
 
         }catch(Exception e){
@@ -109,9 +110,9 @@ public class FrontEndController {
     }
 
     @GetMapping("/myEvents")
-    public List<Evento> getEventiCreati(HttpServletRequest req, @RequestParam String sessionId){
+    public List<Evento> getEventiCreati(HttpServletRequest req, @RequestParam String jsessionid){
 
-        HttpSession session = (HttpSession) req.getServletContext().getAttribute(sessionId);
+        HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
         Utente user = (Utente) session.getAttribute("user");
 
         return DBManager.getInstance().getEventoDao().findAllCreatedByUser(user.getId());
@@ -138,12 +139,14 @@ public class FrontEndController {
 
     }
 
-    @GetMapping("/partecipate")
-    public boolean partecipaEvento(HttpServletRequest req, @RequestParam String jsessionid, @RequestParam Long idEvento){
+    @PostMapping("/partecipate")
+    public boolean partecipaEvento(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody Evento evento){
         HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
         Utente user = (Utente) session.getAttribute("user");
         try {
-            DBManager.getInstance().getPartecipaDao().createPartecipation(user.getId(), idEvento);
+            DBManager.getInstance().getPartecipaDao().createPartecipation(user.getId(), evento.getId());
+            evento.setPartecipanti(evento.getPartecipanti() + 1);
+            DBManager.getInstance().getEventoDao().saveOrUpdate(evento, user.getId());
         }catch(Exception e){
             return false;
         }

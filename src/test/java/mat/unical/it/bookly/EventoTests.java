@@ -20,12 +20,12 @@ public class EventoTests {
     @Test
     public void testSaveUpdate(){
         Evento evento = new Evento();
-        evento.setId(Long.valueOf(99));
-        evento.setNome("Cronoscalata del reventino");
-        evento.setDescrizione("Facciamo le gincane e ci divertiamo");
-        evento.setData(Date.valueOf("2025-12-03"));
-        evento.setLuogo("Lamezia Terme");
-        DBManager.getInstance().getEventoDao().saveOrUpdate(evento,Long.valueOf(49));
+        evento.setNome("ProvaNome");
+        evento.setDescrizione("ProvaDescrizione");
+        evento.setData(Date.valueOf("2023-12-03"));
+        evento.setLuogo("ProvaLuogo");
+        evento.setPartecipanti(12);
+        DBManager.getInstance().getEventoDao().saveOrUpdate(evento,Long.valueOf(46));
 
     }
 
