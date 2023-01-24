@@ -80,26 +80,21 @@ public class FrontEndController {
     }
 
     @GetMapping("/events")
-    public List<Evento> getEventi(){
+    public List<Evento> getEventi(HttpServletRequest req, @RequestParam String jsessionid){
 
-        return DBManager.getInstance().getEventoDao().findAll();
+        HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
+        Utente user = (Utente) session.getAttribute("user");
+
+        return DBManager.getInstance().getEventoDao().findAvailableEvents(user.getId());
     }
 
-    @GetMapping("/addEvent")
-    public boolean aggiungiEvento(HttpServletRequest req, @RequestParam String jsessionid, @RequestParam String nome,
-                                  @RequestParam String descrizione, @RequestParam Date data, @RequestParam String luogo){
+    @PostMapping("/addEvent")
+    public boolean aggiungiEvento(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody Evento evento){
 
         HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
         Utente user = (Utente) session.getAttribute("user");
 
         try {
-
-            Evento evento = new Evento();
-            evento.setNome(nome);
-            evento.setDescrizione(descrizione);
-            evento.setData((java.sql.Date) data);
-            evento.setLuogo(luogo);
-            evento.setPartecipanti(0);
             DBManager.getInstance().getEventoDao().saveOrUpdate(evento, user.getId());
 
         }catch(Exception e){
@@ -130,7 +125,7 @@ public class FrontEndController {
         return true;
     }
 
-    @GetMapping("myPartecipations")
+    @GetMapping("/myPartecipations")
     public List<Evento> getPartecipazioni(HttpServletRequest req, @RequestParam String jsessionid) {
         HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
         Utente user = (Utente) session.getAttribute("user");

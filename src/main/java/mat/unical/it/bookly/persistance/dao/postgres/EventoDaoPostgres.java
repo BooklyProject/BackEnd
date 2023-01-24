@@ -167,12 +167,12 @@ public class EventoDaoPostgres implements EventoDao {
     @Override
     public List<Evento> findAvailableEvents(Long idUtente) {
         List<Evento> eventi = new ArrayList<>();
-        String query = "SELECT * FROM eventi e1" +
-                "WHERE e1.id NOT IN (SELECT p.evento FROM partecipa p)" +
+        String query = "SELECT * FROM eventi e1 WHERE e1.id NOT IN (SELECT p.evento FROM partecipa p WHERE p.utente = ?)" +
                 "AND e1.id NOT IN (SELECT e.id FROM eventi e JOIN post p ON p.id = e.id JOIN utenti u ON p.utente = u.id WHERE p.utente = ?)";
         try {
             PreparedStatement st = conn.prepareStatement(query);
             st.setLong(1, idUtente);
+            st.setLong(2, idUtente);
             ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
