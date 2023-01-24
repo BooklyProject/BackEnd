@@ -96,5 +96,9 @@
     <orderEntry type="library" name="Maven: org.attoparser:attoparser:2.0.6.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.unbescape:unbescape:1.1.6.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: postgresql:postgresql:9.0-801.jdbc4" level="project" />
+    <orderEntry type="library" name="Maven: commons-fileupload:commons-fileupload:1.4" level="project" />
+    <orderEntry type="library" name="Maven: commons-io:commons-io:2.2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.tomcat:tomcat-servlet-api:9.0.39" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: jakarta.servlet:jakarta.servlet-api:6.0.0" level="project" />
   </component>
 </module>

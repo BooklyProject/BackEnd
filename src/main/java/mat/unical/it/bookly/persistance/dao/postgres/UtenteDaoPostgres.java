@@ -120,15 +120,17 @@ public class UtenteDaoPostgres implements UtenteDao {
                 st.setBoolean(8, utente.getBanned());
 
                 st.executeUpdate();
-
+                /*
                 Raccolta raccolta1 = new Raccolta();
                 Raccolta raccolta2 = new Raccolta();
                 raccolta1.setNome("Preferiti");
-                raccolta1.setId(newId);
+                raccolta1.setUtente(newId);
                 raccolta2.setNome("Da leggere");
-                raccolta2.setId(newId);
+                raccolta2.setUtente(newId);
                 DBManager.getInstance().getRaccoltaDao().saveOrUpdate(raccolta1);
                 DBManager.getInstance().getRaccoltaDao().saveOrUpdate(raccolta2);
+
+                 */
 
             } catch (SQLException e) {
                 e.printStackTrace();
