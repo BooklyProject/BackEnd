@@ -10,6 +10,16 @@ public class Evento {
     private String luogo;
     private Integer partecipanti;
 
+    public String getOrario() {
+        return orario;
+    }
+
+    public void setOrario(String orario) {
+        this.orario = orario;
+    }
+
+    private String orario;
+
     public Long getId() {
         return id;
     }

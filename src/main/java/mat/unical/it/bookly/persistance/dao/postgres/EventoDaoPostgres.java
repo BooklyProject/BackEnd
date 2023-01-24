@@ -110,7 +110,7 @@ public class EventoDaoPostgres implements EventoDao {
             p.setId(id);
             p.setIdUtente(idUtente);
             DBManager.getInstance().getPostDao().saveUpdate(p);
-            String insertStr = "INSERT INTO eventi VALUES (?,?,?,?,?,?)";
+            String insertStr = "INSERT INTO eventi VALUES (?,?,?,?,?,?,?)";
             PreparedStatement st;
             try{
                 st = conn.prepareStatement(insertStr);
@@ -121,6 +121,8 @@ public class EventoDaoPostgres implements EventoDao {
                 st.setDate(4,evento.getData());
                 st.setString(5,evento.getLuogo());
                 st.setInt(6,evento.getPartecipanti());
+                st.setString(7,evento.getOrario());
+
 
                 st.executeUpdate();
 
@@ -133,6 +135,7 @@ public class EventoDaoPostgres implements EventoDao {
                     "data = ?," +
                     "luogo = ?," +
                     "partecipanti = ?" +
+                    "orario = ?" +
                     "where id = ?";
             PreparedStatement st;
             try{
@@ -143,6 +146,7 @@ public class EventoDaoPostgres implements EventoDao {
                 st.setString(4,evento.getLuogo());
                 st.setInt(5,evento.getPartecipanti());
                 st.setLong(6,evento.getId());
+                st.setString(7,evento.getOrario());
 
                 st.executeUpdate();
             } catch (SQLException e) {
@@ -183,6 +187,7 @@ public class EventoDaoPostgres implements EventoDao {
                 evento.setData(rs.getDate("data"));
                 evento.setLuogo(rs.getString("luogo"));
                 evento.setPartecipanti(rs.getInt("partecipanti"));
+                evento.setOrario(rs.getString("orario"));
 
                 eventi.add(evento);
             }

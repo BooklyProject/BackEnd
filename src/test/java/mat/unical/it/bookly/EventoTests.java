@@ -42,6 +42,11 @@ public class EventoTests {
 
     @Test
     public void testDelete(){
-        DBManager.getInstance().getEventoDao().delete(Long.valueOf(37));
+
+        DBManager.getInstance().getEventoDao().delete(Long.valueOf(52));
+        DBManager.getInstance().getEventoDao().delete(Long.valueOf(53));
+        DBManager.getInstance().getEventoDao().delete(Long.valueOf(57));
+        DBManager.getInstance().getEventoDao().delete(Long.valueOf(62));
+        DBManager.getInstance().getEventoDao().delete(Long.valueOf(63));
     }
 }
