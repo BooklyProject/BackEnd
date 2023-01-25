@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.sound.midi.Soundbank;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -246,5 +247,38 @@ public class FrontEndController {
 
         return true;
     }
+
+    @GetMapping("/getStats")
+    public Statistiche mostraStatistiche(HttpServletRequest req, @RequestParam String jsessionid){
+
+        HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
+        Utente user = (Utente) session.getAttribute("user");
+
+        Statistiche stats = new Statistiche();
+
+        stats.setRaccolteCreate(DBManager.getInstance().getRaccoltaDao().findAllForUser(user.getId()).size());
+        stats.setEventiCreati(DBManager.getInstance().getEventoDao().findAllCreatedByUser(user.getId()).size());
+        stats.setSeguiti(DBManager.getInstance().getFollowDao().followList(user.getId()).size());
+        stats.setFollowers(DBManager.getInstance().getFollowDao().followByList(user.getId()).size());
+        stats.setEventiPartecipati(DBManager.getInstance().getPartecipaDao().eventFromUserList(user.getId()).size());
+        stats.setLibriLetti(DBManager.getInstance().getRecensioneDao().findAllWroteByUser(user.getId()).size());
+        stats.setAutorePreferito(DBManager.getInstance().getRecensioneDao().findPreferredResultByAttribute(user.getId(), "autore"));
+        stats.setGenerePreferito(DBManager.getInstance().getRecensioneDao().findPreferredResultByAttribute(user.getId(), "generi"));
+
+        return stats;
+    }
+
+    @PostMapping("/modifyProfile")
+    public Boolean modificaProfilo(@RequestBody Utente utente){
+        try {
+            DBManager.getInstance().getUtenteDao().saveOrUpdate(utente);
+        }catch(Exception e){
+            return false;
+        }
+
+        return true;
+    }
+
+
 
 }
