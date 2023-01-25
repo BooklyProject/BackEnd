@@ -220,9 +220,9 @@ public class FrontEndController {
         return true;
     }
 
-    @GetMapping("/deleteCollection")
-    public Boolean eliminaRaccolta(@RequestParam Long idRaccolta){
-
+    @PostMapping("/deleteCollection")
+    public Boolean eliminaRaccolta(@RequestBody HashMap <String, Long> r){
+        Long idRaccolta = r.get("idRaccolta");
         try {
             DBManager.getInstance().getContenutoDao().deleteBooksForCollections(idRaccolta);
             DBManager.getInstance().getRaccoltaDao().delete(idRaccolta);
