@@ -5,6 +5,7 @@ import mat.unical.it.bookly.persistance.dao.RaccoltaDao;
 import mat.unical.it.bookly.persistance.model.Raccolta;
 import mat.unical.it.bookly.persistance.model.Utente;
 
+import javax.sound.midi.SysexMessage;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -86,7 +87,7 @@ public class RaccoltaDaoPostgress implements RaccoltaDao {
     @Override
     public void saveOrUpdate(Raccolta raccolta) {
         //TODO: try update
-        if(findByPrimaryKey(raccolta.getId()) == null){
+        if(raccolta.getId() == null || findByPrimaryKey(raccolta.getId()) == null){
             String insertStr = "INSERT INTO raccolte VALUES (?,?,?)";
             PreparedStatement st;
             try{

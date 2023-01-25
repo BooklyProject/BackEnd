@@ -202,18 +202,18 @@ public class FrontEndController {
         return DBManager.getInstance().getRaccoltaDao().findAllForUser(user.getId());
     }
 
-    @GetMapping("/createCollection")
-    public Boolean creaRaccolta(HttpServletRequest req, @RequestParam String jsessionid, @RequestParam String nome){
+    @PostMapping("/createCollection")
+    public Boolean creaRaccolta(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody HashMap <String,String> nome){
 
         HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
         Utente user = (Utente) session.getAttribute("user");
-
         try {
             Raccolta raccolta = new Raccolta();
-            raccolta.setNome(nome);
+            raccolta.setNome(nome.get("nome"));
             raccolta.setUtente(user.getId());
             DBManager.getInstance().getRaccoltaDao().saveOrUpdate(raccolta);
         }catch(Exception e){
+            e.printStackTrace();
             return false;
         }
 
