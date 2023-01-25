@@ -1,0 +1,3 @@
+
+//TODO: fare in modo che ogni qual volta viene eliminato una recensione o commento o evento, questa viene eliminata anche da POST
+

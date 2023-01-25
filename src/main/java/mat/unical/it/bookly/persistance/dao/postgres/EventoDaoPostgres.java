@@ -49,7 +49,7 @@ public class EventoDaoPostgres implements EventoDao {
         List<Evento> eventi = new ArrayList<>();
         String query = "" +
                 "SELECT e.id as e_id, e.nome as e_nome, e.descrizione as e_de," +
-                "e.data as e_data, e.luogo as e_luogo, e.partecipanti as e_partecipanti " +
+                "e.data as e_data, e.luogo as e_luogo, e.partecipanti as e_partecipanti, e.orario as e_orario " +
                 "FROM eventi e " +
                 "JOIN post p ON p.id = e.id " +
                 "JOIN utenti u ON p.utente = u.id " +
@@ -67,6 +67,7 @@ public class EventoDaoPostgres implements EventoDao {
                 evento.setData(rs.getDate("e_data"));
                 evento.setLuogo(rs.getString("e_luogo"));
                 evento.setPartecipanti(rs.getInt("e_partecipanti"));
+                evento.setOrario(rs.getString("e_orario"));
 
                 eventi.add(evento);
         }
@@ -94,7 +95,7 @@ public class EventoDaoPostgres implements EventoDao {
                 e.setData(rs.getDate("data"));
                 e.setLuogo(rs.getString("luogo"));
                 e.setPartecipanti(rs.getInt("partecipanti"));
-
+                e.setOrario(rs.getString("orario"));
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -134,7 +135,7 @@ public class EventoDaoPostgres implements EventoDao {
                     "descrizione = ?," +
                     "data = ?," +
                     "luogo = ?," +
-                    "partecipanti = ?" +
+                    "partecipanti = ?," +
                     "orario = ?" +
                     "where id = ?";
             PreparedStatement st;
@@ -145,8 +146,8 @@ public class EventoDaoPostgres implements EventoDao {
                 st.setDate(3,evento.getData());
                 st.setString(4,evento.getLuogo());
                 st.setInt(5,evento.getPartecipanti());
-                st.setLong(6,evento.getId());
-                st.setString(7,evento.getOrario());
+                st.setString(6,evento.getOrario());
+                st.setLong(7,evento.getId());
 
                 st.executeUpdate();
             } catch (SQLException e) {
