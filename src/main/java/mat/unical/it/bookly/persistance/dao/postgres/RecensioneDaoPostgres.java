@@ -77,9 +77,27 @@ public class RecensioneDaoPostgres implements RecensioneDao {
     }
 
     @Override
+    public Long findUserByReview(Long id) {
+
+        String query = "SELECT * FROM post p WHERE p.id = ?";
+        try {
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setLong(1, id);
+            ResultSet rs = st.executeQuery();
+
+            if (rs.next()) {
+                return rs.getLong("utente");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
     public List<Recensione> findReviewsByBook(Long idUtente, String ISBNLibro) {
         List<Recensione> recensioni = new ArrayList<>();
-        String query1 = "select * from recensioni r where r.libro = ? AND EXISTS(SELECT * FROM post p WHERE p.id = r.id AND EXISTS(SELECT * FROM utenti u WHERE post.utente = u.id AND u.id = ?))";
+        String query1 = "select * from recensioni r where r.libro = ? AND EXISTS(SELECT * FROM post p WHERE p.id = r.id AND EXISTS(SELECT * FROM utenti u WHERE p.utente = u.id AND u.id = ?))";
         try {
             PreparedStatement st = conn.prepareStatement(query1);
             st.setString(1, ISBNLibro);
@@ -102,7 +120,7 @@ public class RecensioneDaoPostgres implements RecensioneDao {
             e.printStackTrace();
         }
 
-        String query2 = "select * from recensioni r where r.libro = ? AND EXISTS(SELECT * FROM post p WHERE p.id = r.id AND EXISTS(SELECT * FROM utenti u WHERE post.utente = u.id AND u.id != ?))";
+        String query2 = "select * from recensioni r where r.libro = ? AND EXISTS(SELECT * FROM post p WHERE p.id = r.id AND EXISTS(SELECT * FROM utenti u WHERE p.utente = u.id AND u.id != ?))";
         try {
             PreparedStatement st = conn.prepareStatement(query2);
             st.setString(1, ISBNLibro);

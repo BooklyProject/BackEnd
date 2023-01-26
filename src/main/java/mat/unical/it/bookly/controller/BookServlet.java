@@ -25,6 +25,11 @@ public class BookServlet extends HttpServlet {
         System.out.println("libro: " + libro);
         List<Recensione> recensioni =  DBManager.getInstance().getRecensioneDao().findReviewsByBook(user.getId(), libro.getIsbn());
         session.setAttribute("recensioni", recensioni);
+        Long idPrimaRecensione = null;
+        if(!recensioni.isEmpty()) {
+            idPrimaRecensione = DBManager.getInstance().getRecensioneDao().findUserByReview(recensioni.get(0).getId());
+        }
+        session.setAttribute("idUtentePrimaRecensione", idPrimaRecensione);
         resp.sendRedirect("views/schedaLibro.html");
     }
 }
