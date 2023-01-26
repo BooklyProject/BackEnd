@@ -77,6 +77,46 @@ public class RecensioneDaoPostgres implements RecensioneDao {
     }
 
     @Override
+    public String findPreferredResultByAttribute(Long idUtente, String attribute) {
+        List<String> listaAttributi = new ArrayList<>();
+        String query = "SELECT * FROM recensioni r" +
+                "WHERE EXISTS ( SELECT * FROM post p WHERE r.id = p.id AND EXISTS(SELECT * FROM utenti u WHERE p.utente = u.id AND u.id = ?))";
+        try{
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setLong(1,idUtente);
+            ResultSet rs = st.executeQuery();
+
+            while(rs.next()){
+                listaAttributi.add(rs.getString(attribute));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if(listaAttributi.isEmpty()){
+            return "Nessuno";
+        }
+        else {
+            int maxcount = 0;
+            String element_having_max_freq = "";
+            for (int i = 0; i < listaAttributi.size(); i++) {
+                int count = 0;
+                for (int j = 0; j < listaAttributi.size(); j++) {
+                    if (listaAttributi.get(i) == listaAttributi.get(j)) {
+                        count++;
+                    }
+                }
+
+                if (count > maxcount) {
+                    maxcount = count;
+                    element_having_max_freq = listaAttributi.get(i);
+                }
+            }
+            return element_having_max_freq;
+        }
+    }
+
+    @Override
     public void saveOrUpdate(Recensione recensione) {
         if(findByPrimaryKey(recensione.getId()) == null){
             //

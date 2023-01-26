@@ -1,5 +1,6 @@
 package mat.unical.it.bookly.controller;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.sound.midi.Soundbank;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -109,16 +112,23 @@ public class FrontEndController {
 
         HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
         Utente user = (Utente) session.getAttribute("user");
+        List<Evento> mieiEventi = DBManager.getInstance().getEventoDao().findAllCreatedByUser(user.getId());
 
-        return DBManager.getInstance().getEventoDao().findAllCreatedByUser(user.getId());
+        return mieiEventi;
     }
 
-    @GetMapping("/deleteEvent")
-    public boolean cancellaEvento(@RequestParam Long id){
+    @PostMapping("/deleteEvent")
+    public boolean cancellaEvento(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody HashMap<String, Long> e){
+
+        Long idEvento = e.get("idEvento");
+        System.out.println("id evento: " + idEvento);
+        HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
+        Utente user = (Utente) session.getAttribute("user");
         try {
-            DBManager.getInstance().getPartecipaDao().deleteAllEventPartecipations(id);
-            DBManager.getInstance().getEventoDao().delete(id);
-        }catch(Exception e){
+            DBManager.getInstance().getPartecipaDao().deleteAllEventPartecipations(idEvento);
+            DBManager.getInstance().getEventoDao().delete(idEvento);
+
+        }catch(Exception ex){
             return false;
         }
 
@@ -135,26 +145,30 @@ public class FrontEndController {
     }
 
     @PostMapping("/partecipate")
-    public boolean partecipaEvento(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody Evento evento){
+    public boolean partecipaEvento(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody HashMap<String, Long> e){
+
+        Long idEvento = e.get("idEvento");
+        System.out.println("id evento: " + idEvento);
         HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
         Utente user = (Utente) session.getAttribute("user");
         try {
+            Evento evento = DBManager.getInstance().getEventoDao().findByPrimaryKey(idEvento);
             DBManager.getInstance().getPartecipaDao().createPartecipation(user.getId(), evento.getId());
             evento.setPartecipanti(evento.getPartecipanti() + 1);
             DBManager.getInstance().getEventoDao().saveOrUpdate(evento, user.getId());
-        }catch(Exception e){
+        }catch(Exception ex){
             return false;
         }
 
         return true;
     }
 
-    @GetMapping("/deletePartecipation")
-    public boolean cancellaPartecipazione(HttpServletRequest req, @RequestParam String jsessionid, @RequestParam Long idEvento){
+    @PostMapping("/deletePartecipation")
+    public boolean cancellaPartecipazione(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody HashMap<String, Long> evento){
         HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
         Utente user = (Utente) session.getAttribute("user");
         try {
-            DBManager.getInstance().getPartecipaDao().deletePartecipation(user.getId(), idEvento);
+            DBManager.getInstance().getPartecipaDao().deletePartecipation(user.getId(), evento.get("idEvento"));
         }catch(Exception e){
             return false;
         }
@@ -188,27 +202,27 @@ public class FrontEndController {
         return DBManager.getInstance().getRaccoltaDao().findAllForUser(user.getId());
     }
 
-    @GetMapping("/createCollection")
-    public Boolean creaRaccolta(HttpServletRequest req, @RequestParam String jsessionid, @RequestParam String nome){
+    @PostMapping("/createCollection")
+    public Boolean creaRaccolta(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody HashMap <String,String> nome){
 
         HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
         Utente user = (Utente) session.getAttribute("user");
-
         try {
             Raccolta raccolta = new Raccolta();
-            raccolta.setNome(nome);
+            raccolta.setNome(nome.get("nome"));
             raccolta.setUtente(user.getId());
             DBManager.getInstance().getRaccoltaDao().saveOrUpdate(raccolta);
         }catch(Exception e){
+            e.printStackTrace();
             return false;
         }
 
         return true;
     }
 
-    @GetMapping("/deleteCollection")
-    public Boolean eliminaRaccolta(@RequestParam Long idRaccolta){
-
+    @PostMapping("/deleteCollection")
+    public Boolean eliminaRaccolta(@RequestBody HashMap <String, Long> r){
+        Long idRaccolta = r.get("idRaccolta");
         try {
             DBManager.getInstance().getContenutoDao().deleteBooksForCollections(idRaccolta);
             DBManager.getInstance().getRaccoltaDao().delete(idRaccolta);
@@ -246,5 +260,38 @@ public class FrontEndController {
 
         return true;
     }
+
+    @GetMapping("/getStats")
+    public Statistiche mostraStatistiche(HttpServletRequest req, @RequestParam String jsessionid){
+
+        HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
+        Utente user = (Utente) session.getAttribute("user");
+
+        Statistiche stats = new Statistiche();
+
+        stats.setRaccolteCreate(DBManager.getInstance().getRaccoltaDao().findAllForUser(user.getId()).size());
+        stats.setEventiCreati(DBManager.getInstance().getEventoDao().findAllCreatedByUser(user.getId()).size());
+        stats.setSeguiti(DBManager.getInstance().getFollowDao().followList(user.getId()).size());
+        stats.setFollowers(DBManager.getInstance().getFollowDao().followByList(user.getId()).size());
+        stats.setEventiPartecipati(DBManager.getInstance().getPartecipaDao().eventFromUserList(user.getId()).size());
+        stats.setLibriLetti(DBManager.getInstance().getRecensioneDao().findAllWroteByUser(user.getId()).size());
+        stats.setAutorePreferito(DBManager.getInstance().getRecensioneDao().findPreferredResultByAttribute(user.getId(), "autore"));
+        stats.setGenerePreferito(DBManager.getInstance().getRecensioneDao().findPreferredResultByAttribute(user.getId(), "generi"));
+
+        return stats;
+    }
+
+    @PostMapping("/modifyProfile")
+    public Boolean modificaProfilo(@RequestBody Utente utente){
+        try {
+            DBManager.getInstance().getUtenteDao().saveOrUpdate(utente);
+        }catch(Exception e){
+            return false;
+        }
+
+        return true;
+    }
+
+
 
 }

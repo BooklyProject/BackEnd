@@ -21,7 +21,7 @@ public class FollowDaoPostgress implements FollowDao {
     @Override
     public List<Utente> followList(Long id) {
         List<Utente> utenti = new ArrayList<>();
-        String query = "select utente2 from segue where utente1 = ?"; //ritorna la lista di tutti gli utenti
+        String query = "select utente2 from segue where utente1 = ?"; //ritorna la lista di tutti gli utenti seguiti
         try{
             PreparedStatement st = conn.prepareStatement(query);
             st.setLong(1,id);
@@ -41,7 +41,7 @@ public class FollowDaoPostgress implements FollowDao {
     @Override
     public List<Utente> followByList(Long id) {
         List<Utente> utenti = new ArrayList<>();
-        String query = "select utente1 from segue where utente2 = ?"; //ritorna la lista di tutti gli utenti
+        String query = "select utente1 from segue where utente2 = ?"; //ritorna la lista di tutti gli utenti che mi seguono
         try{
             PreparedStatement st = conn.prepareStatement(query);
             st.setLong(1,id);

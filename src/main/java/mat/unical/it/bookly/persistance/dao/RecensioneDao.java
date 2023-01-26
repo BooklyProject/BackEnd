@@ -8,6 +8,7 @@ import java.util.List;
 public interface RecensioneDao {
     public List<Recensione> findAllWroteByUser(Long idUtente);
     public Recensione findByPrimaryKey(Long id);
+    public String findPreferredResultByAttribute(Long idUtente, String attribute);
     public void saveOrUpdate(Recensione recensione);
     public void delete(Long id);
 }
