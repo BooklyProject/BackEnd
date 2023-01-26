@@ -233,9 +233,9 @@ public class FrontEndController {
         return true;
     }
 
-    @GetMapping("/getCollectionBooks")
-    public List<Libro> getContenutoRaccolta(@RequestParam Long idRaccolta){
-
+    @PostMapping("/getCollectionBooks")
+    public List<Libro> getContenutoRaccolta(@RequestBody HashMap<String, Long> r){
+        Long idRaccolta = r.get("idRaccolta");
         return DBManager.getInstance().getContenutoDao().findBooksForCollection(idRaccolta);
     }
 
