@@ -295,15 +295,16 @@ public class FrontEndController {
     @PostMapping("/addReview")
     public Boolean aggiungiRecensione(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody Recensione recensione){
         HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
+
         Utente user = (Utente) session.getAttribute("user");
         Libro libro = (Libro) session.getAttribute("libro");
         recensione.setLibro(libro.getIsbn());
         try {
+            DBManager.getInstance().getLibroDao().saveOrUpdate(libro);
             DBManager.getInstance().getRecensioneDao().saveOrUpdate(recensione, user.getId());
         }catch(Exception e){
             return false;
         }
-
         return true;
     }
 
@@ -327,12 +328,12 @@ public class FrontEndController {
         Libro libro = (Libro) session.getAttribute("libro");
 
         return DBManager.getInstance().getRecensioneDao().findReviewsByBook(user.getId(), libro.getIsbn());
-
     }
 
     @PostMapping("/getReviewWriter")
     public Utente mostraScrittoreRecensione(@RequestBody HashMap<String, Long> r){
         Long idRecensione = r.get("idRecensione");
+        System.out.println("idRec: " + idRecensione);
         Long idUtente = DBManager.getInstance().getRecensioneDao().findUserByReview(idRecensione);
         return DBManager.getInstance().getUtenteDao().findByPrimaryKey(idUtente);
     }

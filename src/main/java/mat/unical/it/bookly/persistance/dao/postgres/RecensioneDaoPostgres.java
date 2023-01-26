@@ -195,8 +195,8 @@ public class RecensioneDaoPostgres implements RecensioneDao {
 
     @Override
     public void saveOrUpdate(Recensione recensione, Long idUtente) {
-        if(findByPrimaryKey(recensione.getId()) == null){
-            //
+        if(recensione.getId() == null || findByPrimaryKey(recensione.getId()) == null){
+
             Post p = new Post();
             Long id = IdBroker.getId(conn);
             p.setId(id);
