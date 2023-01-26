@@ -292,6 +292,246 @@ public class FrontEndController {
         return true;
     }
 
+    @PostMapping("/addReview")
+    public Boolean aggiungiRecensione(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody Recensione recensione){
+        HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
+        Utente user = (Utente) session.getAttribute("user");
+        Libro libro = (Libro) session.getAttribute("libro");
+        recensione.setLibro(libro.getIsbn());
+        try {
+            DBManager.getInstance().getRecensioneDao().saveOrUpdate(recensione, user.getId());
+        }catch(Exception e){
+            return false;
+        }
+
+        return true;
+    }
+
+    @PostMapping("/deleteReview")
+    public Boolean cancellaRecensione(@RequestBody HashMap<String, Long> r){
+        Long idRecensione = r.get("idRecensione");
+        try {
+            DBManager.getInstance().getCommentoDao().deleteForReview(idRecensione);
+            DBManager.getInstance().getRecensioneDao().delete(idRecensione);
+        }catch(Exception e){
+            return false;
+        }
+
+        return true;
+    }
+
+    @GetMapping("/getReviews")
+    public List<Recensione> mostraRecensioni(HttpServletRequest req, @RequestParam String jsessionid){
+        HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
+        Utente user = (Utente) session.getAttribute("user");
+        Libro libro = (Libro) session.getAttribute("libro");
+
+        return DBManager.getInstance().getRecensioneDao().findReviewsByBook(user.getId(), libro.getIsbn());
+
+    }
+
+    @PostMapping("/getReviewWriter")
+    public Utente mostraScrittoreRecensione(@RequestBody HashMap<String, Long> r){
+        Long idRecensione = r.get("idRecensione");
+        Long idUtente = DBManager.getInstance().getRecensioneDao().findUserByReview(idRecensione);
+        return DBManager.getInstance().getUtenteDao().findByPrimaryKey(idUtente);
+    }
+
+    @PostMapping("/getComments")
+    public List<Commento> mostraCommenti(@RequestBody HashMap<String, Long> r){
+        Long idRecensione = r.get("idRecensione");
+
+        return DBManager.getInstance().getCommentoDao().findByReview(idRecensione);
+    }
+
+    @PostMapping("/addComment")
+    public Boolean aggiungiCommento(HttpServletRequest req, @RequestParam String jsessionid, @RequestParam HashMap<String, Long> r, @RequestBody Commento commento){
+        HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
+        Utente user = (Utente) session.getAttribute("user");
+        Long idRecensione = r.get("idRecensione");
+        commento.setRecensioni(idRecensione);
+        try {
+            DBManager.getInstance().getCommentoDao().saveOrUpdate(commento, user.getId());
+        }catch(Exception e){
+            return false;
+        }
+
+        return true;
+    }
+
+    @PostMapping("/deleteComment")
+    public Boolean cancellaCommento(@RequestBody HashMap<String, Long> c){
+        Long idCommento = c.get("idCommento");
+        try {
+            DBManager.getInstance().getRecensioneDao().delete(idCommento);
+        }catch(Exception e){
+            return false;
+        }
+
+        return true;
+    }
+
+    @PostMapping("/getCommentWriter")
+    public Utente mostraScrittoreCommento(@RequestBody HashMap<String, Long> c){
+        Long idCommento = c.get("idCommento");
+        Long idUtente = DBManager.getInstance().getCommentoDao().findUserByComment(idCommento);
+        return DBManager.getInstance().getUtenteDao().findByPrimaryKey(idUtente);
+    }
+
+    @GetMapping("/createDefaultCollection")
+    public Boolean creaRaccolteDefault(HttpServletRequest req, @RequestParam String jsessionid){
+        HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
+        Utente user = (Utente) session.getAttribute("user");
+        try {
+
+            Raccolta raccoltaDaLeggere = new Raccolta();
+            raccoltaDaLeggere.setNome("Da leggere");
+            raccoltaDaLeggere.setUtente(user.getId());
+            DBManager.getInstance().getRaccoltaDao().saveOrUpdate(raccoltaDaLeggere);
+            Raccolta raccoltaPreferiti = new Raccolta();
+            raccoltaPreferiti.setNome("Preferiti");
+            raccoltaPreferiti.setUtente(user.getId());
+            DBManager.getInstance().getRaccoltaDao().saveOrUpdate(raccoltaPreferiti);
+
+        }catch(Exception e){
+            return false;
+        }
+
+        return true;
+    }
+
+    @PostMapping("/addCommentLike")
+    public Boolean aggiungiLikeCommento(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody HashMap<String, Long> c){
+        HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
+        Utente user = (Utente) session.getAttribute("user");
+        Long idCommento = c.get("idCommento");
+        try {
+            Commento commento = DBManager.getInstance().getCommentoDao().findByPrimaryKey(idCommento);
+            commento.setNumeroMiPiace(commento.getNumeroMiPiace() + 1);
+            DBManager.getInstance().getCommentoDao().saveOrUpdate(commento, user.getId());
+        } catch (Exception e){
+            return false;
+        }
+
+        return true;
+    }
+
+    @PostMapping("/removeCommentLike")
+    public Boolean rimuoviLikeCommento(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody HashMap<String, Long> c){
+        HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
+        Utente user = (Utente) session.getAttribute("user");
+        Long idCommento = c.get("idCommento");
+        try {
+            Commento commento = DBManager.getInstance().getCommentoDao().findByPrimaryKey(idCommento);
+            commento.setNumeroMiPiace(commento.getNumeroMiPiace() - 1);
+            DBManager.getInstance().getCommentoDao().saveOrUpdate(commento, user.getId());
+        } catch (Exception e){
+            return false;
+        }
+
+        return true;
+    }
+
+    @PostMapping("/addCommentDislike")
+    public Boolean aggiungiDisikeCommento(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody HashMap<String, Long> c){
+        HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
+        Utente user = (Utente) session.getAttribute("user");
+        Long idCommento = c.get("idCommento");
+        try {
+            Commento commento = DBManager.getInstance().getCommentoDao().findByPrimaryKey(idCommento);
+            commento.setNumeroNonMiPiace(commento.getNumeroNonMiPiace() + 1);
+            DBManager.getInstance().getCommentoDao().saveOrUpdate(commento, user.getId());
+        } catch (Exception e){
+            return false;
+        }
+
+        return true;
+    }
+
+    @PostMapping("/removeCommentDislike")
+    public Boolean rimuoviDisikeCommento(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody HashMap<String, Long> c){
+        HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
+        Utente user = (Utente) session.getAttribute("user");
+        Long idCommento = c.get("idCommento");
+        try {
+            Commento commento = DBManager.getInstance().getCommentoDao().findByPrimaryKey(idCommento);
+            commento.setNumeroNonMiPiace(commento.getNumeroNonMiPiace() - 1);
+            DBManager.getInstance().getCommentoDao().saveOrUpdate(commento, user.getId());
+        } catch (Exception e){
+            return false;
+        }
+
+        return true;
+    }
+
+    @PostMapping("/addReviewLike")
+    public Boolean aggiungiLikeRecensione(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody HashMap<String, Long> r){
+        HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
+        Utente user = (Utente) session.getAttribute("user");
+        Long idRecensione = r.get("idRecensione");
+        try {
+            Recensione recensione = DBManager.getInstance().getRecensioneDao().findByPrimaryKey(idRecensione);
+            recensione.setNumeroMiPiace(recensione.getNumeroMiPiace() + 1);
+            DBManager.getInstance().getRecensioneDao().saveOrUpdate(recensione, user.getId());
+        } catch (Exception e){
+            return false;
+        }
+
+        return true;
+    }
+
+
+
+    @PostMapping("/removeReviewLike")
+    public Boolean rimuoviLikeRecensione(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody HashMap<String, Long> r){
+        HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
+        Utente user = (Utente) session.getAttribute("user");
+        Long idRecensione = r.get("idRecensione");
+        try {
+            Recensione recensione = DBManager.getInstance().getRecensioneDao().findByPrimaryKey(idRecensione);
+            recensione.setNumeroMiPiace(recensione.getNumeroMiPiace() - 1);
+            DBManager.getInstance().getRecensioneDao().saveOrUpdate(recensione, user.getId());
+        } catch (Exception e){
+            return false;
+        }
+
+        return true;
+    }
+
+    @PostMapping("/addReviewDislike")
+    public Boolean aggiungiDislikeRecensione(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody HashMap<String, Long> r){
+        HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
+        Utente user = (Utente) session.getAttribute("user");
+        Long idRecensione = r.get("idRecensione");
+        try {
+            Recensione recensione = DBManager.getInstance().getRecensioneDao().findByPrimaryKey(idRecensione);
+            recensione.setNumeroNonMiPiace(recensione.getNumeroNonMiPiace() + 1);
+            DBManager.getInstance().getRecensioneDao().saveOrUpdate(recensione, user.getId());
+        } catch (Exception e){
+            return false;
+        }
+
+        return true;
+    }
+
+    @PostMapping("/removeReviewDislike")
+    public Boolean rimuoviDislikeRecensione(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody HashMap<String, Long> r){
+        HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
+        Utente user = (Utente) session.getAttribute("user");
+        Long idRecensione = r.get("idRecensione");
+        try {
+            Recensione recensione = DBManager.getInstance().getRecensioneDao().findByPrimaryKey(idRecensione);
+            recensione.setNumeroNonMiPiace(recensione.getNumeroNonMiPiace() - 1);
+            DBManager.getInstance().getRecensioneDao().saveOrUpdate(recensione, user.getId());
+        } catch (Exception e){
+            return false;
+        }
+
+        return true;
+    }
+
+
+
 
 
 }

@@ -11,7 +11,7 @@ public class Commento{
 
      Long id;
      String descrizione;
-     Date data; //utilizzo java.sql.Date
+     //Date data; //utilizzo java.sql.Date
      Integer numeroMiPiace;
      Integer numeroNonMiPiace;
      Long recensione;
@@ -32,7 +32,7 @@ public class Commento{
      public void setDescrizione(String descrizione) {
           this.descrizione = descrizione;
      }
-
+     /*
      public Date getData() {
           return data;
      }
@@ -40,7 +40,7 @@ public class Commento{
      public void setData(Date data) {
           this.data = data;
      }
-
+     */
      public Integer getNumeroMiPiace() {
           return numeroMiPiace;
      }

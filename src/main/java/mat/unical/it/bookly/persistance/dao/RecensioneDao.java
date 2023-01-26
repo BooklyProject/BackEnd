@@ -11,6 +11,6 @@ public interface RecensioneDao {
     public Long findUserByReview(Long id);
     public List<Recensione> findReviewsByBook(Long idUtente, String ISBNBook);
     public String findPreferredResultByAttribute(Long idUtente, String attribute);
-    public void saveOrUpdate(Recensione recensione);
+    public void saveOrUpdate(Recensione recensione, Long idUtente);
     public void delete(Long id);
 }

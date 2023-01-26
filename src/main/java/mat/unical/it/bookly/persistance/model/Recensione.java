@@ -11,7 +11,7 @@ public class Recensione {
     Long id;
     String descrizione;
     Integer voto;
-    Date data;
+    //Date data;
     Integer numeroMiPiace;
     Integer numeroNonMiPiace;
     String isbnLibro;
@@ -39,7 +39,7 @@ public class Recensione {
     public void setVoto(Integer voto) {
         this.voto = voto;
     }
-
+    /*
     public Date getData() {
         return data;
     }
@@ -47,7 +47,7 @@ public class Recensione {
     public void setData(Date data) {
         this.data = data;
     }
-
+    */
     public Integer getNumeroMiPiace() {
         return numeroMiPiace;
     }

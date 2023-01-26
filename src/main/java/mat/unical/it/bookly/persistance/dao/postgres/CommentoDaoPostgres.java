@@ -5,6 +5,7 @@ import mat.unical.it.bookly.persistance.IdBroker;
 import mat.unical.it.bookly.persistance.dao.CommentoDao;
 import mat.unical.it.bookly.persistance.model.Commento;
 import mat.unical.it.bookly.persistance.model.Post;
+import mat.unical.it.bookly.persistance.model.Recensione;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,12 +23,19 @@ public class CommentoDaoPostgres implements CommentoDao {
     public List<Commento> findAllWroteByUser(Long idUtente) {
         List<Commento> commentiUtente = new ArrayList<>();
         String query = "" +
-                "SELECT c.id as c_id, c.descrizione as c_des, c.data as c_da, c.mi_piace " +
+                "SELECT c.id as c_id, c.descrizione as c_des, c.mi_piace " +
                 "as c_mi, c.non_mi_piace as c_no, c.recensione as c_rec " +
                 "FROM commenti c " +
                 "JOIN post p ON p.id = c.id " +
                 "JOIN utenti u ON p.utente = u.id " +
                 "WHERE p.utente = ?";
+        /*String query = "" +
+                "SELECT c.id as c_id, c.descrizione as c_des, c.data as c_da, c.mi_piace " +
+                "as c_mi, c.non_mi_piace as c_no, c.recensione as c_rec " +
+                "FROM commenti c " +
+                "JOIN post p ON p.id = c.id " +
+                "JOIN utenti u ON p.utente = u.id " +
+                "WHERE p.utente = ?";*/
         try{
             PreparedStatement st = conn.prepareStatement(query);
             st.setLong(1,idUtente);
@@ -37,7 +45,7 @@ public class CommentoDaoPostgres implements CommentoDao {
                 Commento commento = new Commento();
                 commento.setId(rs.getLong("c_id"));
                 commento.setDescrizione(rs.getString("c_des"));
-                commento.setData(rs.getDate("c_da"));
+                //commento.setData(rs.getDate("c_da"));
                 commento.setNumeroMiPiace(rs.getInt("c_mi"));
                 commento.setNumeroNonMiPiace(rs.getInt("c_no"));
                 commento.setRecensioni(rs.getLong("c_rec"));
@@ -63,7 +71,7 @@ public class CommentoDaoPostgres implements CommentoDao {
                 c = new Commento();
                 c.setId(rs.getLong("id"));
                 c.setDescrizione(rs.getString("descrizione"));
-                c.setData(rs.getDate("data"));
+                //c.setData(rs.getDate("data"));
                 c.setNumeroMiPiace(rs.getInt("mi_piace"));
                 c.setNumeroNonMiPiace(rs.getInt("non_mi_piace"));
                 c.setRecensioni(rs.getLong("recensione"));
@@ -75,25 +83,26 @@ public class CommentoDaoPostgres implements CommentoDao {
     }
 
     @Override
-    public void saveOrUpdate(Commento commento) {
+    public void saveOrUpdate(Commento commento, Long idUtente) {
         if(findByPrimaryKey(commento.getId()) == null){
 
             Post p = new Post();
             Long id = IdBroker.getId(conn);
             p.setId(id);
-            p.setIdUtente(Long.valueOf(29));
+            p.setIdUtente(idUtente);
             DBManager.getInstance().getPostDao().saveUpdate(p);
-            String insertStr = "INSERT INTO commenti VALUES (?,?,?,?,?,?)";
+            //String insertStr = "INSERT INTO commenti VALUES (?,?,?,?,?,?)";
+            String insertStr = "INSERT INTO commenti VALUES (?,?,?,?,?)";
             PreparedStatement st;
             try{
                 st = conn.prepareStatement(insertStr);
 
                 st.setLong(1,id);
                 st.setString(2,commento.getDescrizione());
-                st.setDate(3,commento.getData());
-                st.setInt(4,commento.getNumeroMiPiace());
-                st.setInt(5,commento.getNumeroNonMiPiace());
-                st.setLong(6,commento.getRecensioni());
+                //st.setDate(3,2023-01-27);
+                st.setInt(3,commento.getNumeroMiPiace());
+                st.setInt(4,commento.getNumeroNonMiPiace());
+                st.setLong(5,commento.getRecensioni());
 
                 st.executeUpdate();
 
@@ -102,20 +111,25 @@ public class CommentoDaoPostgres implements CommentoDao {
             }
         }else{
             String updateStr = "UPDATE commenti set descrizione = ?," +
-                    "data = ?," +
                     "mi_piace = ?," +
                     "non_mi_piace = ?," +
                     "recensione = ?" +
                     "where id = ?";
+            /*String updateStr = "UPDATE commenti set descrizione = ?," +
+                    "data = ?," +
+                    "mi_piace = ?," +
+                    "non_mi_piace = ?," +
+                    "recensione = ?" +
+                    "where id = ?";*/
             PreparedStatement st;
             try{
                 st = conn.prepareStatement(updateStr);
                 st.setString(1,commento.getDescrizione());
-                st.setDate(2,commento.getData());
-                st.setInt(3,commento.getNumeroMiPiace());
-                st.setInt(4,commento.getNumeroNonMiPiace());
-                st.setLong(5,commento.getRecensioni());
-                st.setLong(6,commento.getId());
+                //st.setDate(2,commento.getData());
+                st.setInt(2,commento.getNumeroMiPiace());
+                st.setInt(3,commento.getNumeroNonMiPiace());
+                st.setLong(4,commento.getRecensioni());
+                st.setLong(5,commento.getId());
                 st.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -124,11 +138,68 @@ public class CommentoDaoPostgres implements CommentoDao {
     }
 
     @Override
+    public Long findUserByComment(Long id) {
+
+        String query = "SELECT * FROM post p WHERE p.id = ?";
+        try {
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setLong(1, id);
+            ResultSet rs = st.executeQuery();
+
+            if (rs.next()) {
+                return rs.getLong("utente");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public List<Commento> findByReview(Long idRecensione) {
+        List<Commento> commenti = new ArrayList<>();
+        String query1 = "select * from commenti c where c.recensione = ?";
+        try {
+            PreparedStatement st = conn.prepareStatement(query1);
+            st.setLong(1, idRecensione);
+
+            ResultSet rs = st.executeQuery();
+
+            if (rs.next()) {
+                Commento c = new Commento();
+                c.setId(rs.getLong("id"));
+                c.setDescrizione(rs.getString("descrizione"));
+                //c.setData(rs.getDate("data"));
+                c.setNumeroMiPiace(rs.getInt("mi_piace"));
+                c.setNumeroNonMiPiace(rs.getInt("non_mi_piace"));
+
+                commenti.add(c);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return commenti;
+    }
+
+    @Override
     public void delete(Long id) {
         String query = "DELETE FROM commenti where id = ?";
         try{
             PreparedStatement st = conn.prepareStatement(query);
             st.setLong(1,id);
+            st.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void deleteForReview(Long idRecensione) {
+        String query = "DELETE FROM commenti where recensione = ?";
+        try{
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setLong(1,idRecensione);
             st.executeUpdate();
         }catch (SQLException e){
             e.printStackTrace();

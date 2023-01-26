@@ -19,12 +19,18 @@ public class RecensioneDaoPostgres implements RecensioneDao {
     @Override
     public List<Recensione> findAllWroteByUser(Long idUtente) {
         List<Recensione> recensioniUtente = new ArrayList<>();
-        String query = "SELECT r.id as r_id, r.descrizione as r_desc, r.voto as r_voto, r.data as r_data, r.mi_piace as r_mi," +
+        String query = "SELECT r.id as r_id, r.descrizione as r_desc, r.voto as r_voto, r.mi_piace as r_mi," +
                 "r.non_mi_piace as r_no, r.libro as r_libro " +
                         "FROM recensioni r " +
                         "JOIN post p ON p.id = r.id " +
                 "JOIN utenti u ON p.utente = u.id " +
                 "where p.utente = ?";
+        /*"SELECT r.id as r_id, r.descrizione as r_desc, r.voto as r_voto, r.data as r_data, r.mi_piace as r_mi," +
+                "r.non_mi_piace as r_no, r.libro as r_libro " +
+                "FROM recensioni r " +
+                "JOIN post p ON p.id = r.id " +
+                "JOIN utenti u ON p.utente = u.id " +
+                "where p.utente = ?";*/
 
         try{
             PreparedStatement st = conn.prepareStatement(query);
@@ -36,7 +42,7 @@ public class RecensioneDaoPostgres implements RecensioneDao {
                 recensione.setId(rs.getLong("r_id"));
                 recensione.setDescrizione(rs.getString("r_desc"));
                 recensione.setVoto(rs.getInt("r_voto"));
-                recensione.setData(rs.getDate("r_data"));
+                //recensione.setData(rs.getDate("r_data"));
                 recensione.setNumeroMiPiace(rs.getInt("r_mi"));
                 recensione.setNumeroNonMiPiace(rs.getInt("r_no"));
                 recensione.setLibro(rs.getString("r_libro"));
@@ -64,7 +70,7 @@ public class RecensioneDaoPostgres implements RecensioneDao {
                 r.setId(rs.getLong("id"));
                 r.setDescrizione(rs.getString("descrizione"));
                 r.setVoto(rs.getInt("voto"));
-                r.setData(rs.getDate("data"));
+                //r.setData(rs.getDate("data"));
                 r.setNumeroMiPiace(rs.getInt("mi_piace"));
                 r.setNumeroNonMiPiace(rs.getInt("non_mi_piace"));
                 r.setLibro(rs.getString("libro"));
@@ -109,7 +115,7 @@ public class RecensioneDaoPostgres implements RecensioneDao {
                 r.setId(rs.getLong("id"));
                 r.setDescrizione(rs.getString("descrizione"));
                 r.setVoto(rs.getInt("voto"));
-                r.setData(rs.getDate("data"));
+                //r.setData(rs.getDate("data"));
                 r.setNumeroMiPiace(rs.getInt("mi_piace"));
                 r.setNumeroNonMiPiace(rs.getInt("non_mi_piace"));
                 r.setLibro(rs.getString("libro"));
@@ -132,7 +138,7 @@ public class RecensioneDaoPostgres implements RecensioneDao {
                 r.setId(rs.getLong("id"));
                 r.setDescrizione(rs.getString("descrizione"));
                 r.setVoto(rs.getInt("voto"));
-                r.setData(rs.getDate("data"));
+                //r.setData(rs.getDate("data"));
                 r.setNumeroMiPiace(rs.getInt("mi_piace"));
                 r.setNumeroNonMiPiace(rs.getInt("non_mi_piace"));
                 r.setLibro(rs.getString("libro"));
@@ -188,15 +194,16 @@ public class RecensioneDaoPostgres implements RecensioneDao {
     }
 
     @Override
-    public void saveOrUpdate(Recensione recensione) {
+    public void saveOrUpdate(Recensione recensione, Long idUtente) {
         if(findByPrimaryKey(recensione.getId()) == null){
             //
             Post p = new Post();
             Long id = IdBroker.getId(conn);
             p.setId(id);
-            p.setIdUtente(Long.valueOf(30));
+            p.setIdUtente(idUtente);
             DBManager.getInstance().getPostDao().saveUpdate(p);
-            String insertStr = "INSERT INTO recensioni VALUES (?,?,?,?,?,?,?)";
+            //String insertStr = "INSERT INTO recensioni VALUES (?,?,?,?,?,?,?)";
+            String insertStr = "INSERT INTO recensioni VALUES (?,?,?,?,?,?)";
             PreparedStatement st;
             try{
                 st = conn.prepareStatement(insertStr);
@@ -204,10 +211,10 @@ public class RecensioneDaoPostgres implements RecensioneDao {
                 st.setLong(1,id);
                 st.setString(2,recensione.getDescrizione());
                 st.setInt(3,recensione.getVoto());
-                st.setDate(4,recensione.getData());
-                st.setInt(5,recensione.getNumeroMiPiace());
-                st.setInt(6,recensione.getNumeroNonMiPiace());
-                st.setString(7,recensione.getLibro());
+                //st.setDate(4,recensione.getData());
+                st.setInt(4,recensione.getNumeroMiPiace());
+                st.setInt(5,recensione.getNumeroNonMiPiace());
+                st.setString(6,recensione.getLibro());
 
                 st.executeUpdate();
 
@@ -217,21 +224,27 @@ public class RecensioneDaoPostgres implements RecensioneDao {
         }else{
             String updateStr = "UPDATE recensioni set descrizione = ?," +
                     "voto = ?," +
-                    "data = ?," +
                     "mi_piace = ?," +
                     "non_mi_piace = ?," +
                     "libro = ?" +
                     "where id = ?";
+            /*String updateStr = "UPDATE recensioni set descrizione = ?," +
+                    "voto = ?," +
+                    "data = ?," +
+                    "mi_piace = ?," +
+                    "non_mi_piace = ?," +
+                    "libro = ?" +
+                    "where id = ?";*/
             PreparedStatement st;
             try{
                 st = conn.prepareStatement(updateStr);
                 st.setString(1,recensione.getDescrizione());
                 st.setInt(2,recensione.getVoto());
-                st.setDate(3,recensione.getData());
-                st.setInt(4,recensione.getNumeroMiPiace());
-                st.setInt(5,recensione.getNumeroNonMiPiace());
-                st.setString(6,recensione.getLibro());
-                st.setLong(7,recensione.getId());
+                //st.setDate(3,recensione.getData());
+                st.setInt(3,recensione.getNumeroMiPiace());
+                st.setInt(4,recensione.getNumeroNonMiPiace());
+                st.setString(5,recensione.getLibro());
+                st.setLong(6,recensione.getId());
                 st.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();

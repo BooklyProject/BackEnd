@@ -124,7 +124,6 @@ public class EventoDaoPostgres implements EventoDao {
                 st.setInt(6,evento.getPartecipanti());
                 st.setString(7,evento.getOrario());
 
-
                 st.executeUpdate();
 
             } catch (SQLException e) {
