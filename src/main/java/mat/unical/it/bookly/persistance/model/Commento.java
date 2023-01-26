@@ -14,7 +14,7 @@ public class Commento{
      Date data; //utilizzo java.sql.Date
      Integer numeroMiPiace;
      Integer numeroNonMiPiace;
-     Long rencesione;
+     Long recensione;
 
 
      public Long getId() {
@@ -58,10 +58,10 @@ public class Commento{
      }
 
      public Long getRecensioni() {
-          return rencesione;
+          return recensione;
      }
 
      public void setRecensioni(Long recensione) {
-          this.rencesione = recensione;
+          this.recensione = recensione;
      }
 }
