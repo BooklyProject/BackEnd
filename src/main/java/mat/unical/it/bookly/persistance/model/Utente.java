@@ -10,6 +10,24 @@ public class Utente {
     private Boolean isBanned;
     private String userImage;
 
+    @Override   //TODO: finish to complete equals
+    public boolean equals(Object obj) {
+        Utente u1 = (Utente) obj;
+        return (u1.getId().equals(id) && u1.getUsername().equals(username) && u1.getNome().equals(nome));
+    }
+
+    public Utente(Long id, String username, String nome, String cognome, String email, String password, Boolean isBanned, String userImage) {
+        this.id = id;
+        this.username = username;
+        this.nome = nome;
+        this.cognome = cognome;
+        this.email = email;
+        this.password = password;
+        this.isBanned = isBanned;
+        this.userImage = userImage;
+    }
+    public Utente(){};
+
     public Long getId() {
         return id;
     }
@@ -63,4 +81,18 @@ public class Utente {
     public String getUserImage() { return userImage; }
 
     public void setUserImage(String userImage) { this.userImage = userImage; }
+
+    @Override
+    public String toString() {
+        return "Utente{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", nome='" + nome + '\'' +
+                ", cognome='" + cognome + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", isBanned=" + isBanned +
+                ", userImage='" + userImage + '\'' +
+                '}';
+    }
 }

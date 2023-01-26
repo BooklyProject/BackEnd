@@ -59,7 +59,7 @@ class UtenteDaoPostgresTest {
         List<Utente> utenti = DBManager.getInstance().getUtenteDao().findAll();
         for(Utente utente: utenti){
             assertNotNull(utente.getUsername());
-            System.out.println(utente.getUsername());
+            System.out.println(utente);
         }
     }
 
