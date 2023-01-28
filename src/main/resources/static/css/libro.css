@@ -19,11 +19,20 @@
     height: 375px;
     width: 250px;
     margin-left: 20px;
+    border: 5px solid black;
+    box-shadow: black 5px 5px 5px;
 }
 
-.column {
+.column1 {
     float: left;
     width: 30%;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.column2 {
+    float: left;
+    width: 70%;
     margin-top: 30px;
     margin-bottom: 30px;
 }
