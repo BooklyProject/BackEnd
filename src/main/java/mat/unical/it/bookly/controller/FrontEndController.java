@@ -243,7 +243,7 @@ public class FrontEndController {
         return true;
     }
 
-    @GetMapping("/deleteBook")
+    @PostMapping("/deleteBook")
     public Boolean cancellaLibroRaccolta(@RequestParam Long idRaccolta, @RequestParam String ISBN){
         try {
             DBManager.getInstance().getContenutoDao().delete(idRaccolta, ISBN);
