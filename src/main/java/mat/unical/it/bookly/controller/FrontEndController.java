@@ -1,10 +1,7 @@
 package mat.unical.it.bookly.controller;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import jakarta.servlet.RequestDispatcher;
+
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpServletResponseWrapper;
 import jakarta.servlet.http.HttpSession;
 import mat.unical.it.bookly.persistance.DBManager;
 import mat.unical.it.bookly.persistance.dao.*;
@@ -12,10 +9,6 @@ import mat.unical.it.bookly.persistance.model.*;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.sound.midi.Soundbank;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -239,14 +232,14 @@ public class FrontEndController {
         return DBManager.getInstance().getContenutoDao().findBooksForCollection(idRaccolta);
     }
 
-    @GetMapping("/addBook")
-    public Boolean aggiungiLibroRaccolta(@RequestParam Long idRaccolta, @RequestParam String ISBN){
+    @PostMapping("/addBook")
+    public Boolean aggiungiLibroRaccolta(@RequestParam Long idRaccolta, @RequestBody Libro libro){
         try {
-            DBManager.getInstance().getContenutoDao().save(idRaccolta, ISBN);
+            DBManager.getInstance().getLibroDao().saveOrUpdate(libro);
+            DBManager.getInstance().getContenutoDao().save(idRaccolta, libro.getIsbn());
         }catch(Exception e){
             return false;
         }
-
         return true;
     }
 
