@@ -83,12 +83,13 @@ public class CommentoDaoPostgres implements CommentoDao {
     }
 
     @Override
-    public void saveOrUpdate(Commento commento, Long idUtente) {
-        if(findByPrimaryKey(commento.getId()) == null){
+    public Long saveOrUpdate(Commento commento, Long idUtente) {
+        Long idC = null;
+        if(commento.getId() == null || findByPrimaryKey(commento.getId()) == null){
 
             Post p = new Post();
-            Long id = IdBroker.getId(conn);
-            p.setId(id);
+            idC = IdBroker.getId(conn);
+            p.setId(idC);
             p.setIdUtente(idUtente);
             DBManager.getInstance().getPostDao().saveUpdate(p);
             //String insertStr = "INSERT INTO commenti VALUES (?,?,?,?,?,?)";
@@ -97,7 +98,7 @@ public class CommentoDaoPostgres implements CommentoDao {
             try{
                 st = conn.prepareStatement(insertStr);
 
-                st.setLong(1,id);
+                st.setLong(1,idC);
                 st.setString(2,commento.getDescrizione());
                 //st.setDate(3,2023-01-27);
                 st.setInt(3,commento.getNumeroMiPiace());
@@ -110,6 +111,7 @@ public class CommentoDaoPostgres implements CommentoDao {
                 e.printStackTrace();
             }
         }else{
+            idC = commento.getId();
             String updateStr = "UPDATE commenti set descrizione = ?," +
                     "mi_piace = ?," +
                     "non_mi_piace = ?," +
@@ -135,6 +137,7 @@ public class CommentoDaoPostgres implements CommentoDao {
                 e.printStackTrace();
             }
         }
+        return idC;
     }
 
     @Override

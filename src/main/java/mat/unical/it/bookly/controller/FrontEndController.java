@@ -337,18 +337,21 @@ public class FrontEndController {
     }
 
     @PostMapping("/addComment")
-    public Boolean aggiungiCommento(HttpServletRequest req, @RequestParam String jsessionid, @RequestParam HashMap<String, Long> r, @RequestBody Commento commento){
+    public Long aggiungiCommento(HttpServletRequest req, @RequestParam String jsessionid, @RequestParam Long idRec, @RequestBody HashMap<String, String> c){
         HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
         Utente user = (Utente) session.getAttribute("user");
-        Long idRecensione = r.get("idRecensione");
-        commento.setRecensioni(idRecensione);
+        Long idC = null;
+        Commento commento = new Commento();
+        String descrizione = c.get("descrizione");
+        commento.setRecensioni(idRec);
+        commento.setDescrizione(descrizione);
         try {
-            DBManager.getInstance().getCommentoDao().saveOrUpdate(commento, user.getId());
+            idC = DBManager.getInstance().getCommentoDao().saveOrUpdate(commento, user.getId());
         }catch(Exception e){
-            return false;
+            e.printStackTrace();
         }
 
-        return true;
+        return idC;
     }
 
     @PostMapping("/deleteComment")
