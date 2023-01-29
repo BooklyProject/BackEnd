@@ -1,3 +1,14 @@
 
-//TODO: fare in modo che ogni qual volta viene eliminato una recensione o commento o evento, questa viene eliminata anche da POST
+JACOPO:
+    //TODO: modificare delete() di RecensioneDaoPostgress -> fare in modo che ogni qual volta si elimina un commento viene
+    //eliminato anche il post ad esso associato
+    //TODO: associazione valutazione per i Commenti
+
+
+FRANCESCO:
+    //TODO: modificare delete() di CommentoDaoPostgress -> fare in modo che ogni qual volta si elimina un commento viene
+    //eliminato anche il post ad esso associato
+
+    //TODO: Gestione recupero credenziali (principalmente recupero password).
+    //TODO: associazione valutazione per Recensione
 
