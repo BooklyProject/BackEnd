@@ -196,21 +196,19 @@ public class FrontEndController {
     }
 
     @PostMapping("/createCollection")
-    public Boolean creaRaccolta(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody HashMap <String,String> nome){
-
+    public Long creaRaccolta(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody HashMap <String,String> nome){
+        Long idRaccolta = null;
         HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
         Utente user = (Utente) session.getAttribute("user");
         try {
             Raccolta raccolta = new Raccolta();
             raccolta.setNome(nome.get("nome"));
             raccolta.setUtente(user.getId());
-            DBManager.getInstance().getRaccoltaDao().saveOrUpdate(raccolta);
+            idRaccolta = DBManager.getInstance().getRaccoltaDao().saveOrUpdate(raccolta);
         }catch(Exception e){
             e.printStackTrace();
-            return false;
         }
-
-        return true;
+        return idRaccolta;
     }
 
     @PostMapping("/deleteCollection")
@@ -243,14 +241,13 @@ public class FrontEndController {
         return true;
     }
 
-    @PostMapping("/deleteBook")
+    @GetMapping("/deleteBook")
     public Boolean cancellaLibroRaccolta(@RequestParam Long idRaccolta, @RequestParam String ISBN){
         try {
             DBManager.getInstance().getContenutoDao().delete(idRaccolta, ISBN);
         }catch(Exception e){
             return false;
         }
-
         return true;
     }
 

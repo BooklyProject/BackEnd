@@ -9,7 +9,7 @@ public interface RaccoltaDao {
     public List<Raccolta> findAllForUser(Long idUtente);
     public List<Raccolta> findAll();
     public Raccolta findByPrimaryKey(Long id);
-    public void saveOrUpdate(Raccolta raccolta);
+    public Long saveOrUpdate(Raccolta raccolta);
     public void delete(Long id);
     public void deleteAllForUser(Long idUtente);
 }

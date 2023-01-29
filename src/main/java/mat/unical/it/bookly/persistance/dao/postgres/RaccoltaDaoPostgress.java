@@ -85,14 +85,14 @@ public class RaccoltaDaoPostgress implements RaccoltaDao {
 
 
     @Override
-    public void saveOrUpdate(Raccolta raccolta) {
-        //TODO: try update
+    public Long saveOrUpdate(Raccolta raccolta) {
+        Long newId = null;
         if(raccolta.getId() == null || findByPrimaryKey(raccolta.getId()) == null){
             String insertStr = "INSERT INTO raccolte VALUES (?,?,?)";
             PreparedStatement st;
             try{
                 st = conn.prepareStatement(insertStr);
-                Long newId = IdBroker.getId(conn);
+                newId = IdBroker.getId(conn);
 
                 st.setLong(1,newId);
                 st.setString(2,raccolta.getNome());
@@ -102,6 +102,7 @@ public class RaccoltaDaoPostgress implements RaccoltaDao {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+            return newId;
         }else{
             String updateStr = "UPDATE raccolte set nome = ?," +
                     "utente = ?" +
@@ -116,6 +117,7 @@ public class RaccoltaDaoPostgress implements RaccoltaDao {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+            return raccolta.getId();
         }
     }
 
