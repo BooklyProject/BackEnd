@@ -32,7 +32,6 @@ public class ContenutoDaoPostgres implements ContenutoDao {
             while(rs.next()){
                 Libro libro = DBManager.getInstance().getLibroDao().findByPrimaryKey(rs.getString("libro"));
                 libri.add(libro);
-
             }
         } catch (SQLException e) {
             e.printStackTrace();

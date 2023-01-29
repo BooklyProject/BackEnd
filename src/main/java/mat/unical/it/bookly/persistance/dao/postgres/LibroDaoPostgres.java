@@ -31,7 +31,7 @@ public class LibroDaoPostgres implements LibroDao {
                 libro.setNumeroPagine(rs.getInt("num_pagine"));
                 libro.setLingua(rs.getString("lingua"));
                 libro.setDescrizione(rs.getString("descrizione"));
-                libro.setCopertina("copertina");
+                libro.setCopertina(rs.getString("copertina"));
 
                 libri.add(libro);
             }
@@ -60,7 +60,7 @@ public class LibroDaoPostgres implements LibroDao {
                 libro.setNumeroPagine(rs.getInt("num_pagine"));
                 libro.setLingua(rs.getString("lingua"));
                 libro.setDescrizione(rs.getString("descrizione"));
-                libro.setCopertina("copertina");
+                libro.setCopertina(rs.getString("copertina"));
 
             }
         } catch (SQLException e) {
