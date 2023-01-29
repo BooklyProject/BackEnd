@@ -283,19 +283,20 @@ public class FrontEndController {
     }
 
     @PostMapping("/addReview")
-    public Boolean aggiungiRecensione(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody Recensione recensione){
+    public Long aggiungiRecensione(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody Recensione recensione){
         HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
 
         Utente user = (Utente) session.getAttribute("user");
         Libro libro = (Libro) session.getAttribute("libro");
         recensione.setLibro(libro.getIsbn());
+        Long idR = null;
         try {
             DBManager.getInstance().getLibroDao().saveOrUpdate(libro);
-            DBManager.getInstance().getRecensioneDao().saveOrUpdate(recensione, user.getId());
+            idR = DBManager.getInstance().getRecensioneDao().saveOrUpdate(recensione, user.getId());
         }catch(Exception e){
-            return false;
+            e.printStackTrace();
         }
-        return true;
+        return idR;
     }
 
     @PostMapping("/deleteReview")

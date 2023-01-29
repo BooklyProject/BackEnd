@@ -194,12 +194,13 @@ public class RecensioneDaoPostgres implements RecensioneDao {
     }
 
     @Override
-    public void saveOrUpdate(Recensione recensione, Long idUtente) {
+    public Long saveOrUpdate(Recensione recensione, Long idUtente) {
+        Long idR = null;
         if(recensione.getId() == null || findByPrimaryKey(recensione.getId()) == null){
 
             Post p = new Post();
-            Long id = IdBroker.getId(conn);
-            p.setId(id);
+            idR = IdBroker.getId(conn);
+            p.setId(idR);
             p.setIdUtente(idUtente);
             DBManager.getInstance().getPostDao().saveUpdate(p);
             //String insertStr = "INSERT INTO recensioni VALUES (?,?,?,?,?,?,?)";
@@ -208,7 +209,7 @@ public class RecensioneDaoPostgres implements RecensioneDao {
             try{
                 st = conn.prepareStatement(insertStr);
 
-                st.setLong(1,id);
+                st.setLong(1,idR);
                 st.setString(2,recensione.getDescrizione());
                 st.setInt(3,recensione.getVoto());
                 //st.setDate(4,recensione.getData());
@@ -222,6 +223,7 @@ public class RecensioneDaoPostgres implements RecensioneDao {
                 e.printStackTrace();
             }
         }else{
+            idR = recensione.getId();
             String updateStr = "UPDATE recensioni set descrizione = ?," +
                     "voto = ?," +
                     "mi_piace = ?," +
@@ -250,6 +252,7 @@ public class RecensioneDaoPostgres implements RecensioneDao {
                 e.printStackTrace();
             }
         }
+        return idR;
     }
 
     @Override
