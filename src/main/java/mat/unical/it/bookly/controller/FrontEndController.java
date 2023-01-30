@@ -428,7 +428,7 @@ public class FrontEndController {
     }
 
     @PostMapping("/addCommentDislike")
-    public Boolean aggiungiDisikeCommento(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody HashMap<String, Long> c){
+    public Boolean aggiungiDislikeCommento(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody HashMap<String, Long> c){
         HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
         Utente user = (Utente) session.getAttribute("user");
         Long idCommento = c.get("idCommento");
@@ -444,7 +444,7 @@ public class FrontEndController {
     }
 
     @PostMapping("/removeCommentDislike")
-    public Boolean rimuoviDisikeCommento(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody HashMap<String, Long> c){
+    public Boolean rimuoviDislikeCommento(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody HashMap<String, Long> c){
         HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
         Utente user = (Utente) session.getAttribute("user");
         Long idCommento = c.get("idCommento");
@@ -465,6 +465,11 @@ public class FrontEndController {
         Utente user = (Utente) session.getAttribute("user");
         Long idRecensione = r.get("idRecensione");
         try {
+            ValutazioneRecensione v = new ValutazioneRecensione();
+            v.setRecensione(idRecensione);
+            v.setUtente(user.getId());
+            v.setTipo("like");
+            DBManager.getInstance().getValutazioneRecensioneDao().saveOrUpdate(v);
             Recensione recensione = DBManager.getInstance().getRecensioneDao().findByPrimaryKey(idRecensione);
             recensione.setNumeroMiPiace(recensione.getNumeroMiPiace() + 1);
             DBManager.getInstance().getRecensioneDao().saveOrUpdate(recensione, user.getId());
