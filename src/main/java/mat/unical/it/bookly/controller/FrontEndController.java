@@ -333,16 +333,23 @@ public class FrontEndController {
     public List<Commento> mostraCommenti(@RequestBody HashMap<String, Long> r){
         Long idRecensione = r.get("idRecensione");
 
-        return DBManager.getInstance().getCommentoDao().findByReview(idRecensione);
+        List<Commento> lista = DBManager.getInstance().getCommentoDao().findByReview(idRecensione);
+        for(Commento comm: lista) {
+            System.out.println("idComm: " + comm.getId());
+        }
+        return lista;
     }
 
     @PostMapping("/addComment")
     public Long aggiungiCommento(HttpServletRequest req, @RequestParam String jsessionid, @RequestParam Long idRec, @RequestBody HashMap<String, String> c){
         HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
+        System.out.println("session: " + session.getId());
+        System.out.println("idRecensione: " + idRec);
         Utente user = (Utente) session.getAttribute("user");
         Long idC = null;
         Commento commento = new Commento();
         String descrizione = c.get("descrizione");
+        System.out.println("comm: " + descrizione);
         commento.setRecensioni(idRec);
         commento.setDescrizione(descrizione);
         try {

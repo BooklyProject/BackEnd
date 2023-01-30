@@ -167,8 +167,8 @@ public class CommentoDaoPostgres implements CommentoDao {
             st.setLong(1, idRecensione);
 
             ResultSet rs = st.executeQuery();
-            while(rs.next()) {
 
+            while(rs.next()) {
                 Commento c = new Commento();
                 c.setId(rs.getLong("id"));
                 c.setDescrizione(rs.getString("descrizione"));
