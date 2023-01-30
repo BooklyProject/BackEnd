@@ -358,7 +358,7 @@ public class FrontEndController {
     public Boolean cancellaCommento(@RequestBody HashMap<String, Long> c){
         Long idCommento = c.get("idCommento");
         try {
-            DBManager.getInstance().getRecensioneDao().delete(idCommento);
+            DBManager.getInstance().getCommentoDao().delete(idCommento);
         }catch(Exception e){
             return false;
         }
@@ -488,9 +488,11 @@ public class FrontEndController {
         Utente user = (Utente) session.getAttribute("user");
         Long idRecensione = r.get("idRecensione");
         try {
+            DBManager.getInstance().getValutazioneRecensioneDao().delete(idRecensione, user.getId());
             Recensione recensione = DBManager.getInstance().getRecensioneDao().findByPrimaryKey(idRecensione);
             recensione.setNumeroMiPiace(recensione.getNumeroMiPiace() - 1);
             DBManager.getInstance().getRecensioneDao().saveOrUpdate(recensione, user.getId());
+
         } catch (Exception e){
             return false;
         }

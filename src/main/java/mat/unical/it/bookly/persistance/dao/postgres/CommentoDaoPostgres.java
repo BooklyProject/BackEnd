@@ -168,7 +168,6 @@ public class CommentoDaoPostgres implements CommentoDao {
 
             ResultSet rs = st.executeQuery();
             while(rs.next()) {
-                System.out.println(1);
 
                 Commento c = new Commento();
                 c.setId(rs.getLong("id"));
@@ -201,11 +200,19 @@ public class CommentoDaoPostgres implements CommentoDao {
 
     @Override
     public void deleteForReview(Long idRecensione) {
-        String query = "DELETE FROM commenti where recensione = ?";
+
+        String query = "SELECT * FROM commenti where recensione = ?";
         try{
             PreparedStatement st = conn.prepareStatement(query);
-            st.setLong(1,idRecensione);
-            st.executeUpdate();
+            st.setLong(1, idRecensione);
+
+            ResultSet rs = st.executeQuery();
+            while(rs.next()) {
+
+                DBManager.getInstance().getCommentoDao().delete(rs.getLong("id"));
+
+            }
+
         }catch (SQLException e){
             e.printStackTrace();
         }
