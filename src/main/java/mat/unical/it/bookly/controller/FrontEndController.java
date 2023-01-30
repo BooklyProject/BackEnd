@@ -358,7 +358,7 @@ public class FrontEndController {
     public Boolean cancellaCommento(@RequestBody HashMap<String, Long> c){
         Long idCommento = c.get("idCommento");
         try {
-            DBManager.getInstance().getRecensioneDao().delete(idCommento);
+            DBManager.getInstance().getCommentoDao().delete(idCommento);
         }catch(Exception e){
             return false;
         }
@@ -526,12 +526,6 @@ public class FrontEndController {
         } catch (Exception e){
             return false;
         }
-
         return true;
     }
-
-
-
-
-
 }

@@ -30,7 +30,7 @@ public class ValutazioneRecensioneDaoPostgres implements ValutazioneRecensioneDa
                 valutazioneRecensione = new ValutazioneRecensione();
                 valutazioneRecensione.setRecensione(rs.getLong("recensione"));
                 valutazioneRecensione.setUtente(rs.getLong("utente"));
-                valutazioneRecensione.setTipo(rs.getString("tipo"));
+                valutazioneRecensione.setTipo(rs.getString("tipologia"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -56,7 +56,7 @@ public class ValutazioneRecensioneDaoPostgres implements ValutazioneRecensioneDa
                 e.printStackTrace();
             }
         }else{
-            String updateStr = "UPDATE valutazionirecensioni set tipo = ? where recensione = ? and utente = ?";
+            String updateStr = "UPDATE valutazionirecensioni set tipologia = ? where recensione = ? and utente = ?";
 
             try{
                 PreparedStatement st = conn.prepareStatement(updateStr);

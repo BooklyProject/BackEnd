@@ -57,7 +57,7 @@ public class PostDaoPostgres implements PostDao {
 
     @Override
     public void delete(Long id) {
-        String query = "DELETE FROM segnalazioni where id = ?";
+        String query = "DELETE FROM post where id = ?";
 
         try{
             PreparedStatement st = conn.prepareStatement(query);
