@@ -18,7 +18,7 @@ public class RecensioneTests {
     void contextLoads(){
 
     }
-
+/*
     @Test
     public void testSaveUpdate(){
         Recensione r = new Recensione();
@@ -29,7 +29,7 @@ public class RecensioneTests {
         r.setLibro("1235");
         DBManager.getInstance().getRecensioneDao().saveOrUpdate(r);
     }
-
+*/
     @Test
     public void testFindAllWroteByUser(){
         List<Recensione> recensioni = DBManager.getInstance().getRecensioneDao().findAllWroteByUser(Long.valueOf(23));

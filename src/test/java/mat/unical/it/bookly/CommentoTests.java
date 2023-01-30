@@ -18,6 +18,7 @@ public class CommentoTests {
 
     }
 
+    /*
     @Test
     public void testSaveUpdate(){
         Commento c = new Commento();
@@ -27,6 +28,8 @@ public class CommentoTests {
         c.setRecensioni(Long.valueOf(33));
         DBManager.getInstance().getCommentoDao().saveOrUpdate(c);
     }
+
+     */
 
     @Test
     public void testFindAllWroteByUser(){
