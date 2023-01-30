@@ -488,9 +488,11 @@ public class FrontEndController {
         Utente user = (Utente) session.getAttribute("user");
         Long idRecensione = r.get("idRecensione");
         try {
+            DBManager.getInstance().getValutazioneRecensioneDao().delete(idRecensione, user.getId());
             Recensione recensione = DBManager.getInstance().getRecensioneDao().findByPrimaryKey(idRecensione);
             recensione.setNumeroMiPiace(recensione.getNumeroMiPiace() - 1);
             DBManager.getInstance().getRecensioneDao().saveOrUpdate(recensione, user.getId());
+
         } catch (Exception e){
             return false;
         }

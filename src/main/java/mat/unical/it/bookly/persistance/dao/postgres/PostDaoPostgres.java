@@ -67,6 +67,4 @@ public class PostDaoPostgres implements PostDao {
             e.printStackTrace();
         }
     }
-
-    //TODO: fare in modo che una volta che si cancellano i post, vengano cancellate anche le relative recensioni e viceversa
 }
