@@ -192,6 +192,7 @@ public class CommentoDaoPostgres implements CommentoDao {
             PreparedStatement st = conn.prepareStatement(query);
             st.setLong(1,id);
             st.executeUpdate();
+            DBManager.getInstance().getPostDao().delete(id);
         }catch (SQLException e){
             e.printStackTrace();
         }
