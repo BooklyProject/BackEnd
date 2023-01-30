@@ -156,8 +156,7 @@ public class RecensioneDaoPostgres implements RecensioneDao {
     @Override
     public String findPreferredResultByAttribute(Long idUtente, String attribute) {
         List<String> listaAttributi = new ArrayList<>();
-        String query = "SELECT * FROM recensioni r" +
-                "WHERE EXISTS ( SELECT * FROM post p WHERE r.id = p.id AND EXISTS(SELECT * FROM utenti u WHERE p.utente = u.id AND u.id = ?))";
+        String query = "SELECT * FROM recensioni r WHERE EXISTS ( SELECT * FROM post p WHERE r.id = p.id AND EXISTS(SELECT * FROM utenti u WHERE p.utente = u.id AND u.id = ?))";
         try{
             PreparedStatement st = conn.prepareStatement(query);
             st.setLong(1,idUtente);
