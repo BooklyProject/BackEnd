@@ -85,4 +85,16 @@ public class ValutazioneRecensioneDaoPostgres implements ValutazioneRecensioneDa
         }
     }
 
+    @Override
+    public void deleteForReview(Long idRecensione) {
+        String query = "DELETE FROM valutazionirecensioni where recensione = ?";
+        try{
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setLong(1,idRecensione);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

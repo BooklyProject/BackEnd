@@ -4,7 +4,7 @@ public class ValutazioneCommento {
 
     private Long commento;
     private Long utente;
-    private String tipologia;
+    private String tipo;
 
     public Long getCommento() {
         return commento;
@@ -22,12 +22,12 @@ public class ValutazioneCommento {
         this.utente = utente;
     }
 
-    public String getTipologia() {
-        return tipologia;
+    public String getTipo() {
+        return tipo;
     }
 
-    public void setTipologia(String tipologia) {
-        this.tipologia = tipologia;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
 
