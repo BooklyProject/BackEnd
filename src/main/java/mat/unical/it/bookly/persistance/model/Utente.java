@@ -9,6 +9,8 @@ public class Utente {
     private String password;
     private Boolean isBanned;
     private String userImage;
+    private String resetPasswordToken;
+
 
     @Override   //TODO: finish to complete equals
     public boolean equals(Object obj) {
@@ -81,6 +83,14 @@ public class Utente {
     public String getUserImage() { return userImage; }
 
     public void setUserImage(String userImage) { this.userImage = userImage; }
+
+    public String getResetPasswordToken() {
+        return resetPasswordToken;
+    }
+
+    public void setResetPasswordToken(String resetPasswordToken) {
+        this.resetPasswordToken = resetPasswordToken;
+    }
 
     @Override
     public String toString() {

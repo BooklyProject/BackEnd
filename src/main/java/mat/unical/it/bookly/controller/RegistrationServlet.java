@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Base64;
 import java.util.List;
+import java.util.UUID;
 
 @MultipartConfig
 @WebServlet("/doRegistration")
@@ -39,6 +40,11 @@ public class RegistrationServlet extends HttpServlet {
         String image = Base64.getEncoder().encodeToString(bytes);
         u.setUserImage(image);
         u.setBanned(false);
+
+        //Generazione token per il recupero della password
+        String random = String.valueOf(UUID.randomUUID());
+        u.setResetPasswordToken(random);
+
         DBManager.getInstance().getUtenteDao().saveOrUpdate(u);
         HttpSession session = req.getSession();
         session.setAttribute("user",u);

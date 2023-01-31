@@ -35,6 +35,7 @@ public class UtenteDaoPostgres implements UtenteDao {
                 utente.setUsername(rs.getString("username"));
                 utente.setUserImage(rs.getString("user_image"));
                 utente.setBanned(rs.getBoolean("is_banned"));
+                utente.setResetPasswordToken(rs.getString("reset_password_token"));
 
                 utenti.add(utente);
             }
@@ -64,6 +65,7 @@ public class UtenteDaoPostgres implements UtenteDao {
                 utente.setUsername(rs.getString("username"));
                 utente.setUserImage(rs.getString("user_image"));
                 utente.setBanned(rs.getBoolean("is_banned"));
+                utente.setResetPasswordToken(rs.getString("reset_password_token"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -90,6 +92,7 @@ public class UtenteDaoPostgres implements UtenteDao {
                 utente.setUsername(rs.getString("username"));
                 utente.setUserImage(rs.getString("user_image"));
                 utente.setBanned(rs.getBoolean("is_banned"));
+                utente.setResetPasswordToken(rs.getString("reset_password_token"));
             }
 
         } catch (SQLException e) {
@@ -103,7 +106,7 @@ public class UtenteDaoPostgres implements UtenteDao {
     @Override
     public void saveOrUpdate(Utente utente) {
         if (findByEmail(utente.getEmail()) == null) {
-            String insertStr = "INSERT INTO utenti VALUES (?,?,?,?,?,?,?,?)";
+            String insertStr = "INSERT INTO utenti VALUES (?,?,?,?,?,?,?,?,?)";
             PreparedStatement st;
 
             try {
@@ -118,7 +121,7 @@ public class UtenteDaoPostgres implements UtenteDao {
                 st.setString(6, utente.getPassword());
                 st.setString(7, utente.getUserImage());
                 st.setBoolean(8, utente.getBanned());
-
+                st.setString(9, utente.getResetPasswordToken());
                 st.executeUpdate();
                 /*
                 Raccolta raccolta1 = new Raccolta();
@@ -141,8 +144,9 @@ public class UtenteDaoPostgres implements UtenteDao {
                     "cognome = ?," +
                     "email = ?," +
                     "password = ?," +
-                    "immagine = ?," +
-                    "isBanned = ?" +
+                    "user_image = ?," +
+                    "is_banned = ?," +
+                    "reset_password_token = ?" +
                     "where id = ?";
             PreparedStatement st;
             try {
@@ -154,7 +158,8 @@ public class UtenteDaoPostgres implements UtenteDao {
                 st.setString(5, utente.getPassword());
                 st.setString(6, utente.getUserImage());
                 st.setBoolean(7, utente.getBanned());
-                st.setLong(8, utente.getId());
+                st.setString(8, utente.getResetPasswordToken());
+                st.setLong(9, utente.getId());
 
                 st.executeUpdate();
             } catch (SQLException e) {
@@ -196,11 +201,37 @@ public class UtenteDaoPostgres implements UtenteDao {
                 utente.setUsername(rs.getString("username"));
                 utente.setUserImage(rs.getString("user_image"));
                 utente.setBanned(rs.getBoolean("is_banned"));
+                utente.setResetPasswordToken(rs.getString("reset_password_token"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return utente;
+    }
 
+    @Override
+    public Utente findByToken(String token){
+        Utente utente = null;
+        String query = "SELECT * from utenti where reset_password_token = ?";
+        try{
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setString(1, token);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                utente = new Utente();
+                utente.setId(rs.getLong("id"));
+                utente.setCognome(rs.getString("cognome"));
+                utente.setNome(rs.getString("nome"));
+                utente.setEmail(rs.getString("email"));
+                utente.setPassword(rs.getString("password"));
+                utente.setUsername(rs.getString("username"));
+                utente.setUserImage(rs.getString("user_image"));
+                utente.setBanned(rs.getBoolean("is_banned"));
+                utente.setResetPasswordToken(rs.getString("reset_password_token"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return utente;
     }
 }

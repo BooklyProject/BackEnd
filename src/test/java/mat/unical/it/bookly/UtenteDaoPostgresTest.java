@@ -28,7 +28,7 @@ class UtenteDaoPostgresTest {
 
     @Test
     public void testCancellazioneUtente() {
-        DBManager.getInstance().getUtenteDao().delete(Long.valueOf(38));
+        DBManager.getInstance().getUtenteDao().delete(Long.valueOf(239));
     }
 
     @Test
