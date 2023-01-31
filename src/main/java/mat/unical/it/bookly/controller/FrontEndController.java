@@ -415,7 +415,7 @@ public class FrontEndController {
         Utente user = (Utente) session.getAttribute("user");
         Long idCommento = c.get("idCommento");
         ValutazioneCommento v = DBManager.getInstance().getValutazioneCommentoDao().findByPrimaryKey(idCommento, user.getId());
-        if(v != null && v.getTipo() == "like") {
+        if(v != null && v.getTipo().equals("like")) {
             return true;
         }
         else{
@@ -467,7 +467,7 @@ public class FrontEndController {
         Utente user = (Utente) session.getAttribute("user");
         Long idCommento = c.get("idCommento");
         ValutazioneCommento v = DBManager.getInstance().getValutazioneCommentoDao().findByPrimaryKey(idCommento, user.getId());
-        if(v != null && v.getTipo() == "dislike") {
+        if(v != null && v.getTipo().equals("dislike")) {
             return true;
         }
         else{
@@ -518,7 +518,8 @@ public class FrontEndController {
         Utente user = (Utente) session.getAttribute("user");
         Long idRecensione = r.get("idRecensione");
         ValutazioneRecensione v = DBManager.getInstance().getValutazioneRecensioneDao().findByPrimaryKey(idRecensione, user.getId());
-        if(v != null && v.getTipo() == "like") {
+        if(v != null && v.getTipo().equals("like")) {
+            System.out.println("liked");
             return true;
         }
         else{
@@ -540,6 +541,7 @@ public class FrontEndController {
             Recensione recensione = DBManager.getInstance().getRecensioneDao().findByPrimaryKey(idRecensione);
             recensione.setNumeroMiPiace(recensione.getNumeroMiPiace() + 1);
             DBManager.getInstance().getRecensioneDao().saveOrUpdate(recensione, user.getId());
+            Recensione recensione2 = DBManager.getInstance().getRecensioneDao().findByPrimaryKey(idRecensione);
         } catch (Exception e){
             return false;
         }
@@ -571,7 +573,9 @@ public class FrontEndController {
         Utente user = (Utente) session.getAttribute("user");
         Long idRecensione = r.get("idRecensione");
         ValutazioneRecensione v = DBManager.getInstance().getValutazioneRecensioneDao().findByPrimaryKey(idRecensione, user.getId());
-        if(v != null && v.getTipo() == "dislike") {
+        if(v != null && v.getTipo().equals("dislike")) {
+            System.out.println("disliked");
+
             return true;
         }
         else{
@@ -610,6 +614,7 @@ public class FrontEndController {
             Recensione recensione = DBManager.getInstance().getRecensioneDao().findByPrimaryKey(idRecensione);
             recensione.setNumeroNonMiPiace(recensione.getNumeroNonMiPiace() - 1);
             DBManager.getInstance().getRecensioneDao().saveOrUpdate(recensione, user.getId());
+            Recensione recensione2 = DBManager.getInstance().getRecensioneDao().findByPrimaryKey(idRecensione);
         } catch (Exception e){
             return false;
         }
