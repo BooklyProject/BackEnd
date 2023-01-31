@@ -67,12 +67,14 @@ public class SegnalazioneDaoPostgres implements SegnalazioneDao {
 
     @Override
     public void saveOrUpdate(Segnalazione segnalazione) {
-        if(findByPrimaryKey(segnalazione.getId()) == null){
-            String insertStr = "INSERT INTO segnalazioni VALUES (?,?,?,?,?,?)";
+        if(segnalazione.getId() == null || findByPrimaryKey(segnalazione.getId()) == null){
+            String insertStr = "INSERT INTO segnalazioni VALUES (?,?,?,?,?,?,?)";
             PreparedStatement st;
             try{
                 st = conn.prepareStatement(insertStr);
                 Long newId = IdBroker.getId(conn);
+                segnalazione.setId(newId);
+                segnalazione.setDone(false);
 
                 st.setLong(1,segnalazione.getId());
                 st.setString(2,segnalazione.getTipo());
@@ -80,6 +82,8 @@ public class SegnalazioneDaoPostgres implements SegnalazioneDao {
                 st.setLong(4,segnalazione.getUtente());
                 st.setLong(5,segnalazione.getAmministratore());
                 st.setString(6,segnalazione.getDescrizione());
+                st.setBoolean(7,segnalazione.getDone());
+
                 st.executeUpdate();
 
             } catch (SQLException e) {

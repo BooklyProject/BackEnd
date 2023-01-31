@@ -33,6 +33,11 @@ public class FrontEndController {
         Utente user = (Utente) session.getAttribute("user");
 
         try {
+            System.out.println("STAMPA");
+            System.out.println(session.getId());
+            System.out.println(tipo);
+            System.out.println(post);
+            System.out.println(descrizione);
 
             Segnalazione segnalazione = new Segnalazione();
             segnalazione.setTipo(tipo);
@@ -44,6 +49,7 @@ public class FrontEndController {
             DBManager.getInstance().getSegnalazioneDao().saveOrUpdate(segnalazione);
 
         }catch(Exception e){
+            e.printStackTrace();
             return false;
         }
 
