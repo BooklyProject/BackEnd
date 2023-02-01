@@ -26,29 +26,36 @@ import java.util.UUID;
 public class RegistrationServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        Utente u = new Utente();
-        u.setEmail(req.getParameter("email"));
-        String password = req.getParameter("password");
-        String hashed = BCrypt.hashpw(password,BCrypt.gensalt(12));
-        u.setPassword(hashed);
-        u.setCognome(req.getParameter("surname"));
-        u.setNome(req.getParameter("name"));
-        u.setUsername(req.getParameter("username"));
-        Part filePart = req.getPart("file");
-        InputStream fileContent = filePart.getInputStream();
-        byte[] bytes = IOUtils.toByteArray(fileContent);
-        String image = Base64.getEncoder().encodeToString(bytes);
-        u.setUserImage(image);
-        u.setBanned(false);
+        if(DBManager.getInstance().getUtenteDao().findByEmail(req.getParameter("email")) == null && DBManager.getInstance().getAmministratoreDao().findByEmail("email") == null) {
+            Utente u = new Utente();
 
-        //Generazione token per il recupero della password
-        String random = String.valueOf(UUID.randomUUID());
-        u.setResetPasswordToken(random);
+            u.setEmail(req.getParameter("email"));
+            String password = req.getParameter("password");
+            u.setPassword(BCrypt.hashpw(password, BCrypt.gensalt(12)));
 
-        DBManager.getInstance().getUtenteDao().saveOrUpdate(u);
-        HttpSession session = req.getSession();
-        session.setAttribute("user",u);
-        resp.sendRedirect("/");
+            u.setNome(req.getParameter("name"));
+            u.setCognome(req.getParameter("surname"));
+            u.setUsername(req.getParameter("username"));
+            u.setBanned(false);
+
+            Part filePart = req.getPart("file");
+            InputStream fileContent = filePart.getInputStream();
+            byte[] bytes = IOUtils.toByteArray(fileContent);
+            String image = Base64.getEncoder().encodeToString(bytes);
+            u.setUserImage(image);
+
+            //Generazione token per il recupero della password
+            String random = String.valueOf(UUID.randomUUID());
+            u.setResetPasswordToken(random);
+
+            DBManager.getInstance().getUtenteDao().saveOrUpdate(u);
+            HttpSession session = req.getSession();
+            session.setAttribute("user", u);
+            resp.sendRedirect("/");
+        }
+        else{
+            resp.sendRedirect("/error_page.html");
+        }
     }
 }
 

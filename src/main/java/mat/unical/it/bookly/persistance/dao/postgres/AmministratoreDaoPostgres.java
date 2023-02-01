@@ -66,8 +66,35 @@ public class AmministratoreDaoPostgres implements AmministratoreDao {
     }
 
     @Override
-    public int findAdministratorsNum() {
-        int count = 0;
+    public Amministratore findByEmail(String email) {
+        Amministratore a = null;
+        String query = "SELECT * FROM amministratori where email = ?";
+        try {
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setString(1, email);
+            ResultSet rs = st.executeQuery();
+
+            if (rs.next()) {
+                a = new Amministratore();
+                a.setId(rs.getLong("id"));
+                a.setCognome(rs.getString("cognome"));
+                a.setNome(rs.getString("nome"));
+                a.setEmail(rs.getString("email"));
+                a.setPassword(rs.getString("password"));
+                //utente.setUserImage(rs.getString("user_image"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        return a;
+    }
+
+    @Override
+    public Integer findAdministratorsNum() {
+        Integer count = 0;
         String query = "select count(*) from amministratori";
         try{
             PreparedStatement st = conn.prepareStatement(query);

@@ -21,9 +21,7 @@ public class ChangePasswordServlet extends HttpServlet {
         String token = SingleToken.getInstance().getStringData();
         Utente utente = DBManager.getInstance().getUtenteDao().findByToken(token);
         String password = req.getParameter("password");
-        String hashed = BCrypt.hashpw(password,BCrypt.gensalt(12));
-        utente.setPassword(hashed
-        );
+        utente.setPassword(BCrypt.hashpw(password,BCrypt.gensalt(12)));
         String random = String.valueOf(UUID.randomUUID());
         utente.setResetPasswordToken(random);
         DBManager.getInstance().getUtenteDao().saveOrUpdate(utente);

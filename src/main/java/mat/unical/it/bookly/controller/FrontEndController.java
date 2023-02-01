@@ -268,8 +268,6 @@ public class FrontEndController {
 
         stats.setRaccolteCreate(DBManager.getInstance().getRaccoltaDao().findAllForUser(user.getId()).size());
         stats.setEventiCreati(DBManager.getInstance().getEventoDao().findAllCreatedByUser(user.getId()).size());
-        stats.setSeguiti(DBManager.getInstance().getFollowDao().followList(user.getId()).size());
-        stats.setFollowers(DBManager.getInstance().getFollowDao().followByList(user.getId()).size());
         stats.setEventiPartecipati(DBManager.getInstance().getPartecipaDao().eventFromUserList(user.getId()).size());
         stats.setLibriLetti(DBManager.getInstance().getRecensioneDao().findAllWroteByUser(user.getId()).size());
         stats.setAutorePreferito(DBManager.getInstance().getRecensioneDao().findPreferredResultByAttribute(user.getId(), "autore"));
