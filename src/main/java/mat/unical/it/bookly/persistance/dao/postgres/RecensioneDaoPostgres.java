@@ -201,8 +201,8 @@ public class RecensioneDaoPostgres implements RecensioneDao {
             idR = IdBroker.getId(conn);
             p.setId(idR);
             p.setIdUtente(idUtente);
+            p.setTipologia("recensione");
             DBManager.getInstance().getPostDao().saveUpdate(p);
-            //String insertStr = "INSERT INTO recensioni VALUES (?,?,?,?,?,?,?)";
             String insertStr = "INSERT INTO recensioni VALUES (?,?,?,?,?,?)";
             PreparedStatement st;
             try{
@@ -211,7 +211,6 @@ public class RecensioneDaoPostgres implements RecensioneDao {
                 st.setLong(1,idR);
                 st.setString(2,recensione.getDescrizione());
                 st.setInt(3,recensione.getVoto());
-                //st.setDate(4,recensione.getData());
                 st.setInt(4,recensione.getNumeroMiPiace());
                 st.setInt(5,recensione.getNumeroNonMiPiace());
                 st.setString(6,recensione.getLibro());
@@ -229,19 +228,11 @@ public class RecensioneDaoPostgres implements RecensioneDao {
                     "non_mi_piace = ?," +
                     "libro = ?" +
                     "where id = ?";
-            /*String updateStr = "UPDATE recensioni set descrizione = ?," +
-                    "voto = ?," +
-                    "data = ?," +
-                    "mi_piace = ?," +
-                    "non_mi_piace = ?," +
-                    "libro = ?" +
-                    "where id = ?";*/
             PreparedStatement st;
             try{
                 st = conn.prepareStatement(updateStr);
                 st.setString(1,recensione.getDescrizione());
                 st.setInt(2,recensione.getVoto());
-                //st.setDate(3,recensione.getData());
                 st.setInt(3,recensione.getNumeroMiPiace());
                 st.setInt(4,recensione.getNumeroNonMiPiace());
                 st.setString(5,recensione.getLibro());

@@ -87,6 +87,27 @@ public class FrontEndController {
         return true;
     }
 
+    @PostMapping("/getPostDescription")
+    public String getDescrizione(@RequestBody HashMap<String,Long> p){
+
+        Post post = DBManager.getInstance().getPostDao().findByPrimaryKey(p.get("idPost"));
+        String descrizione = "";
+        if(post.getTipologia().equals("recensione")){
+            Recensione recensione = DBManager.getInstance().getRecensioneDao().findByPrimaryKey(p.get("idPost"));
+            descrizione = recensione.getDescrizione();
+        }
+        else if(post.getTipologia().equals("commento")){
+            Commento commento = DBManager.getInstance().getCommentoDao().findByPrimaryKey(p.get("idPost"));
+            descrizione = commento.getDescrizione();
+        }
+        else if(post.getTipologia().equals("evento")){
+            Evento evento = DBManager.getInstance().getEventoDao().findByPrimaryKey(p.get("idPost"));
+            descrizione = evento.getDescrizione();
+        }
+
+        return descrizione;
+    }
+
     @GetMapping("/events")
     public List<Evento> getEventi(HttpServletRequest req, @RequestParam String jsessionid){
 

@@ -21,7 +21,7 @@ public class EventoDaoPostgres implements EventoDao {
     @Override
     public List<Evento> findAll() {
         List<Evento> eventi = new ArrayList<>();
-        String query = "select * from eventi"; //ritorna la lista di tutti gli utenti
+        String query = "select * from eventi";
         try{
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(query);
@@ -110,6 +110,7 @@ public class EventoDaoPostgres implements EventoDao {
             Long id = IdBroker.getId(conn);
             p.setId(id);
             p.setIdUtente(idUtente);
+            p.setTipologia("evento");
             DBManager.getInstance().getPostDao().saveUpdate(p);
             String insertStr = "INSERT INTO eventi VALUES (?,?,?,?,?,?,?)";
             PreparedStatement st;

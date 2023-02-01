@@ -19,12 +19,13 @@ public class PostDaoPostgres implements PostDao {
     @Override
     public void saveUpdate(Post post) {
         if(findByPrimaryKey(post.getId()) == null){
-            String insertStr = "INSERT INTO post VALUES (?,?)";
+            String insertStr = "INSERT INTO post VALUES (?,?,?)";
             PreparedStatement st;
             try{
                 st = conn.prepareStatement(insertStr);
                 st.setLong(1,post.getId());
                 st.setLong(2,post.getIdUtente());
+                st.setString(3,post.getTipologia());
 
                 st.executeUpdate();
             } catch (SQLException e) {
@@ -48,6 +49,7 @@ public class PostDaoPostgres implements PostDao {
                 post = new Post();
                 post.setId(rs.getLong("id"));
                 post.setIdUtente(rs.getLong("utente"));
+                post.setTipologia(rs.getString("tipologia"));
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -29,13 +29,6 @@ public class CommentoDaoPostgres implements CommentoDao {
                 "JOIN post p ON p.id = c.id " +
                 "JOIN utenti u ON p.utente = u.id " +
                 "WHERE p.utente = ?";
-        /*String query = "" +
-                "SELECT c.id as c_id, c.descrizione as c_des, c.data as c_da, c.mi_piace " +
-                "as c_mi, c.non_mi_piace as c_no, c.recensione as c_rec " +
-                "FROM commenti c " +
-                "JOIN post p ON p.id = c.id " +
-                "JOIN utenti u ON p.utente = u.id " +
-                "WHERE p.utente = ?";*/
         try{
             PreparedStatement st = conn.prepareStatement(query);
             st.setLong(1,idUtente);
@@ -45,7 +38,6 @@ public class CommentoDaoPostgres implements CommentoDao {
                 Commento commento = new Commento();
                 commento.setId(rs.getLong("c_id"));
                 commento.setDescrizione(rs.getString("c_des"));
-                //commento.setData(rs.getDate("c_da"));
                 commento.setNumeroMiPiace(rs.getInt("c_mi"));
                 commento.setNumeroNonMiPiace(rs.getInt("c_no"));
                 commento.setRecensioni(rs.getLong("c_rec"));
@@ -71,7 +63,6 @@ public class CommentoDaoPostgres implements CommentoDao {
                 c = new Commento();
                 c.setId(rs.getLong("id"));
                 c.setDescrizione(rs.getString("descrizione"));
-                //c.setData(rs.getDate("data"));
                 c.setNumeroMiPiace(rs.getInt("mi_piace"));
                 c.setNumeroNonMiPiace(rs.getInt("non_mi_piace"));
                 c.setRecensioni(rs.getLong("recensione"));
@@ -91,8 +82,8 @@ public class CommentoDaoPostgres implements CommentoDao {
             idC = IdBroker.getId(conn);
             p.setId(idC);
             p.setIdUtente(idUtente);
+            p.setTipologia("commento");
             DBManager.getInstance().getPostDao().saveUpdate(p);
-            //String insertStr = "INSERT INTO commenti VALUES (?,?,?,?,?,?)";
             String insertStr = "INSERT INTO commenti VALUES (?,?,?,?,?)";
             PreparedStatement st;
             try{
@@ -100,7 +91,6 @@ public class CommentoDaoPostgres implements CommentoDao {
 
                 st.setLong(1,idC);
                 st.setString(2,commento.getDescrizione());
-                //st.setDate(3,2023-01-27);
                 st.setInt(3,commento.getNumeroMiPiace());
                 st.setInt(4,commento.getNumeroNonMiPiace());
                 st.setLong(5,commento.getRecensioni());
@@ -117,17 +107,10 @@ public class CommentoDaoPostgres implements CommentoDao {
                     "non_mi_piace = ?," +
                     "recensione = ?" +
                     "where id = ?";
-            /*String updateStr = "UPDATE commenti set descrizione = ?," +
-                    "data = ?," +
-                    "mi_piace = ?," +
-                    "non_mi_piace = ?," +
-                    "recensione = ?" +
-                    "where id = ?";*/
             PreparedStatement st;
             try{
                 st = conn.prepareStatement(updateStr);
                 st.setString(1,commento.getDescrizione());
-                //st.setDate(2,commento.getData());
                 st.setInt(2,commento.getNumeroMiPiace());
                 st.setInt(3,commento.getNumeroNonMiPiace());
                 st.setLong(4,commento.getRecensioni());
@@ -172,7 +155,6 @@ public class CommentoDaoPostgres implements CommentoDao {
                 Commento c = new Commento();
                 c.setId(rs.getLong("id"));
                 c.setDescrizione(rs.getString("descrizione"));
-                //c.setData(rs.getDate("data"));
                 c.setNumeroMiPiace(rs.getInt("mi_piace"));
                 c.setNumeroNonMiPiace(rs.getInt("non_mi_piace"));
 
