@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import mat.unical.it.bookly.persistance.DBManager;
 import mat.unical.it.bookly.persistance.dao.UtenteDao;
+import mat.unical.it.bookly.persistance.model.Amministratore;
 import mat.unical.it.bookly.persistance.model.Utente;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
@@ -20,30 +21,44 @@ public class LoginServlet extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException{
         String email = req.getParameter("email");
         String password = req.getParameter("password");
-        UtenteDao utenteDao = DBManager.getInstance().getUtenteDao();
-        Utente utente = utenteDao.findByEmail(email);
+        Utente utente = DBManager.getInstance().getUtenteDao().findByEmail(email);
+        Amministratore amministratore = DBManager.getInstance().getAmministratoreDao().findByEmail(email);
         boolean logged;
-        if(utente == null){
+        if(utente == null && amministratore == null){
             logged = false;
         }else {
-            if(BCrypt.checkpw(password,utente.getPassword())){
+            if(utente == null && BCrypt.checkpw(password,amministratore.getPassword())) {
                 logged = true;
                 HttpSession session = req.getSession();
-                session.setAttribute("user",utente);
-                session.setAttribute("jsessionid",session.getId());
-
-                req.getServletContext().setAttribute(session.getId(),session);
-            }else{
+                session.setAttribute("user", null);
+                session.setAttribute("administrator", amministratore);
+                session.setAttribute("jsessionid", session.getId());
+                req.getServletContext().setAttribute(session.getId(), session);
+            }
+            else if(utente != null && BCrypt.checkpw(password,utente.getPassword()) && utente.getBanned() != true){
+                logged = true;
+                HttpSession session = req.getSession();
+                session.setAttribute("user", utente);
+                session.setAttribute("administrator", null);
+                session.setAttribute("jsessionid", session.getId());
+                req.getServletContext().setAttribute(session.getId(), session);
+            }
+            else{
                 logged = false;
             }
         }
-        if(logged){
-            HttpSession session = req.getSession();
-            System.out.println("sessionId: " + session.getId());
-            resp.sendRedirect("http://localhost:4200/?jsessionid="+ session.getId());
-        }else{
-            //RequestDispatcher dispatcher = req.getRequestDispatcher("views/error_page.html");
-            //dispatcher.forward(req,resp);
+        if(logged) {
+            if (utente != null) {
+                HttpSession session = req.getSession();
+                System.out.println("sessionId: " + session.getId());
+                resp.sendRedirect("http://localhost:4200/?jsessionid=" + session.getId());
+            } else {
+                HttpSession session = req.getSession();
+                System.out.println("sessionId: " + session.getId());
+                resp.sendRedirect("http://localhost:4200/segnalazioni?jsessionid=" + session.getId());
+            }
+        }
+        else{
             resp.sendRedirect("/error_page.html");
         }
     }
