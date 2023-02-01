@@ -22,6 +22,7 @@ public class PostDaoPostgres implements PostDao {
             String insertStr = "INSERT INTO post VALUES (?,?,?)";
             PreparedStatement st;
             try{
+                System.out.println("tipologiaaa: " + post.getTipologia());
                 st = conn.prepareStatement(insertStr);
                 st.setLong(1,post.getId());
                 st.setLong(2,post.getIdUtente());
@@ -46,6 +47,7 @@ public class PostDaoPostgres implements PostDao {
             ResultSet rs = st.executeQuery();
 
             if (rs.next()) {
+                System.out.println("tipologia db: " + rs.getString("tipologia"));
                 post = new Post();
                 post.setId(rs.getLong("id"));
                 post.setIdUtente(rs.getLong("utente"));

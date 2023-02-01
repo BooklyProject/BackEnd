@@ -21,9 +21,7 @@ public class Post {
         this.idUtente = idUtente;
     }
 
-    public String getTipologia() {
-        return tipologia;
-    }
+    public String getTipologia() { return tipologia; }
 
     public void setTipologia(String tipologia) {
         this.tipologia = tipologia;

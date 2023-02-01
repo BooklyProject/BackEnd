@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpSession;
 import mat.unical.it.bookly.persistance.DBManager;
 import mat.unical.it.bookly.persistance.dao.*;
 import mat.unical.it.bookly.persistance.model.*;
-import org.apache.commons.lang3.RandomUtils;
+import mat.unical.it.bookly.persistance.model.Post;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -584,5 +584,98 @@ public class FrontEndController {
             return false;
         }
         return true;
+    }
+
+    @GetMapping("/reports")
+    public List<Segnalazione> getSegnalazioni(HttpServletRequest req, @RequestParam String jsessionid){
+
+        HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
+        Amministratore amministratore = (Amministratore) session.getAttribute("administrator");
+        SegnalazioneDao dao = DBManager.getInstance().getSegnalazioneDao();
+        return dao.findByAdministrator(amministratore.getId());
+    }
+
+    @PostMapping("/getUserId")
+    public Utente getUtente(@RequestBody HashMap<String, Long> u){
+        return DBManager.getInstance().getUtenteDao().findByPrimaryKey(u.get("idUtente"));
+    }
+
+    @GetMapping("/deleteReport")
+    public boolean cancellaSegnalazione(@RequestParam Long id){
+        try {
+            System.out.println("sono in cancella segn");
+            DBManager.getInstance().getSegnalazioneDao().delete(id);
+        }catch(Exception e){
+            return false;
+        }
+
+        return true;
+
+    }
+    @GetMapping("/deleteReportAndPost")
+    public boolean cancellaSegnalazioneEPost(@RequestParam Long id){
+        Segnalazione segnalazione = DBManager.getInstance().getSegnalazioneDao().findByPrimaryKey(id);
+        Long idPost = segnalazione.getPost();
+        Post post = DBManager.getInstance().getPostDao().findByPrimaryKey(idPost);
+        String tipologia = post.getTipologia();
+        System.out.println("entro in cancella segn e post");
+        try {
+            DBManager.getInstance().getSegnalazioneDao().delete(id);
+            if(tipologia.equals("recensione")) {
+                DBManager.getInstance().getValutazioneRecensioneDao().deleteForReview(idPost);
+                DBManager.getInstance().getCommentoDao().deleteForReview(idPost);
+                DBManager.getInstance().getRecensioneDao().delete(idPost);
+            }
+            else if(tipologia.equals("commento")) {
+                DBManager.getInstance().getCommentoDao().delete(idPost);
+            }
+            else if(tipologia.equals("evento")) {
+                DBManager.getInstance().getPartecipaDao().deleteAllEventPartecipations(idPost);
+                DBManager.getInstance().getEventoDao().delete(idPost);
+            }
+        }catch(Exception e){
+            return false;
+        }
+
+        return true;
+
+    }
+
+    @GetMapping("/banUser")
+    public boolean banUtente(@RequestParam Long id){
+
+        // TODO: BANNARE LO SCRITTORE DEL POST, NON LO SCRITTORE DELLA SEGNALAZIONE!!
+        UtenteDao dao = DBManager.getInstance().getUtenteDao();
+        Utente user = dao.findByPrimaryKey(id);
+        user.setBanned(!user.getBanned());
+        try {
+            dao.saveOrUpdate(user);
+        }catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    @PostMapping("/getPostDescription")
+    public String getDescrizione(@RequestBody HashMap<String,Long> p){
+        Long id = p.get("idPost");
+        Post post = DBManager.getInstance().getPostDao().findByPrimaryKey(id);
+        String descrizione = "";
+        String tipo = post.getTipologia();
+        System.out.println("post: " + post.getId() + " " + post.getIdUtente() + " " + tipo);
+        if(tipo.equals("recensione")){
+            Recensione recensione = DBManager.getInstance().getRecensioneDao().findByPrimaryKey(id);
+            descrizione = recensione.getDescrizione();
+        }
+        else if(tipo.equals("commento")){
+            Commento commento = DBManager.getInstance().getCommentoDao().findByPrimaryKey(id);
+            descrizione = commento.getDescrizione();
+        }
+        else if(tipo.equals("evento")){
+            Evento evento = DBManager.getInstance().getEventoDao().findByPrimaryKey(id);
+            descrizione = evento.getDescrizione();
+        }
+        System.out.println("descr: " + descrizione);
+        return descrizione;
     }
 }

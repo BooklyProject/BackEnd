@@ -202,6 +202,7 @@ public class RecensioneDaoPostgres implements RecensioneDao {
             p.setId(idR);
             p.setIdUtente(idUtente);
             p.setTipologia("recensione");
+            System.out.println("tipologia: " + p.getTipologia());
             DBManager.getInstance().getPostDao().saveUpdate(p);
             String insertStr = "INSERT INTO recensioni VALUES (?,?,?,?,?,?)";
             PreparedStatement st;
