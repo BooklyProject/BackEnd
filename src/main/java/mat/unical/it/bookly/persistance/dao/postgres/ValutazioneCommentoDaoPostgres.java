@@ -31,7 +31,7 @@ public class ValutazioneCommentoDaoPostgres implements ValutazioneCommentoDao {
                 valutazioneCommento = new ValutazioneCommento();
                 valutazioneCommento.setCommento(rs.getLong("commento"));
                 valutazioneCommento.setUtente(rs.getLong("utente"));
-                valutazioneCommento.setTipo(rs.getString("tipo"));
+                valutazioneCommento.setTipo(rs.getString("tipologia"));
             }
         }catch (SQLException e){
             e.printStackTrace();
@@ -83,6 +83,4 @@ public class ValutazioneCommentoDaoPostgres implements ValutazioneCommentoDao {
             e.printStackTrace();
         }
     }
-
-
 }

@@ -33,6 +33,11 @@ public class FrontEndController {
         Utente user = (Utente) session.getAttribute("user");
 
         try {
+            System.out.println("STAMPA");
+            System.out.println(session.getId());
+            System.out.println(tipo);
+            System.out.println(post);
+            System.out.println(descrizione);
 
             Segnalazione segnalazione = new Segnalazione();
             segnalazione.setTipo(tipo);
@@ -44,6 +49,7 @@ public class FrontEndController {
             DBManager.getInstance().getSegnalazioneDao().saveOrUpdate(segnalazione);
 
         }catch(Exception e){
+            e.printStackTrace();
             return false;
         }
 
@@ -408,7 +414,8 @@ public class FrontEndController {
         HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
         Utente user = (Utente) session.getAttribute("user");
         Long idCommento = c.get("idCommento");
-        if(DBManager.getInstance().getValutazioneCommentoDao().findByPrimaryKey(idCommento, user.getId()) != null) {
+        ValutazioneCommento v = DBManager.getInstance().getValutazioneCommentoDao().findByPrimaryKey(idCommento, user.getId());
+        if(v != null && v.getTipo().equals("like")) {
             return true;
         }
         else{
@@ -459,7 +466,8 @@ public class FrontEndController {
         HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
         Utente user = (Utente) session.getAttribute("user");
         Long idCommento = c.get("idCommento");
-        if(DBManager.getInstance().getValutazioneCommentoDao().findByPrimaryKey(idCommento, user.getId()) != null) {
+        ValutazioneCommento v = DBManager.getInstance().getValutazioneCommentoDao().findByPrimaryKey(idCommento, user.getId());
+        if(v != null && v.getTipo().equals("dislike")) {
             return true;
         }
         else{
@@ -509,7 +517,9 @@ public class FrontEndController {
         HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
         Utente user = (Utente) session.getAttribute("user");
         Long idRecensione = r.get("idRecensione");
-        if(DBManager.getInstance().getValutazioneRecensioneDao().findByPrimaryKey(idRecensione, user.getId()) != null) {
+        ValutazioneRecensione v = DBManager.getInstance().getValutazioneRecensioneDao().findByPrimaryKey(idRecensione, user.getId());
+        if(v != null && v.getTipo().equals("like")) {
+            System.out.println("liked");
             return true;
         }
         else{
@@ -531,6 +541,7 @@ public class FrontEndController {
             Recensione recensione = DBManager.getInstance().getRecensioneDao().findByPrimaryKey(idRecensione);
             recensione.setNumeroMiPiace(recensione.getNumeroMiPiace() + 1);
             DBManager.getInstance().getRecensioneDao().saveOrUpdate(recensione, user.getId());
+            Recensione recensione2 = DBManager.getInstance().getRecensioneDao().findByPrimaryKey(idRecensione);
         } catch (Exception e){
             return false;
         }
@@ -561,7 +572,10 @@ public class FrontEndController {
         HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
         Utente user = (Utente) session.getAttribute("user");
         Long idRecensione = r.get("idRecensione");
-        if(DBManager.getInstance().getValutazioneRecensioneDao().findByPrimaryKey(idRecensione, user.getId()) != null) {
+        ValutazioneRecensione v = DBManager.getInstance().getValutazioneRecensioneDao().findByPrimaryKey(idRecensione, user.getId());
+        if(v != null && v.getTipo().equals("dislike")) {
+            System.out.println("disliked");
+
             return true;
         }
         else{
@@ -600,6 +614,7 @@ public class FrontEndController {
             Recensione recensione = DBManager.getInstance().getRecensioneDao().findByPrimaryKey(idRecensione);
             recensione.setNumeroNonMiPiace(recensione.getNumeroNonMiPiace() - 1);
             DBManager.getInstance().getRecensioneDao().saveOrUpdate(recensione, user.getId());
+            Recensione recensione2 = DBManager.getInstance().getRecensioneDao().findByPrimaryKey(idRecensione);
         } catch (Exception e){
             return false;
         }
