@@ -1,61 +1,57 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link rel="stylesheet" href="../css/libro.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .home-button {
+            text-align: center;
+            margin-bottom: 20px;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+        .book-info {
+            margin-top: 20px;
+        }
+        .book-cover {
+            text-align: center;
+        }
+        .book-cover img {
+            width: 300px;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="homeButton">
-        <button type="button" class="btn btn-primary">Torna alla home</button>
-    </div>
-    <div class="row">
-        <div class="column1" style="text-align: center">
-            <img th:src="${session.libro.copertina}" class="immagine">
-        </div>
-        <div class="column2">
-            <div class="infoLibro">
-            <div class="info">
-                <p>Titolo:</p>
-            </div>
-            <div class="attributi">
-                <p th:text="${session.libro.nome}"></p>
-            </div>
-            <div class="info">
-                <p>Autori:</p>
-            </div>
-            <div class="attributi">
-                <p th:text="${session.libro.autore}"></p>
-            </div>
-            <div class="info">
-                <p>Generi:</p>
-            </div>
-            <div class="attributi">
-                <p th:text="${session.libro.generi}"></p>
-            </div>
-            <div class="info">
-                <p>Lingua: </p>
-            </div>
-            <div class="attributi">
-                <p th:text="${session.libro.lingua}"></p>
-            </div>
-            <div class="info">
-                <p>Pagine: </p>
-            </div>
-            <div class="attributi">
-                <p th:text="${session.libro.numeroPagine}"></p>
-            </div>
-            <div>
-                <h4>Trama</h4>
-                <p style="margin-right: 30px" th:text="${session.libro.descrizione}"></p>
-            </div>
-        </div>
-        </div>
-    </div>
+<div class="home-button">
+    <a href="#" class="btn btn-primary">Torna alla home</a>
+</div>
 
-    <form action="/showReview" method="POST" class="showButton">
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4 book-cover">
+            <img th:src="${session.libro.copertina}" class="img-fluid">
+        </div>
+        <div class="col-sm-8 book-info">
+            <h2 th:text="${session.libro.nome}"></h2>
+            <p><strong>Autori:</strong> <span th:text="${session.libro.autore}"></span></p>
+            <p><strong>Generi:</strong> <span th:text="${session.libro.generi}"></span></p>
+            <p><strong>Lingua:</strong> <span th:text="${session.libro.lingua}"></span></p>
+            <p><strong>Pagine:</strong> <span th:text="${session.libro.numeroPagine}"></span></p>
+            <hr>
+            <h4>Trama</h4>
+            <p th:text="${session.libro.descrizione}"></p>
+        </div>
+    </div>
+</div>
+
+<div class="text-center" style="margin-top: 20px;">
+    <form action="/showReview" method="POST">
         <button id="mostraRecensioni" type="submit" class="btn btn-primary">Visualizza recensioni</button>
     </form>
+</div>
 </body>
 </html>
+
+
