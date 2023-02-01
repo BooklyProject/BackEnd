@@ -48,15 +48,9 @@ public class LoginServlet extends HttpServlet {
             }
         }
         if(logged) {
-            if (utente != null) {
-                HttpSession session = req.getSession();
-                System.out.println("sessionId: " + session.getId());
-                resp.sendRedirect("http://localhost:4200/?jsessionid=" + session.getId());
-            } else {
-                HttpSession session = req.getSession();
-                System.out.println("sessionId: " + session.getId());
-                resp.sendRedirect("http://localhost:4200/segnalazioni?jsessionid=" + session.getId());
-            }
+            HttpSession session = req.getSession();
+            System.out.println("sessionId: " + session.getId());
+            resp.sendRedirect("http://localhost:4200/?jsessionid=" + session.getId());
         }
         else{
             resp.sendRedirect("/error_page.html");

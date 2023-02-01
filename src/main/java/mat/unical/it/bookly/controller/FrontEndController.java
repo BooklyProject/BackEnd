@@ -20,7 +20,7 @@ public class FrontEndController {
     public List<Segnalazione> getSegnalazioni(HttpServletRequest req, @RequestParam String jsessionid){
 
         HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
-        Amministratore amministratore = (Amministratore) session.getAttribute("user");
+        Amministratore amministratore = (Amministratore) session.getAttribute("administrator");
         SegnalazioneDao dao = DBManager.getInstance().getSegnalazioneDao();
         return dao.findByAdministrator(amministratore.getId());
     }
@@ -55,6 +55,11 @@ public class FrontEndController {
         }
 
         return true;
+    }
+
+    @PostMapping("/getUserId)")
+    public Utente getUtente(@RequestBody HashMap<String, Long> u){
+        return DBManager.getInstance().getUtenteDao().findByPrimaryKey(u.get("idUtente"));
     }
 
     @GetMapping("/deleteReport")
