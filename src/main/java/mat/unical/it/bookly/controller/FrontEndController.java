@@ -42,7 +42,8 @@ public class FrontEndController {
             Segnalazione segnalazione = new Segnalazione();
             segnalazione.setTipo(tipo);
             segnalazione.setPost(post);
-            segnalazione.setAmministratore(RandomUtils.nextLong( 1, DBManager.getInstance().getAmministratoreDao().findAdministratorsNum() + 1));
+            //segnalazione.setAmministratore(RandomUtils.nextLong( 1, DBManager.getInstance().getAmministratoreDao().findAdministratorsNum() + 1));
+            segnalazione.setAmministratore(Long.valueOf(280));
             segnalazione.setDescrizione(descrizione);
             segnalazione.setUtente(user.getId());
 

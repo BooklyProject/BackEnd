@@ -5,6 +5,8 @@ import mat.unical.it.bookly.persistance.model.Utente;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.apache.commons.lang3.RandomUtils;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -27,10 +29,12 @@ public class AmministratoreTests {
     @Test
     public void testSaveUpdateTest(){
         Amministratore a = new Amministratore();
-        a.setNome("Francesco");
-        a.setCognome("Strangis");
-        a.setPassword("ciao");
-        a.setEmail("strangisfrancesco2@gmail.com");
+        a.setNome("Marco");
+        a.setCognome("Rossi");
+        String password = "password";
+        String hashed = BCrypt.hashpw(password,BCrypt.gensalt(12));
+        a.setPassword(hashed);
+        a.setEmail("booklyproject2023@gmail.com");
         a.setId(Long.valueOf(1));
         DBManager.getInstance().getAmministratoreDao().saveOrUpdate(a);
     }
