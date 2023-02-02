@@ -85,6 +85,7 @@ public class FrontEndController {
         HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
         Utente user = (Utente) session.getAttribute("user");
         try {
+            DBManager.getInstance().getSegnalazioneDao().deleteForPost(idEvento);
             DBManager.getInstance().getPartecipaDao().deleteAllEventPartecipations(idEvento);
             DBManager.getInstance().getEventoDao().delete(idEvento);
 
@@ -238,10 +239,14 @@ public class FrontEndController {
     }
 
     @PostMapping("/modifyProfile")
-    public Boolean modificaProfilo(@RequestBody Utente utente){
+    public Boolean modificaProfilo(@RequestBody HashMap<String, Utente> u){
         try {
+            Utente utente = u.get("utente");
+            System.out.println("utente id: " + utente.getId());
+            System.out.println("username: " + utente.getUsername());
             DBManager.getInstance().getUtenteDao().saveOrUpdate(utente);
         }catch(Exception e){
+            e.printStackTrace();
             return false;
         }
 
@@ -269,6 +274,7 @@ public class FrontEndController {
     public Boolean cancellaRecensione(@RequestBody HashMap<String, Long> r){
         Long idRecensione = r.get("idRecensione");
         try {
+            DBManager.getInstance().getSegnalazioneDao().deleteForPost(idRecensione);
             DBManager.getInstance().getValutazioneRecensioneDao().deleteForReview(idRecensione);
             DBManager.getInstance().getCommentoDao().deleteForReview(idRecensione);
             DBManager.getInstance().getRecensioneDao().delete(idRecensione);
@@ -332,6 +338,7 @@ public class FrontEndController {
     public Boolean cancellaCommento(@RequestBody HashMap<String, Long> c){
         Long idCommento = c.get("idCommento");
         try {
+            DBManager.getInstance().getSegnalazioneDao().deleteForPost(idCommento);
             DBManager.getInstance().getValutazioneCommentoDao().deleteForComment(idCommento);
             DBManager.getInstance().getCommentoDao().delete(idCommento);
         }catch(Exception e){

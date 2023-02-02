@@ -105,6 +105,7 @@ public class UtenteDaoPostgres implements UtenteDao {
 
     @Override
     public void saveOrUpdate(Utente utente) {
+        utente.setBanned(false);
         if (findByEmail(utente.getEmail()) == null) {
             String insertStr = "INSERT INTO utenti VALUES (?,?,?,?,?,?,?,?,?)";
             PreparedStatement st;
@@ -112,7 +113,7 @@ public class UtenteDaoPostgres implements UtenteDao {
             try {
                 st = conn.prepareStatement(insertStr);
                 Long newId = IdBroker.getId(conn);
-
+                System.out.println("banned: " + utente.getUsername());
                 st.setLong(1, IdBroker.getId(conn));
                 st.setString(2, utente.getUsername());
                 st.setString(3, utente.getNome());
