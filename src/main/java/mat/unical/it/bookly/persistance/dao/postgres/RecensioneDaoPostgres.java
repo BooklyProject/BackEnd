@@ -19,12 +19,7 @@ public class RecensioneDaoPostgres implements RecensioneDao {
     @Override
     public List<Recensione> findAllWroteByUser(Long idUtente) {
         List<Recensione> recensioniUtente = new ArrayList<>();
-        String query = "SELECT r.id as r_id, r.descrizione as r_desc, r.voto as r_voto, r.mi_piace as r_mi," +
-                "r.non_mi_piace as r_no, r.libro as r_libro " +
-                        "FROM recensioni r " +
-                        "JOIN post p ON p.id = r.id " +
-                "JOIN utenti u ON p.utente = u.id " +
-                "where p.utente = ?";
+        String query = "SELECT * FROM recensioni r WHERE EXISTS(SELECT * FROM post p WHERE p.id = r.id AND p.utente = ?)";
         /*"SELECT r.id as r_id, r.descrizione as r_desc, r.voto as r_voto, r.data as r_data, r.mi_piace as r_mi," +
                 "r.non_mi_piace as r_no, r.libro as r_libro " +
                 "FROM recensioni r " +
@@ -39,13 +34,12 @@ public class RecensioneDaoPostgres implements RecensioneDao {
 
             while(rs.next()){
                 Recensione recensione = new Recensione();
-                recensione.setId(rs.getLong("r_id"));
-                recensione.setDescrizione(rs.getString("r_desc"));
-                recensione.setVoto(rs.getInt("r_voto"));
-                //recensione.setData(rs.getDate("r_data"));
-                recensione.setNumeroMiPiace(rs.getInt("r_mi"));
-                recensione.setNumeroNonMiPiace(rs.getInt("r_no"));
-                recensione.setLibro(rs.getString("r_libro"));
+                recensione.setId(rs.getLong("id"));
+                recensione.setDescrizione(rs.getString("descrizione"));
+                recensione.setVoto(rs.getInt("voto"));
+                recensione.setNumeroMiPiace(rs.getInt("mi_piace"));
+                recensione.setNumeroNonMiPiace(rs.getInt("non_mi_piace"));
+                recensione.setLibro(rs.getString("libro"));
 
                 recensioniUtente.add(recensione);
             }
