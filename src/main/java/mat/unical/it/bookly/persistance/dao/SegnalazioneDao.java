@@ -12,4 +12,5 @@ public interface SegnalazioneDao {
     public void saveOrUpdate(Segnalazione segnalazione);
     public List<Segnalazione> findByAdministrator(Long amministratore);
     public void delete(Long id);
+    public void deleteForPost(Long idPost);
 }

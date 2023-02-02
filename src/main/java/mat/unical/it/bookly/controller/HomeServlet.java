@@ -15,6 +15,6 @@ public class HomeServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HttpSession session = req.getSession();
         session.removeAttribute("libro");
-        resp.sendRedirect("http://localhost:4200/catalogo?jsessionid="+ session.getId());
+        resp.sendRedirect("http://localhost:4200/home?jsessionid="+ session.getId());
     }
 }

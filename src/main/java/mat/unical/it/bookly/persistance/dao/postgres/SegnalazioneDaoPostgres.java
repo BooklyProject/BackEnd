@@ -153,4 +153,17 @@ public class SegnalazioneDaoPostgres implements SegnalazioneDao {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void deleteForPost(Long idPost) {
+        String query = "DELETE FROM segnalazioni WHERE post = ?";
+
+        try{
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setLong(1,idPost);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
