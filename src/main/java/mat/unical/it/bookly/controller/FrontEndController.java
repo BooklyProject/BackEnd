@@ -24,16 +24,10 @@ public class FrontEndController {
         Utente user = (Utente) session.getAttribute("user");
 
         try {
-            System.out.println("STAMPA");
-            System.out.println(session.getId());
-            System.out.println(tipo);
-            System.out.println(post);
-            System.out.println(descrizione);
 
             Segnalazione segnalazione = new Segnalazione();
             segnalazione.setTipo(tipo);
             segnalazione.setPost(post);
-            //segnalazione.setAmministratore(RandomUtils.nextLong( 1, DBManager.getInstance().getAmministratoreDao().findAdministratorsNum() + 1));
             segnalazione.setAmministratore(Long.valueOf(280));
             segnalazione.setDescrizione(descrizione);
             segnalazione.setUtente(user.getId());
@@ -128,6 +122,7 @@ public class FrontEndController {
 
         return true;
     }
+
 
     @PostMapping("/deletePartecipation")
     public boolean cancellaPartecipazione(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody HashMap<String, Long> evento){
@@ -337,6 +332,7 @@ public class FrontEndController {
     public Boolean cancellaCommento(@RequestBody HashMap<String, Long> c){
         Long idCommento = c.get("idCommento");
         try {
+            DBManager.getInstance().getValutazioneCommentoDao().deleteForComment(idCommento);
             DBManager.getInstance().getCommentoDao().delete(idCommento);
         }catch(Exception e){
             return false;
@@ -610,23 +606,24 @@ public class FrontEndController {
         }
 
         return true;
-
     }
-    @GetMapping("/deleteReportAndPost")
-    public boolean cancellaSegnalazioneEPost(@RequestParam Long id){
+
+    @GetMapping("/deleteReportsAndPost")
+    public boolean cancellaSegnalazioniEPost(@RequestParam Long id){
         Segnalazione segnalazione = DBManager.getInstance().getSegnalazioneDao().findByPrimaryKey(id);
         Long idPost = segnalazione.getPost();
         Post post = DBManager.getInstance().getPostDao().findByPrimaryKey(idPost);
         String tipologia = post.getTipologia();
         System.out.println("entro in cancella segn e post");
         try {
-            DBManager.getInstance().getSegnalazioneDao().delete(id);
+            DBManager.getInstance().getSegnalazioneDao().deleteForPost(idPost);
             if(tipologia.equals("recensione")) {
                 DBManager.getInstance().getValutazioneRecensioneDao().deleteForReview(idPost);
                 DBManager.getInstance().getCommentoDao().deleteForReview(idPost);
                 DBManager.getInstance().getRecensioneDao().delete(idPost);
             }
             else if(tipologia.equals("commento")) {
+                DBManager.getInstance().getValutazioneCommentoDao().deleteForComment(idPost);
                 DBManager.getInstance().getCommentoDao().delete(idPost);
             }
             else if(tipologia.equals("evento")) {
@@ -673,7 +670,7 @@ public class FrontEndController {
             Evento evento = DBManager.getInstance().getEventoDao().findByPrimaryKey(id);
             descrizione = evento.getDescrizione();
         }
-        System.out.println("descr: " + descrizione);
+
         return descrizione;
     }
 }

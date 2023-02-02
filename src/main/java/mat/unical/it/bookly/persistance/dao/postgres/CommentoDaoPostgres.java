@@ -190,7 +190,7 @@ public class CommentoDaoPostgres implements CommentoDao {
 
             ResultSet rs = st.executeQuery();
             while(rs.next()) {
-
+                DBManager.getInstance().getValutazioneCommentoDao().deleteForComment(rs.getLong("id"));
                 DBManager.getInstance().getCommentoDao().delete(rs.getLong("id"));
 
             }
