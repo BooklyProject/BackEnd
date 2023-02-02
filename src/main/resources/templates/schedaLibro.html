@@ -5,11 +5,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         .home-button {
-            text-align: center;
-            margin-bottom: 20px;
-            position: absolute;
-            top: 20px;
-            left: 20px;
+            text-align: left;
+            margin-left: 10px;
+            margin-top: 15px;
         }
         .book-info {
             margin-top: 20px;
@@ -28,7 +26,7 @@
     <a href="#" class="btn btn-primary">Torna alla home</a>
 </div>
 
-<div class="container">
+<div class="container" style="margin-top: 20px">
     <div class="row">
         <div class="col-sm-4 book-cover">
             <img th:src="${session.libro.copertina}" class="img-fluid">
