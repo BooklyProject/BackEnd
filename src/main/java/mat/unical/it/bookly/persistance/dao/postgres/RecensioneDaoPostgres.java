@@ -103,7 +103,7 @@ public class RecensioneDaoPostgres implements RecensioneDao {
     @Override
     public List<Recensione> findReviewsByBook(Long idUtente, String ISBNLibro) {
         List<Recensione> recensioni = new ArrayList<>();
-        String query1 = "select * from recensioni r where r.libro = ? AND EXISTS(SELECT * FROM post p WHERE p.id = r.id AND EXISTS(SELECT * FROM utenti u WHERE p.utente = u.id AND u.id = ?))";
+        String query1 = "select * from recensioni r where r.libro = ? AND EXISTS(SELECT * FROM post p WHERE p.id = r.id AND p.utente = ?)";
         try {
             PreparedStatement st = conn.prepareStatement(query1);
             st.setString(1, ISBNLibro);
@@ -126,30 +126,28 @@ public class RecensioneDaoPostgres implements RecensioneDao {
             e.printStackTrace();
         }
 
-        String query2 = "select * from recensioni r where r.libro = ? AND EXISTS(SELECT * FROM post p WHERE p.id = r.id AND EXISTS(SELECT * FROM utenti u WHERE p.utente = u.id AND u.id != ?))";
+        String query2 = "select * from recensioni r where r.libro = ? AND EXISTS(SELECT * FROM post p WHERE p.id = r.id AND p.utente != ?)";
         try {
-            PreparedStatement st = conn.prepareStatement(query2);
-            st.setString(1, ISBNLibro);
-            st.setLong(2, idUtente);
-            ResultSet rs = st.executeQuery();
+            PreparedStatement st2 = conn.prepareStatement(query2);
+            st2.setString(1, ISBNLibro);
+            st2.setLong(2, idUtente);
+            ResultSet rs1 = st2.executeQuery();
 
-            if (rs.next()) {
+            while (rs1.next()) {
                 Recensione r = new Recensione();
-                r.setId(rs.getLong("id"));
-                r.setDescrizione(rs.getString("descrizione"));
-                r.setVoto(rs.getInt("voto"));
+                r.setId(rs1.getLong("id"));
+                r.setDescrizione(rs1.getString("descrizione"));
+                r.setVoto(rs1.getInt("voto"));
                 //r.setData(rs.getDate("data"));
-                r.setNumeroMiPiace(rs.getInt("mi_piace"));
-                r.setNumeroNonMiPiace(rs.getInt("non_mi_piace"));
-                r.setLibro(rs.getString("libro"));
+                r.setNumeroMiPiace(rs1.getInt("mi_piace"));
+                r.setNumeroNonMiPiace(rs1.getInt("non_mi_piace"));
+                r.setLibro(rs1.getString("libro"));
 
                 recensioni.add(r);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
         return recensioni;
     }
 

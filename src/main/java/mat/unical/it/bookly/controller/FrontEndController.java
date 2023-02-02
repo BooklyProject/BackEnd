@@ -147,11 +147,18 @@ public class FrontEndController {
     }
 
     @PostMapping("/sendBook")
-    public Boolean prendiLibro(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody Libro libro) {
-
+    public Boolean prendiLibroCatalogo(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody Libro libro) {
         HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
         session.setAttribute("libro", libro);
+        return true;
+    }
 
+    @PostMapping("/getBookFromCollection")
+    public Boolean mostraLibroRaccolta(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody HashMap<String, Libro> l) {
+        Libro libro = l.get("libro");
+        System.out.println("libro: " + libro.getNome());
+        HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
+        session.setAttribute("libro", libro);
         return true;
     }
 
@@ -291,7 +298,12 @@ public class FrontEndController {
         Utente user = (Utente) session.getAttribute("user");
         Libro libro = (Libro) session.getAttribute("libro");
 
-        return DBManager.getInstance().getRecensioneDao().findReviewsByBook(user.getId(), libro.getIsbn());
+        List<Recensione> lista = DBManager.getInstance().getRecensioneDao().findReviewsByBook(user.getId(), libro.getIsbn());
+        for(int i = 0; i < lista.size(); i++) {
+            System.out.println("id rec:" + lista.get(i).getId());
+        }
+        System.out.println();
+        return lista;
     }
 
     @PostMapping("/getReviewWriter")
