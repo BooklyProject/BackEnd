@@ -13,9 +13,14 @@ public class LogoutServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HttpSession session = req.getSession();
-        session.removeAttribute("user");
-        session.invalidate();
+        if(session.getAttribute("user") != null) {
+            session.removeAttribute("user");
+        }
+        else {
+            session.removeAttribute("administrator");
+        }
 
+        session.invalidate();
         resp.sendRedirect("/");
     }
 }

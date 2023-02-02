@@ -642,14 +642,12 @@ public class FrontEndController {
     }
 
     @GetMapping("/banUser")
-    public boolean banUtente(@RequestParam Long id){
-
-        // TODO: BANNARE LO SCRITTORE DEL POST, NON LO SCRITTORE DELLA SEGNALAZIONE!!
-        UtenteDao dao = DBManager.getInstance().getUtenteDao();
-        Utente user = dao.findByPrimaryKey(id);
-        user.setBanned(!user.getBanned());
+    public boolean banUtente(@RequestParam Long idPost){
+        Post post = DBManager.getInstance().getPostDao().findByPrimaryKey(idPost);
+        Utente user = DBManager.getInstance().getUtenteDao().findByPrimaryKey(post.getIdUtente());
+        user.setBanned(true);
         try {
-            dao.saveOrUpdate(user);
+            DBManager.getInstance().getUtenteDao().saveOrUpdate(user);
         }catch (Exception e) {
             return false;
         }
