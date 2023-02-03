@@ -1,7 +1,6 @@
 package mat.unical.it.bookly.persistance.dao.postgres;
 
 import mat.unical.it.bookly.persistance.DBManager;
-import mat.unical.it.bookly.persistance.IdBroker;
 import mat.unical.it.bookly.persistance.dao.ContenutoDao;
 import mat.unical.it.bookly.persistance.model.*;
 

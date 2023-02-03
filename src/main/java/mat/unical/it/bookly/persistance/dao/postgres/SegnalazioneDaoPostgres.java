@@ -2,7 +2,6 @@ package mat.unical.it.bookly.persistance.dao.postgres;
 
 import mat.unical.it.bookly.persistance.IdBroker;
 import mat.unical.it.bookly.persistance.dao.SegnalazioneDao;
-import mat.unical.it.bookly.persistance.model.Raccolta;
 import mat.unical.it.bookly.persistance.model.Segnalazione;
 
 import java.sql.*;
@@ -68,13 +67,12 @@ public class SegnalazioneDaoPostgres implements SegnalazioneDao {
     @Override
     public void saveOrUpdate(Segnalazione segnalazione) {
         if(segnalazione.getId() == null || findByPrimaryKey(segnalazione.getId()) == null){
-            String insertStr = "INSERT INTO segnalazioni VALUES (?,?,?,?,?,?,?)";
+            String insertStr = "INSERT INTO segnalazioni VALUES (?,?,?,?,?,?)";
             PreparedStatement st;
             try{
                 st = conn.prepareStatement(insertStr);
                 Long newId = IdBroker.getId(conn);
                 segnalazione.setId(newId);
-                segnalazione.setDone(false);
 
                 st.setLong(1,segnalazione.getId());
                 st.setString(2,segnalazione.getTipo());
@@ -82,7 +80,6 @@ public class SegnalazioneDaoPostgres implements SegnalazioneDao {
                 st.setLong(4,segnalazione.getUtente());
                 st.setLong(5,segnalazione.getAmministratore());
                 st.setString(6,segnalazione.getDescrizione());
-                st.setBoolean(7,segnalazione.getDone());
 
                 st.executeUpdate();
 

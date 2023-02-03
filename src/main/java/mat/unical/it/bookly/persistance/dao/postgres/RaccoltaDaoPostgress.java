@@ -3,9 +3,7 @@ package mat.unical.it.bookly.persistance.dao.postgres;
 import mat.unical.it.bookly.persistance.IdBroker;
 import mat.unical.it.bookly.persistance.dao.RaccoltaDao;
 import mat.unical.it.bookly.persistance.model.Raccolta;
-import mat.unical.it.bookly.persistance.model.Utente;
 
-import javax.sound.midi.SysexMessage;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -135,18 +133,5 @@ public class RaccoltaDaoPostgress implements RaccoltaDao {
         }
     }
 
-    @Override
-    public void deleteAllForUser(Long idUtente) {
-
-        String query = "DELETE FROM raccolte where utente = ?";
-
-        try{
-            PreparedStatement st = conn.prepareStatement(query);
-            st.setLong(1,idUtente);
-            st.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }
 

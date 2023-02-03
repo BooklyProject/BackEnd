@@ -7,11 +7,10 @@ import mat.unical.it.bookly.persistance.model.Utente;
 import java.util.List;
 
 public interface PartecipaDao {
-    public List<Utente> usersToEvent(Long evento);
-    public void createPartecipation(Long utente,Long evento);
-    public Partecipazione singlePartecipation(Long utente, Long eveto);
-    public void deletePartecipation(Long utente,Long evento);
-    public List<Evento> eventFromUserList(Long utente); //ritorna gli eventi a cui parteciperù l'utente
-
-    public void deleteAllEventPartecipations(Long evento);
+    List<Utente> usersToEvent(Long evento);
+    void createPartecipation(Long utente,Long evento);
+    Partecipazione singlePartecipation(Long utente, Long eveto);
+    void deletePartecipation(Long utente,Long evento);
+    List<Evento> eventFromUserList(Long utente);
+    void deleteAllEventPartecipations(Long evento);
 }

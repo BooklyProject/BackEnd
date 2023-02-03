@@ -18,9 +18,6 @@ public class Mail {
         transport.connect(emailHost, fromUser, fromUserPassword);
         transport.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
         transport.close();
-        System.out.println("Email sent successfully.");
-
-
     }
 
     public MimeMessage draftEmail(String c,String dest) throws MessagingException, UnsupportedEncodingException {
@@ -36,13 +33,6 @@ public class Mail {
         }
         mimeMessage.setSubject(emailSubject);
         mimeMessage.setFrom(new InternetAddress(fromUser,"Bookly"));
-
-
-
-        //CREATE MIMEMESSAGE
-        //CREATE MESSAGE BODY PARTS
-        //CREATE MESSAGE MULTIPART
-        //ADD MESSAGE BODI PARTS --> MESSAGE MULTIPART
 
         MimeBodyPart bodyPart = new MimeBodyPart();
         bodyPart.setContent(emailBody, "text/html");
@@ -62,7 +52,6 @@ public class Mail {
         properties.put("mail.smtp.starttls.required", "true");
         properties.put("mail.smtp.ssl.protocols", "TLSv1.2");
         newSession = Session.getDefaultInstance(properties, null);
-
     }
 
 }

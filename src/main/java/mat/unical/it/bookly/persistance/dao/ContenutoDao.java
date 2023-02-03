@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface ContenutoDao {
 
-    public List<Libro> findBooksForCollection(Long idRaccolta);
-    public Contenuto findByPrimaryKey(Long idRaccolta, String ISBNLibro);
-    public void save(Long idRaccolta, String ISBNLibro);
-    public void delete(Long idRaccolta, String ISBNLibro);
-    public void deleteBooksForCollections(Long idRaccolta);
+    List<Libro> findBooksForCollection(Long idRaccolta);
+    Contenuto findByPrimaryKey(Long idRaccolta, String ISBNLibro);
+    void save(Long idRaccolta, String ISBNLibro);
+    void delete(Long idRaccolta, String ISBNLibro);
+    void deleteBooksForCollections(Long idRaccolta);
 }

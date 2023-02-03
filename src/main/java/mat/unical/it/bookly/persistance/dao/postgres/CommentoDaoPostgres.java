@@ -5,7 +5,6 @@ import mat.unical.it.bookly.persistance.IdBroker;
 import mat.unical.it.bookly.persistance.dao.CommentoDao;
 import mat.unical.it.bookly.persistance.model.Commento;
 import mat.unical.it.bookly.persistance.model.Post;
-import mat.unical.it.bookly.persistance.model.Recensione;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -126,7 +125,7 @@ public class CommentoDaoPostgres implements CommentoDao {
     @Override
     public Long findUserByComment(Long id) {
 
-        String query = "SELECT * FROM post p WHERE p.id = ?";
+        String query = "SELECT * FROM post WHERE id = ?";
         try {
             PreparedStatement st = conn.prepareStatement(query);
             st.setLong(1, id);

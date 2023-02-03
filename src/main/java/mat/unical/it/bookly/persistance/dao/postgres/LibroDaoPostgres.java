@@ -1,9 +1,7 @@
 package mat.unical.it.bookly.persistance.dao.postgres;
 
-import mat.unical.it.bookly.persistance.IdBroker;
 import mat.unical.it.bookly.persistance.dao.LibroDao;
 import mat.unical.it.bookly.persistance.model.Libro;
-import mat.unical.it.bookly.persistance.model.Utente;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -130,9 +128,6 @@ public class LibroDaoPostgres implements LibroDao {
             e.printStackTrace();
         }
     }
-
-
-    //TODO: fare query lista recensioni che ha un libro
 
 }
 

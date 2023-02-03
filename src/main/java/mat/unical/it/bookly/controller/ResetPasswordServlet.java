@@ -21,11 +21,6 @@ public class ResetPasswordServlet extends HttpServlet {
         if (utente == null) {
             resp.sendRedirect("/error_page.html");
         }else{
-            /*
-            HttpSession session = req.getSession();
-            session.setAttribute("token",token);
-
-             */
             SingleToken.getInstance().setStringData(token);
             resp.sendRedirect("/reset_password_token.html");
         }

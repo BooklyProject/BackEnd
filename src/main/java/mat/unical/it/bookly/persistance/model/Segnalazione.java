@@ -2,19 +2,12 @@ package mat.unical.it.bookly.persistance.model;
 
 public class Segnalazione {
 
-    Long id;
-
-    String tipo;
-
-    Long post;
-
-    Long utente;
-
-    Long amministratore;
-
-    String descrizione;
-
-    Boolean isDone;
+    private Long id;
+    private String tipo;
+    private Long post;
+    private Long utente;
+    private Long amministratore;
+    private String descrizione;
 
     public Long getId() { return id;}
 
@@ -40,7 +33,4 @@ public class Segnalazione {
 
     public void setDescrizione(String descrizione) { this.descrizione = descrizione; }
 
-    public Boolean getDone() { return isDone; }
-
-    public void setDone(Boolean done) { this.isDone = done; }
 }

@@ -44,7 +44,6 @@ public class RegistrationServlet extends HttpServlet {
             String image = Base64.getEncoder().encodeToString(bytes);
             u.setUserImage(image);
 
-            //Generazione token per il recupero della password
             String random = String.valueOf(UUID.randomUUID());
             u.setResetPasswordToken(random);
 

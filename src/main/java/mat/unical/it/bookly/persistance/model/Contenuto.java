@@ -4,9 +4,9 @@ import java.util.List;
 
 public class Contenuto {
 
-    Long raccolta;
+    private Long raccolta;
 
-    String libro;
+    private String libro;
 
     public Long getRaccolta() {
         return raccolta;

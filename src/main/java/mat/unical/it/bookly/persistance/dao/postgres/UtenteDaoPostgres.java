@@ -1,9 +1,7 @@
 package mat.unical.it.bookly.persistance.dao.postgres;
 
-import mat.unical.it.bookly.persistance.DBManager;
 import mat.unical.it.bookly.persistance.IdBroker;
 import mat.unical.it.bookly.persistance.dao.UtenteDao;
-import mat.unical.it.bookly.persistance.model.Raccolta;
 import mat.unical.it.bookly.persistance.model.Utente;
 
 import java.sql.*;
@@ -20,7 +18,7 @@ public class UtenteDaoPostgres implements UtenteDao {
     @Override
     public List<Utente> findAll() {
         List<Utente> utenti = new ArrayList<>();
-        String query = "select * from utenti"; //ritorna la lista di tutti gli utenti
+        String query = "select * from utenti";
         try {
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(query);
@@ -47,7 +45,7 @@ public class UtenteDaoPostgres implements UtenteDao {
     }
 
     @Override
-    public Utente findByPrimaryKey(Long id) {    //ritorna l'utente attraverso il suo ID
+    public Utente findByPrimaryKey(Long id) {
         Utente utente = null;
         String query = "select * from utenti where id = ?";
         try {
@@ -99,13 +97,12 @@ public class UtenteDaoPostgres implements UtenteDao {
             e.printStackTrace();
         }
 
-
         return utente;
     }
 
     @Override
     public void saveOrUpdate(Utente utente) {
-        utente.setBanned(false);
+
         if (findByEmail(utente.getEmail()) == null) {
             String insertStr = "INSERT INTO utenti VALUES (?,?,?,?,?,?,?,?,?)";
             PreparedStatement st;
@@ -113,8 +110,7 @@ public class UtenteDaoPostgres implements UtenteDao {
             try {
                 st = conn.prepareStatement(insertStr);
                 Long newId = IdBroker.getId(conn);
-                System.out.println("banned: " + utente.getUsername());
-                st.setLong(1, IdBroker.getId(conn));
+                st.setLong(1, newId);
                 st.setString(2, utente.getUsername());
                 st.setString(3, utente.getNome());
                 st.setString(4, utente.getCognome());
@@ -123,18 +119,8 @@ public class UtenteDaoPostgres implements UtenteDao {
                 st.setString(7, utente.getUserImage());
                 st.setBoolean(8, utente.getBanned());
                 st.setString(9, utente.getResetPasswordToken());
-                st.executeUpdate();
-                /*
-                Raccolta raccolta1 = new Raccolta();
-                Raccolta raccolta2 = new Raccolta();
-                raccolta1.setNome("Preferiti");
-                raccolta1.setUtente(newId);
-                raccolta2.setNome("Da leggere");
-                raccolta2.setUtente(newId);
-                DBManager.getInstance().getRaccoltaDao().saveOrUpdate(raccolta1);
-                DBManager.getInstance().getRaccoltaDao().saveOrUpdate(raccolta2);
 
-                 */
+                st.executeUpdate();
 
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -170,7 +156,7 @@ public class UtenteDaoPostgres implements UtenteDao {
     }
 
     @Override
-    public void delete(Long id) { //delete utente attraverso id
+    public void delete(Long id) {
         String query = "DELETE FROM utenti where id = ?";
 
         try {

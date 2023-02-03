@@ -1,6 +1,7 @@
 package mat.unical.it.bookly.persistance.model;
 
 public class Utente {
+
     private Long id;
     private String username;
     private String nome;
@@ -11,8 +12,6 @@ public class Utente {
     private String userImage;
     private String resetPasswordToken;
 
-
-    @Override   //TODO: finish to complete equals
     public boolean equals(Object obj) {
         Utente u1 = (Utente) obj;
         return (u1.getId().equals(id) && u1.getUsername().equals(username) && u1.getNome().equals(nome));
@@ -28,7 +27,10 @@ public class Utente {
         this.isBanned = isBanned;
         this.userImage = userImage;
     }
-    public Utente(){};
+
+    public Utente(){
+        isBanned = false;
+    };
 
     public Long getId() {
         return id;

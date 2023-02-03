@@ -9,13 +9,11 @@ public class Commento{
           numeroNonMiPiace = 0;
      }
 
-     Long id;
-     String descrizione;
-     //Date data; //utilizzo java.sql.Date
-     Integer numeroMiPiace;
-     Integer numeroNonMiPiace;
-     Long recensione;
-
+     private Long id;
+     private String descrizione;
+     private Integer numeroMiPiace;
+     private Integer numeroNonMiPiace;
+     private Long recensione;
 
      public Long getId() {
           return id;
@@ -32,15 +30,7 @@ public class Commento{
      public void setDescrizione(String descrizione) {
           this.descrizione = descrizione;
      }
-     /*
-     public Date getData() {
-          return data;
-     }
 
-     public void setData(Date data) {
-          this.data = data;
-     }
-     */
      public Integer getNumeroMiPiace() {
           return numeroMiPiace;
      }

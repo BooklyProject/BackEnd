@@ -3,12 +3,9 @@ package mat.unical.it.bookly.persistance.dao.postgres;
 import mat.unical.it.bookly.persistance.DBManager;
 import mat.unical.it.bookly.persistance.IdBroker;
 import mat.unical.it.bookly.persistance.dao.EventoDao;
-import mat.unical.it.bookly.persistance.model.Commento;
 import mat.unical.it.bookly.persistance.model.Evento;
 import mat.unical.it.bookly.persistance.model.Post;
-import mat.unical.it.bookly.persistance.model.Utente;
 
-import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +13,6 @@ import java.util.List;
 public class EventoDaoPostgres implements EventoDao {
     Connection conn;
     public EventoDaoPostgres(Connection conn){this.conn = conn;}
-
 
     @Override
     public List<Evento> findAll() {

@@ -28,6 +28,8 @@ public class FrontEndController {
             Segnalazione segnalazione = new Segnalazione();
             segnalazione.setTipo(tipo);
             segnalazione.setPost(post);
+
+            //previsto solo un amministratore già presente sul db, quindi si mette direttamente il suo id
             segnalazione.setAmministratore(Long.valueOf(280));
             segnalazione.setDescrizione(descrizione);
             segnalazione.setUtente(user.getId());
@@ -81,7 +83,6 @@ public class FrontEndController {
     public boolean cancellaEvento(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody HashMap<String, Long> e){
 
         Long idEvento = e.get("idEvento");
-        System.out.println("id evento: " + idEvento);
         HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
         Utente user = (Utente) session.getAttribute("user");
         try {
@@ -109,7 +110,6 @@ public class FrontEndController {
     public boolean partecipaEvento(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody HashMap<String, Long> e){
 
         Long idEvento = e.get("idEvento");
-        System.out.println("id evento: " + idEvento);
         HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
         Utente user = (Utente) session.getAttribute("user");
         try {
@@ -156,7 +156,6 @@ public class FrontEndController {
     @PostMapping("/getBookFromCollection")
     public Boolean mostraLibroRaccolta(HttpServletRequest req, @RequestParam String jsessionid, @RequestBody HashMap<String, Libro> l) {
         Libro libro = l.get("libro");
-        System.out.println("libro: " + libro.getNome());
         HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
         session.setAttribute("libro", libro);
         return true;
@@ -235,8 +234,6 @@ public class FrontEndController {
 
         Statistiche stats = new Statistiche();
 
-        stats.setRaccolteCreate(DBManager.getInstance().getRaccoltaDao().findAllForUser(user.getId()).size());
-        stats.setEventiCreati(DBManager.getInstance().getEventoDao().findAllCreatedByUser(user.getId()).size());
         stats.setEventiPartecipati(DBManager.getInstance().getPartecipaDao().eventFromUserList(user.getId()).size());
         stats.setLibriLetti(DBManager.getInstance().getRecensioneDao().findAllWroteByUser(user.getId()).size());
         stats.setAutorePreferito(DBManager.getInstance().getRecensioneDao().findPreferredResultByAttribute(user.getId(), "autore"));
@@ -249,8 +246,6 @@ public class FrontEndController {
     public Boolean modificaProfilo(@RequestBody HashMap<String, Utente> u){
         try {
             Utente utente = u.get("utente");
-            System.out.println("utente id: " + utente.getId());
-            System.out.println("username: " + utente.getUsername());
             DBManager.getInstance().getUtenteDao().saveOrUpdate(utente);
         }catch(Exception e){
             e.printStackTrace();
@@ -274,6 +269,7 @@ public class FrontEndController {
         }catch(Exception e){
             e.printStackTrace();
         }
+
         return idR;
     }
 
@@ -297,44 +293,34 @@ public class FrontEndController {
         HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
         Utente user = (Utente) session.getAttribute("user");
         Libro libro = (Libro) session.getAttribute("libro");
-
         List<Recensione> lista = DBManager.getInstance().getRecensioneDao().findReviewsByBook(user.getId(), libro.getIsbn());
-        for(int i = 0; i < lista.size(); i++) {
-            System.out.println("id rec:" + lista.get(i).getId());
-        }
-        System.out.println();
+
         return lista;
     }
 
     @PostMapping("/getReviewWriter")
     public Utente mostraScrittoreRecensione(@RequestBody HashMap<String, Long> r){
         Long idRecensione = r.get("idRecensione");
-        System.out.println("idRec: " + idRecensione);
         Long idUtente = DBManager.getInstance().getRecensioneDao().findUserByReview(idRecensione);
+
         return DBManager.getInstance().getUtenteDao().findByPrimaryKey(idUtente);
     }
 
     @PostMapping("/getComments")
     public List<Commento> mostraCommenti(@RequestBody HashMap<String, Long> r){
         Long idRecensione = r.get("idRecensione");
-
         List<Commento> lista = DBManager.getInstance().getCommentoDao().findByReview(idRecensione);
-        for(Commento comm: lista) {
-            System.out.println("idComm: " + comm.getId());
-        }
+
         return lista;
     }
 
     @PostMapping("/addComment")
     public Long aggiungiCommento(HttpServletRequest req, @RequestParam String jsessionid, @RequestParam Long idRec, @RequestBody HashMap<String, String> c){
         HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
-        System.out.println("session: " + session.getId());
-        System.out.println("idRecensione: " + idRec);
         Utente user = (Utente) session.getAttribute("user");
         Long idC = null;
         Commento commento = new Commento();
         String descrizione = c.get("descrizione");
-        System.out.println("comm: " + descrizione);
         commento.setRecensioni(idRec);
         commento.setDescrizione(descrizione);
         try {
@@ -365,28 +351,6 @@ public class FrontEndController {
         Long idCommento = c.get("idCommento");
         Long idUtente = DBManager.getInstance().getCommentoDao().findUserByComment(idCommento);
         return DBManager.getInstance().getUtenteDao().findByPrimaryKey(idUtente);
-    }
-
-    @GetMapping("/createDefaultCollection")
-    public Boolean creaRaccolteDefault(HttpServletRequest req, @RequestParam String jsessionid){
-        HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
-        Utente user = (Utente) session.getAttribute("user");
-        try {
-
-            Raccolta raccoltaDaLeggere = new Raccolta();
-            raccoltaDaLeggere.setNome("Da leggere");
-            raccoltaDaLeggere.setUtente(user.getId());
-            DBManager.getInstance().getRaccoltaDao().saveOrUpdate(raccoltaDaLeggere);
-            Raccolta raccoltaPreferiti = new Raccolta();
-            raccoltaPreferiti.setNome("Preferiti");
-            raccoltaPreferiti.setUtente(user.getId());
-            DBManager.getInstance().getRaccoltaDao().saveOrUpdate(raccoltaPreferiti);
-
-        }catch(Exception e){
-            return false;
-        }
-
-        return true;
     }
 
     @PostMapping("/getCommentLike")
@@ -499,7 +463,6 @@ public class FrontEndController {
         Long idRecensione = r.get("idRecensione");
         ValutazioneRecensione v = DBManager.getInstance().getValutazioneRecensioneDao().findByPrimaryKey(idRecensione, user.getId());
         if(v != null && v.getTipo().equals("like")) {
-            System.out.println("liked");
             return true;
         }
         else{
@@ -521,7 +484,6 @@ public class FrontEndController {
             Recensione recensione = DBManager.getInstance().getRecensioneDao().findByPrimaryKey(idRecensione);
             recensione.setNumeroMiPiace(recensione.getNumeroMiPiace() + 1);
             DBManager.getInstance().getRecensioneDao().saveOrUpdate(recensione, user.getId());
-            Recensione recensione2 = DBManager.getInstance().getRecensioneDao().findByPrimaryKey(idRecensione);
         } catch (Exception e){
             return false;
         }
@@ -554,8 +516,6 @@ public class FrontEndController {
         Long idRecensione = r.get("idRecensione");
         ValutazioneRecensione v = DBManager.getInstance().getValutazioneRecensioneDao().findByPrimaryKey(idRecensione, user.getId());
         if(v != null && v.getTipo().equals("dislike")) {
-            System.out.println("disliked");
-
             return true;
         }
         else{
@@ -594,7 +554,6 @@ public class FrontEndController {
             Recensione recensione = DBManager.getInstance().getRecensioneDao().findByPrimaryKey(idRecensione);
             recensione.setNumeroNonMiPiace(recensione.getNumeroNonMiPiace() - 1);
             DBManager.getInstance().getRecensioneDao().saveOrUpdate(recensione, user.getId());
-            Recensione recensione2 = DBManager.getInstance().getRecensioneDao().findByPrimaryKey(idRecensione);
         } catch (Exception e){
             return false;
         }
@@ -618,7 +577,6 @@ public class FrontEndController {
     @GetMapping("/deleteReport")
     public boolean cancellaSegnalazione(@RequestParam Long id){
         try {
-            System.out.println("sono in cancella segn");
             DBManager.getInstance().getSegnalazioneDao().delete(id);
         }catch(Exception e){
             return false;
@@ -633,7 +591,6 @@ public class FrontEndController {
         Long idPost = segnalazione.getPost();
         Post post = DBManager.getInstance().getPostDao().findByPrimaryKey(idPost);
         String tipologia = post.getTipologia();
-        System.out.println("entro in cancella segn e post");
         try {
             DBManager.getInstance().getSegnalazioneDao().deleteForPost(idPost);
             if(tipologia.equals("recensione")) {
@@ -676,7 +633,6 @@ public class FrontEndController {
         Post post = DBManager.getInstance().getPostDao().findByPrimaryKey(id);
         String descrizione = "";
         String tipo = post.getTipologia();
-        System.out.println("post: " + post.getId() + " " + post.getIdUtente() + " " + tipo);
         if(tipo.equals("recensione")){
             Recensione recensione = DBManager.getInstance().getRecensioneDao().findByPrimaryKey(id);
             descrizione = recensione.getDescrizione();

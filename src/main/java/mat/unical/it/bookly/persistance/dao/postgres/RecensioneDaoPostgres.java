@@ -6,7 +6,6 @@ import mat.unical.it.bookly.persistance.dao.RecensioneDao;
 import mat.unical.it.bookly.persistance.model.Post;
 import mat.unical.it.bookly.persistance.model.Recensione;
 
-import java.awt.image.DataBuffer;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,12 +19,6 @@ public class RecensioneDaoPostgres implements RecensioneDao {
     public List<Recensione> findAllWroteByUser(Long idUtente) {
         List<Recensione> recensioniUtente = new ArrayList<>();
         String query = "SELECT * FROM recensioni r WHERE EXISTS(SELECT * FROM post p WHERE p.id = r.id AND p.utente = ?)";
-        /*"SELECT r.id as r_id, r.descrizione as r_desc, r.voto as r_voto, r.data as r_data, r.mi_piace as r_mi," +
-                "r.non_mi_piace as r_no, r.libro as r_libro " +
-                "FROM recensioni r " +
-                "JOIN post p ON p.id = r.id " +
-                "JOIN utenti u ON p.utente = u.id " +
-                "where p.utente = ?";*/
 
         try{
             PreparedStatement st = conn.prepareStatement(query);
@@ -64,7 +57,6 @@ public class RecensioneDaoPostgres implements RecensioneDao {
                 r.setId(rs.getLong("id"));
                 r.setDescrizione(rs.getString("descrizione"));
                 r.setVoto(rs.getInt("voto"));
-                //r.setData(rs.getDate("data"));
                 r.setNumeroMiPiace(rs.getInt("mi_piace"));
                 r.setNumeroNonMiPiace(rs.getInt("non_mi_piace"));
                 r.setLibro(rs.getString("libro"));
@@ -109,7 +101,6 @@ public class RecensioneDaoPostgres implements RecensioneDao {
                 r.setId(rs.getLong("id"));
                 r.setDescrizione(rs.getString("descrizione"));
                 r.setVoto(rs.getInt("voto"));
-                //r.setData(rs.getDate("data"));
                 r.setNumeroMiPiace(rs.getInt("mi_piace"));
                 r.setNumeroNonMiPiace(rs.getInt("non_mi_piace"));
                 r.setLibro(rs.getString("libro"));
@@ -132,7 +123,6 @@ public class RecensioneDaoPostgres implements RecensioneDao {
                 r.setId(rs1.getLong("id"));
                 r.setDescrizione(rs1.getString("descrizione"));
                 r.setVoto(rs1.getInt("voto"));
-                //r.setData(rs.getDate("data"));
                 r.setNumeroMiPiace(rs1.getInt("mi_piace"));
                 r.setNumeroNonMiPiace(rs1.getInt("non_mi_piace"));
                 r.setLibro(rs1.getString("libro"));
@@ -194,7 +184,7 @@ public class RecensioneDaoPostgres implements RecensioneDao {
             p.setId(idR);
             p.setIdUtente(idUtente);
             p.setTipologia("recensione");
-            System.out.println("tipologia: " + p.getTipologia());
+            //System.out.println("tipologia: " + p.getTipologia());
             DBManager.getInstance().getPostDao().saveUpdate(p);
             String insertStr = "INSERT INTO recensioni VALUES (?,?,?,?,?,?)";
             PreparedStatement st;

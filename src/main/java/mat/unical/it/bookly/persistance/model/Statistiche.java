@@ -6,15 +6,7 @@ public class Statistiche {
 
     private String generePreferito;
 
-    private Integer raccolteCreate;
-
     private String autorePreferito;
-
-    private Integer seguiti;
-
-    private Integer followers;
-
-    private Integer eventiCreati;
 
     private Integer eventiPartecipati;
 
@@ -35,44 +27,12 @@ public class Statistiche {
         this.generePreferito = generePreferito;
     }
 
-    public Integer getRaccolteCreate() {
-        return raccolteCreate;
-    }
-
-    public void setRaccolteCreate(Integer raccolteCreate) {
-        this.raccolteCreate = raccolteCreate;
-    }
-
     public String getAutorePreferito() {
         return autorePreferito;
     }
 
     public void setAutorePreferito(String autorePreferito) {
         this.autorePreferito = autorePreferito;
-    }
-
-    public Integer getSeguiti() {
-        return seguiti;
-    }
-
-    public void setSeguiti(Integer seguiti) {
-        this.seguiti = seguiti;
-    }
-
-    public Integer getFollowers() {
-        return followers;
-    }
-
-    public void setFollowers(Integer followers) {
-        this.followers = followers;
-    }
-
-    public Integer getEventiCreati() {
-        return eventiCreati;
-    }
-
-    public void setEventiCreati(Integer eventiCreati) {
-        this.eventiCreati = eventiCreati;
     }
 
     public Integer getEventiPartecipati() {
@@ -83,17 +43,4 @@ public class Statistiche {
         this.eventiPartecipati = eventiPartecipati;
     }
 
-    @Override
-    public String toString() {
-        return "Statistiche{" +
-                "libriLetti=" + libriLetti +
-                ", generePreferito='" + generePreferito + '\'' +
-                ", raccolteCreate=" + raccolteCreate +
-                ", autorePreferito='" + autorePreferito + '\'' +
-                ", seguiti=" + seguiti +
-                ", followers=" + followers +
-                ", eventiCreati=" + eventiCreati +
-                ", eventiPartecipati=" + eventiPartecipati +
-                '}';
-    }
 }

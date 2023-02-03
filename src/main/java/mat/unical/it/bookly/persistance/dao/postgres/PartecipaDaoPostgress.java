@@ -13,7 +13,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class PartecipaDaoPostgress implements PartecipaDao {
     Connection conn;
     public PartecipaDaoPostgress(Connection conn){
@@ -44,23 +43,20 @@ public class PartecipaDaoPostgress implements PartecipaDao {
 
     @Override
     public void createPartecipation(Long utente, Long evento) {
-        if(singlePartecipation(utente, evento) == null){
-            String insertStr = "INSERT INTO partecipa VALUES (?,?)";
-            PreparedStatement st;
+        String insertStr = "INSERT INTO partecipa VALUES (?,?)";
+        PreparedStatement st;
 
-            try{
-                st = conn.prepareStatement(insertStr);
+        try{
+            st = conn.prepareStatement(insertStr);
 
-                st.setLong(1,utente);
-                st.setLong(2,evento);
+            st.setLong(1,utente);
+            st.setLong(2,evento);
 
-                st.executeUpdate();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }else{
-            System.out.println("già presente questo evento");
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+
     }
 
     @Override

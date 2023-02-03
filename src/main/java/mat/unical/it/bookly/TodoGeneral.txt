@@ -1,8 +1,0 @@
-
-JACOPO:
-
-
-FRANCESCO:
-    //TODO: Gestione recupero credenziali (principalmente recupero password).
-
-

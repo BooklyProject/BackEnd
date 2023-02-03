@@ -8,13 +8,12 @@ public class Recensione {
         numeroMiPiace = 0;
         numeroNonMiPiace = 0;
     }
-    Long id;
-    String descrizione;
-    Integer voto;
-    //Date data;
-    Integer numeroMiPiace;
-    Integer numeroNonMiPiace;
-    String isbnLibro;
+    private Long id;
+    private String descrizione;
+    private Integer voto;
+    private Integer numeroMiPiace;
+    private Integer numeroNonMiPiace;
+    private String isbnLibro;
 
     public Long getId() {
         return id;
@@ -39,36 +38,16 @@ public class Recensione {
     public void setVoto(Integer voto) {
         this.voto = voto;
     }
-    /*
-    public Date getData() {
-        return data;
-    }
 
-    public void setData(Date data) {
-        this.data = data;
-    }
-    */
-    public Integer getNumeroMiPiace() {
-        return numeroMiPiace;
-    }
+    public Integer getNumeroMiPiace() { return numeroMiPiace; }
 
-    public void setNumeroMiPiace(Integer numeroMiPiace) {
-        this.numeroMiPiace = numeroMiPiace;
-    }
+    public void setNumeroMiPiace(Integer numeroMiPiace) { this.numeroMiPiace = numeroMiPiace; }
 
-    public Integer getNumeroNonMiPiace() {
-        return numeroNonMiPiace;
-    }
+    public Integer getNumeroNonMiPiace() { return numeroNonMiPiace; }
 
-    public void setNumeroNonMiPiace(Integer numeroNonMiPiace) {
-        this.numeroNonMiPiace = numeroNonMiPiace;
-    }
+    public void setNumeroNonMiPiace(Integer numeroNonMiPiace) { this.numeroNonMiPiace = numeroNonMiPiace; }
 
-    public String getLibro() {
-        return isbnLibro;
-    }
+    public String getLibro() { return isbnLibro; }
 
-    public void setLibro(String isbnLibro) {
-        this.isbnLibro = isbnLibro;
-    }
+    public void setLibro(String isbnLibro) { this.isbnLibro = isbnLibro; }
 }

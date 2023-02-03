@@ -35,9 +35,11 @@ public class SendEmailServlet extends HttpServlet {
             } catch (MessagingException e) {
                 e.printStackTrace();
             }
+
+            resp.sendRedirect("/recupero_password.html");
         }else{
-            System.out.println("Utente non trovato");
+            resp.sendRedirect("/error_page.html");
         }
-        resp.sendRedirect("/recupero_password.html");
+
     }
 }

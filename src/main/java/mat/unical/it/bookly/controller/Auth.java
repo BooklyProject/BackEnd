@@ -14,10 +14,8 @@ public class Auth {
     public Boolean isAuth(HttpServletRequest req, String jsessionid){
         HttpSession session = (HttpSession) req.getServletContext().getAttribute(jsessionid);
         if (session.getAttribute("user") != null) {
-            System.out.println("ciao");
             return true;
         }else {
-            System.out.println("ciao admin");
             return false;
         }
     }

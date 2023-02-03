@@ -7,7 +7,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DBManager { //classe Singleton che gestice la connessione con il DB
+public class DBManager {
 
     private DBManager(){};
     private static DBManager instance = null;
@@ -19,7 +19,7 @@ public class DBManager { //classe Singleton che gestice la connessione con il DB
         return instance;
     }
 
-    Connection conn = null; //definiamo un oggetto di tipo Connection nullo
+    Connection conn = null;
 
     public Connection getConnection(){
         if (conn == null){

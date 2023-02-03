@@ -3,8 +3,9 @@ package mat.unical.it.bookly.persistance.model;
 import java.util.List;
 
 public class Partecipazione {
-    Long utente;
-    Long evento;
+
+    private Long utente;
+    private Long evento;
 
     public Long getUtente() {
         return utente;

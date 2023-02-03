@@ -1,9 +1,10 @@
 package mat.unical.it.bookly.persistance.model;
 
 public class Post {
-    Long id;
-    Long idUtente;
-    String tipologia;
+
+    private Long id;
+    private Long idUtente;
+    private String tipologia;
 
     public Long getId() {
         return id;

@@ -1,9 +1,10 @@
 package mat.unical.it.bookly.persistance.model;
 
 public class Raccolta {
-    Long id;
-    String nome;
-    Long utente;
+
+    private Long id;
+    private String nome;
+    private Long utente;
 
     public Long getId() {
         return id;

@@ -3,14 +3,12 @@ package mat.unical.it.bookly.persistance.dao.postgres;
 import mat.unical.it.bookly.persistance.IdBroker;
 import mat.unical.it.bookly.persistance.dao.AmministratoreDao;
 import mat.unical.it.bookly.persistance.model.Amministratore;
-import mat.unical.it.bookly.persistance.model.Utente;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AmministratoreDaoPostgres implements AmministratoreDao {
-
 
     Connection conn;
     public AmministratoreDaoPostgres(Connection conn){  //attraverso il costruttore settiamo l'oggetto di tipo Connection
@@ -20,7 +18,7 @@ public class AmministratoreDaoPostgres implements AmministratoreDao {
     @Override
     public List<Amministratore> findAll() {
         List<Amministratore> amministratori = new ArrayList<>();
-        String query = "select * from amministratori"; //ritorna la lista di tutti gli amministratori
+        String query = "select * from amministratori";
         try{
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(query);
@@ -81,7 +79,6 @@ public class AmministratoreDaoPostgres implements AmministratoreDao {
                 a.setNome(rs.getString("nome"));
                 a.setEmail(rs.getString("email"));
                 a.setPassword(rs.getString("password"));
-                //utente.setUserImage(rs.getString("user_image"));
             }
 
         } catch (SQLException e) {

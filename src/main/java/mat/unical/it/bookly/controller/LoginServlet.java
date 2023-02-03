@@ -7,7 +7,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import mat.unical.it.bookly.persistance.DBManager;
-import mat.unical.it.bookly.persistance.dao.UtenteDao;
 import mat.unical.it.bookly.persistance.model.Amministratore;
 import mat.unical.it.bookly.persistance.model.Utente;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -49,7 +48,6 @@ public class LoginServlet extends HttpServlet {
         }
         if(logged) {
             HttpSession session = req.getSession();
-            System.out.println("sessionId: " + session.getId());
             resp.sendRedirect("http://localhost:4200/?jsessionid=" + session.getId());
         }
         else{

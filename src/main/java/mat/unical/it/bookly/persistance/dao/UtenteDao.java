@@ -5,11 +5,11 @@ import mat.unical.it.bookly.persistance.model.Utente;
 import java.util.List;
 
 public interface UtenteDao {
-    public List<Utente> findAll();
-    public Utente findByPrimaryKey(Long id);
-    public Utente findByEmail(String email);
-    public void saveOrUpdate(Utente utente);
-    public void delete(Long id);
-    public Utente findByEmailAndPassword(String email,String password);
-    public Utente findByToken(String token);
+    List<Utente> findAll();
+    Utente findByPrimaryKey(Long id);
+    Utente findByEmail(String email);
+    void saveOrUpdate(Utente utente);
+    void delete(Long id);
+    Utente findByEmailAndPassword(String email,String password);
+    Utente findByToken(String token);
 }
